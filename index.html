@@ -37,6 +37,11 @@ background:rgba(9,9,11,.9);backdrop-filter:blur(18px);border-bottom:1px solid va
 .hdr-space{flex:1}
 .pill-live{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t3)}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px rgba(16,185,129,.09)}
+.save-state-pill{display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:750;color:#c4d2e2;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);white-space:nowrap}
+.save-state-dot{width:7px;height:7px;border-radius:50%;background:#42d5a2;box-shadow:0 0 0 4px rgba(66,213,162,.12)}
+.save-state-pill.saving .save-state-dot{background:#f6c453;box-shadow:0 0 0 4px rgba(246,196,83,.12)}
+.save-state-pill.error{color:#ffd6da;background:rgba(227,77,89,.14);border-color:rgba(255,180,187,.22)}
+.save-state-pill.error .save-state-dot{background:#ff7180;box-shadow:0 0 0 4px rgba(255,113,128,.12)}
 .btn{border:0;border-radius:9px;padding:8px 13px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
 font-size:12px;font-weight:750;transition:.18s;white-space:nowrap}
 .btn-p{background:var(--o);color:white}.btn-p:hover{background:#d84605;transform:translateY(-1px)}
@@ -288,7 +293,7 @@ body.present .hero{min-height:calc(100vh - 56px);display:flex;align-items:center
   .hero .g2{display:block}.hero-side{margin-top:18px}
 }
 @media(max-width:560px){
-  .hdr-title,.pill-live{display:none}.btn span.hide-sm{display:none}
+  .hdr-title,.pill-live{display:none}.save-state-pill span:last-child{display:none}.save-state-pill{padding:7px}.btn span.hide-sm{display:none}
   .kpi-strip{grid-template-columns:1fr}.g4{grid-template-columns:1fr}.month-grid{grid-template-columns:repeat(2,1fr)}
   .funnel{grid-template-columns:repeat(2,1fr)}.bar-row{grid-template-columns:72px 1fr 58px}
 }
@@ -619,6 +624,7 @@ body.present .page{padding:32px 4vw}
 
 
 
+<!-- GitHub Pages + Google Sheets sync ready -->
 </head>
 <body>
 <header class="hdr">
@@ -626,6 +632,8 @@ body.present .page{padding:32px 4vw}
   <div class="sep-v"></div>
   <div class="hdr-title">Giang Tấn Văn — Kế hoạch Kinh doanh H2</div>
   <div class="hdr-space"></div>
+  <div class="save-state-pill" id="saveState" title="Trạng thái lưu và đồng bộ dữ liệu"><span class="save-state-dot"></span><span id="saveStateText">Đang khởi tạo…</span></div>
+  <button class="btn btn-g" onclick="configureCloudSync()" title="Kết nối và đồng bộ Google Sheets">☁ <span class="hide-sm">Google Sheets</span></button>
   <button class="btn btn-g" id="globalEditBtn" onclick="toggleEditMode()">✎ <span class="hide-sm">Chỉnh sửa</span></button>
   <button class="btn btn-g" onclick="togglePresent()">⛶ <span class="hide-sm">Trình chiếu</span></button>
   <button class="btn btn-p" onclick="window.print()">↗ <span class="hide-sm">In / PDF</span></button>
@@ -1047,30 +1055,394 @@ body.present .page{padding:32px 4vw}
 <footer class="footer"><span>1Office · Giang Tấn Văn · H2 Business Plan</span><span id="footerMetrics">Dữ liệu kế hoạch: 4.500M Target · 1.318M đã thanh toán · 1.862M chờ thanh toán · còn thiếu 1.320M</span></footer>
 
 <script>
+/* ============================================================
+   GOOGLE SHEETS CLOUD SYNC
+   1) Deploy Code.gs as an Apps Script Web App.
+   2) Replace the placeholder URL below with the /exec URL before
+      uploading index.html to GitHub Pages, or use the "Google Sheets"
+      button in the header to save a local endpoint override.
+   ============================================================ */
+const GOOGLE_SHEETS_DEFAULT_URL = "https://script.google.com/macros/s/AKfycbwGwDou6EwjYZQIT2LlbmC4S9e_v86Onb7Gwi4_GaOPXqaxx4rJS5cD23VKFMJQRleIcg/exec";
+const CLOUD_KEYS = {
+  endpoint: "h2-cloud-endpoint",
+  token: "h2-cloud-write-token",
+  clientId: "h2-cloud-client-id"
+};
+let CLOUD_ENDPOINT = "";
+let CLOUD_WRITE_TOKEN = "";
+let CLOUD_CLIENT_ID = "";
+let CLOUD_VERSION = 0;
+let CLOUD_SYNC_INTERVAL_MS = 15000;
+let CLOUD_POLL_TIMER = null;
+let CLOUD_FLUSH_TIMER = null;
+let CLOUD_SYNCING = false;
+let CLOUD_APPLYING = false;
+let CLOUD_DEFERRED_SNAPSHOT = null;
+const CLOUD_PENDING = new Map();
+
+function initCloudConfigValues(){
+  try{
+    CLOUD_ENDPOINT=(localStorage.getItem(CLOUD_KEYS.endpoint)||GOOGLE_SHEETS_DEFAULT_URL||"").trim();
+    CLOUD_WRITE_TOKEN=(localStorage.getItem(CLOUD_KEYS.token)||"").trim();
+    CLOUD_CLIENT_ID=localStorage.getItem(CLOUD_KEYS.clientId)||("web-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9));
+    localStorage.setItem(CLOUD_KEYS.clientId,CLOUD_CLIENT_ID);
+  }catch(error){
+    console.warn("Không thể đọc cấu hình Google Sheets",error);
+    CLOUD_ENDPOINT=GOOGLE_SHEETS_DEFAULT_URL;
+    CLOUD_WRITE_TOKEN="";
+    CLOUD_CLIENT_ID="web-anonymous";
+  }
+}
+function isCloudConfigured(){return /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec(?:\?.*)?$/.test(CLOUD_ENDPOINT)}
+function cloudStatus(message,state="saved"){
+  setSaveState(state,message);
+  const pill=document.getElementById("saveState");
+  if(pill)pill.title=isCloudConfigured()?"Dữ liệu dùng chung qua Google Sheets":"Chưa kết nối Google Sheets; dữ liệu chỉ lưu trên trình duyệt";
+}
+function cloudUrl(params={}){
+  const url=new URL(CLOUD_ENDPOINT);
+  Object.entries(params).forEach(([key,value])=>url.searchParams.set(key,String(value)));
+  url.searchParams.set("_",Date.now().toString());
+  return url.toString();
+}
+function hasActiveDataEditor(){
+  const el=document.activeElement;
+  if(!el||el===document.body)return false;
+  return Boolean(el.matches?.("textarea,input,select,[contenteditable=true]")||el.closest?.("textarea,input,select,[contenteditable=true]"));
+}
+function jsonpRequest(params={}){
+  return new Promise((resolve,reject)=>{
+    const callback="__h2CloudCallback_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+    const script=document.createElement("script");
+    const timer=setTimeout(()=>finish(new Error("Google Sheets phản hồi quá thời gian")),18000);
+    function cleanup(){clearTimeout(timer);delete window[callback];script.remove()}
+    function finish(error,data){cleanup();error?reject(error):resolve(data)}
+    window[callback]=data=>finish(null,data);
+    script.onerror=()=>finish(new Error("Không tải được dữ liệu Google Sheets"));
+    script.src=cloudUrl({...params,callback});
+    document.head.appendChild(script);
+  });
+}
+async function fetchCloudSnapshot(){
+  const url=cloudUrl({action:"snapshot"});
+  try{
+    const response=await fetch(url,{method:"GET",cache:"no-store",redirect:"follow"});
+    if(!response.ok)throw new Error("HTTP "+response.status);
+    return await response.json();
+  }catch(error){
+    console.warn("Fetch trực tiếp thất bại, chuyển sang JSONP",error);
+    return jsonpRequest({action:"snapshot"});
+  }
+}
+function normalizeCloudPaid(row,index){
+  const rawValue=Number(row?.value);
+  const month=String(row?.month??"7").match(/^(7|8|9|10|11|12)$/)?.[1]||"7";
+  return {
+    id:String(row?.id||("paid-"+(index+1))),
+    name:String(row?.name||""),project:String(row?.project||""),solution:String(row?.solution||""),
+    value:Number.isFinite(rawValue)?rawValue:0,month,status:String(row?.status||"")
+  };
+}
+function normalizeCloudSupport(row,index){
+  return {
+    id:String(row?.id||("support-"+(index+1))),
+    issue:String(row?.issue||""),risk:String(row?.risk||""),proposal:String(row?.proposal||""),opinion:String(row?.opinion||"")
+  };
+}
+function cacheSetDirect(key,value){try{localStorage.setItem(key,String(value))}catch(error){console.warn("Không thể cập nhật cache",key,error)}}
+function cacheRemoveDirect(key){try{localStorage.removeItem(key)}catch(error){console.warn("Không thể xóa cache",key,error)}}
+function applyEditableCloudContent(content){
+  document.querySelectorAll(".editable-field").forEach(el=>{
+    const storageKey="editable-"+el.dataset.editKey;
+    if(Object.prototype.hasOwnProperty.call(content,storageKey))el.innerHTML=String(content[storageKey]||"");
+  });
+}
+function clearMissingCloudContent(content){
+  try{
+    const keys=[];
+    for(let i=0;i<localStorage.length;i++){
+      const key=localStorage.key(i);
+      if(key&&(key.startsWith("editable-")||key.startsWith("widget-text-")))keys.push(key);
+    }
+    keys.forEach(key=>{if(!Object.prototype.hasOwnProperty.call(content,key))localStorage.removeItem(key)});
+  }catch(error){console.warn("Không thể dọn cache nội dung",error)}
+}
+function applyCloudSnapshot(snapshot,force=false){
+  if(!snapshot||snapshot.ok!==true)throw new Error(snapshot?.error||"Dữ liệu Google Sheets không hợp lệ");
+  const version=Number(snapshot.version||0);
+  if(!force&&version&&version<=CLOUD_VERSION)return false;
+  if((hasActiveDataEditor()||CLOUD_PENDING.size)&&!force){CLOUD_DEFERRED_SNAPSHOT=snapshot;return false}
+  CLOUD_APPLYING=true;
+  try{
+    if(snapshot.settings){
+      const target=Number(snapshot.settings.h2Target);
+      if(Number.isFinite(target)&&target>0)H2_TARGET=target;
+      const seconds=Number(snapshot.settings.syncIntervalSeconds);
+      if(Number.isFinite(seconds)&&seconds>=5){
+        const nextMs=seconds*1000;
+        if(nextMs!==CLOUD_SYNC_INTERVAL_MS){CLOUD_SYNC_INTERVAL_MS=nextMs;restartCloudPolling()}
+      }
+    }
+    if(snapshot.monthTargets&&typeof snapshot.monthTargets==="object"){
+      const months={};
+      Object.entries(snapshot.monthTargets).forEach(([month,row])=>{
+        if(!/^(7|8|9|10|11|12)$/.test(month))return;
+        const target=Number(row?.target);
+        months[month]={target:Number.isFinite(target)?target:0,focus:String(row?.focus||"")};
+      });
+      if(Object.keys(months).length)MONTH_TARGETS=months;
+    }
+    if(Array.isArray(snapshot.paidRevenue))JULY_ACTUALS=snapshot.paidRevenue.map(normalizeCloudPaid);
+    if(Array.isArray(snapshot.deals)){
+      DEALS=snapshot.deals.map(normalizeStoredDeal);
+      cacheSetDirect(STORAGE_KEYS.deals,JSON.stringify(DEALS));
+    }
+    if(Array.isArray(snapshot.supportRows)){
+      supportRows=snapshot.supportRows.map(normalizeCloudSupport);
+      cacheSetDirect(STORAGE_KEYS.support,JSON.stringify(supportRows));
+    }
+    const content=snapshot.content&&typeof snapshot.content==="object"?snapshot.content:{};
+    clearMissingCloudContent(content);
+    Object.entries(content).forEach(([key,value])=>cacheSetDirect(key,value));
+    applyEditableCloudContent(content);
+    const note=String(snapshot.decisions?.directorNote||"");
+    cacheSetDirect(STORAGE_KEYS.note,note);
+    const noteEl=document.getElementById("directorNote");if(noteEl&&!noteEl.matches(":focus"))noteEl.value=note;
+    if(document.getElementById("dealBody"))filterDeals();
+    renderSupportRows();
+    updateDashboardMetrics();
+    CLOUD_VERSION=version;
+    CLOUD_DEFERRED_SNAPSHOT=null;
+    cloudStatus("Đã đồng bộ Sheets","saved");
+    return true;
+  }finally{CLOUD_APPLYING=false}
+}
+async function syncFromCloud(force=false){
+  if(!isCloudConfigured()){
+    cloudStatus("Chưa kết nối Sheets","error");
+    return false;
+  }
+  if(CLOUD_SYNCING||(!force&&(hasActiveDataEditor()||CLOUD_PENDING.size)))return false;
+  CLOUD_SYNCING=true;
+  cloudStatus("Đang tải từ Sheets…","saving");
+  try{
+    const snapshot=await fetchCloudSnapshot();
+    return applyCloudSnapshot(snapshot,force);
+  }catch(error){
+    console.error("Không thể đồng bộ Google Sheets",error);
+    cloudStatus("Lỗi kết nối Sheets","error");
+    return false;
+  }finally{CLOUD_SYNCING=false}
+}
+function restartCloudPolling(){
+  clearInterval(CLOUD_POLL_TIMER);
+  if(isCloudConfigured())CLOUD_POLL_TIMER=setInterval(()=>syncFromCloud(false),CLOUD_SYNC_INTERVAL_MS);
+}
+function queueCloudOperation(key,operation){
+  if(CLOUD_APPLYING)return;
+  if(!isCloudConfigured()){
+    cloudStatus("Đã lưu cục bộ · Chưa kết nối Sheets","error");
+    return;
+  }
+  CLOUD_PENDING.set(key,operation);
+  cloudStatus(CLOUD_WRITE_TOKEN?"Đang đồng bộ…":"Cần mã ghi Sheets",CLOUD_WRITE_TOKEN?"saving":"error");
+  clearTimeout(CLOUD_FLUSH_TIMER);
+  CLOUD_FLUSH_TIMER=setTimeout(flushCloudQueue,650);
+}
+async function postCloudPayload(payload){
+  const request={...payload,token:CLOUD_WRITE_TOKEN,clientId:CLOUD_CLIENT_ID};
+  const body=JSON.stringify(request);
+  try{
+    const response=await fetch(CLOUD_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body,redirect:"follow"});
+    if(!response.ok)throw new Error("HTTP "+response.status);
+    const result=await response.json();
+    if(!result.ok)throw new Error(result.error||"Google Sheets từ chối ghi dữ liệu");
+    return result;
+  }catch(error){
+    console.warn("POST có phản hồi thất bại; thử gửi no-cors và xác nhận lại bằng lần đọc tiếp theo",error);
+    await fetch(CLOUD_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body,redirect:"follow"});
+    return {ok:true,opaque:true};
+  }
+}
+async function flushCloudQueue(){
+  if(!CLOUD_PENDING.size||!isCloudConfigured())return;
+  if(!CLOUD_WRITE_TOKEN){
+    cloudStatus("Cần cấu hình mã ghi Sheets","error");
+    return;
+  }
+  const entries=[...CLOUD_PENDING.entries()];
+  CLOUD_PENDING.clear();
+  const operations=entries.map(([,operation])=>operation);
+  cloudStatus("Đang ghi lên Sheets…","saving");
+  try{
+    const result=await postCloudPayload({action:"batch",operations});
+    if(result.version)CLOUD_VERSION=Number(result.version);
+    cloudStatus(result.opaque?"Đã gửi · Đang xác nhận…":"Đã đồng bộ Sheets","saved");
+    setTimeout(()=>syncFromCloud(true),result.opaque?1800:700);
+  }catch(error){
+    console.error("Không thể ghi Google Sheets",error);
+    entries.forEach(([key,operation])=>CLOUD_PENDING.set(key,operation));
+    cloudStatus("Ghi Sheets thất bại","error");
+  }
+}
+function mirrorStorageKeyToCloud(key,value,deleted=false){
+  if(CLOUD_APPLYING)return;
+  if(key.startsWith("editable-")||key.startsWith("widget-text-")){
+    queueCloudOperation("content:"+key,deleted?{action:"deleteContent",key}:{action:"saveContent",key,tab:key.split("-")[1]||"general",html:String(value||"")});
+  }else if(key===STORAGE_KEYS.note){
+    queueCloudOperation("decision:directorNote",{action:"saveDecision",key:"directorNote",value:deleted?"":String(value||"")});
+  }
+}
+function createSupportId(){return "support-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,7)}
+function collectCloudContent(){
+  const content={};
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const key=localStorage.key(i);
+      if(key&&(key.startsWith("editable-")||key.startsWith("widget-text-")))content[key]=localStorage.getItem(key)||"";
+    }
+  }catch(error){console.warn(error)}
+  document.querySelectorAll(".editable-field").forEach(el=>{content["editable-"+el.dataset.editKey]=el.innerHTML});
+  return content;
+}
+async function bootstrapGoogleSheets(){
+  if(!isCloudConfigured()){alert("Hãy cấu hình URL Apps Script trước.");return}
+  if(!CLOUD_WRITE_TOKEN){alert("Hãy cấu hình mã ghi dữ liệu trước.");return}
+  if(!confirm("Đẩy toàn bộ dữ liệu hiện tại trên web lên Google Sheets? Thao tác này sẽ thay thế dữ liệu đang có trong các bảng dữ liệu của Sheet."))return;
+  cloudStatus("Đang khởi tạo Sheets…","saving");
+  try{
+    const result=await postCloudPayload({
+      action:"bootstrap",confirmOverwrite:true,
+      settings:{h2Target:H2_TARGET,syncIntervalSeconds:Math.round(CLOUD_SYNC_INTERVAL_MS/1000)},
+      deals:DEALS,paidRevenue:JULY_ACTUALS,monthTargets:MONTH_TARGETS,supportRows,
+      content:collectCloudContent(),decisions:{directorNote:document.getElementById("directorNote")?.value||""}
+    });
+    if(result.version)CLOUD_VERSION=Number(result.version);
+    cloudStatus("Đã khởi tạo Google Sheets","saved");
+    setTimeout(()=>syncFromCloud(true),900);
+  }catch(error){console.error(error);cloudStatus("Khởi tạo Sheets thất bại","error");alert("Không thể khởi tạo Sheets: "+error.message)}
+}
+async function configureCloudSync(){
+  const endpoint=prompt("Dán URL Apps Script Web App kết thúc bằng /exec:",isCloudConfigured()?CLOUD_ENDPOINT:"");
+  if(endpoint===null)return;
+  const clean=endpoint.trim();
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec(?:\?.*)?$/.test(clean)){
+    alert("URL chưa đúng. Hãy dùng URL Web App kết thúc bằng /exec.");return;
+  }
+  CLOUD_ENDPOINT=clean;
+  localStorage.setItem(CLOUD_KEYS.endpoint,CLOUD_ENDPOINT);
+  const token=prompt("Nhập mã ghi dữ liệu đã thiết lập trong Apps Script. Có thể để trống nếu chỉ xem dữ liệu:",CLOUD_WRITE_TOKEN);
+  if(token!==null){CLOUD_WRITE_TOKEN=token.trim();if(CLOUD_WRITE_TOKEN)localStorage.setItem(CLOUD_KEYS.token,CLOUD_WRITE_TOKEN);else localStorage.removeItem(CLOUD_KEYS.token)}
+  restartCloudPolling();
+  const choice=prompt("Chọn thao tác:\n1 = Tải dữ liệu từ Google Sheets về web\n2 = Đẩy dữ liệu web hiện tại lên Google Sheets (chỉ dùng lần đầu)","1");
+  if(choice==="2")await bootstrapGoogleSheets();else await syncFromCloud(true);
+}
+function sendPendingWithBeacon(){
+  if(!navigator.sendBeacon||!isCloudConfigured()||!CLOUD_WRITE_TOKEN||!CLOUD_PENDING.size)return;
+  const operations=[...CLOUD_PENDING.values()];
+  const body=JSON.stringify({action:"batch",operations,token:CLOUD_WRITE_TOKEN,clientId:CLOUD_CLIENT_ID});
+  try{navigator.sendBeacon(CLOUD_ENDPOINT,new Blob([body],{type:"text/plain;charset=utf-8"}))}catch(error){console.warn("Beacon Sheets thất bại",error)}
+}
+function initCloudSync(){
+  initCloudConfigValues();
+  restartCloudPolling();
+  window.addEventListener("focus",()=>syncFromCloud(false));
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="visible")syncFromCloud(false);
+    else sendPendingWithBeacon();
+  });
+  window.addEventListener("pagehide",sendPendingWithBeacon);
+  if(isCloudConfigured())syncFromCloud(true);else cloudStatus("Chưa kết nối Sheets","error");
+}
+
+
+const STORAGE_KEYS={
+  deals:"h2-deals-data-v6",
+  support:"h2-support-rows",
+  note:"h2-director-note",
+  activeTab:"h2-active-tab"
+};
+let SAVE_STATE_TIMER=null;
+function setSaveState(state="saved",message=""){
+  const box=document.getElementById("saveState"),text=document.getElementById("saveStateText");
+  if(!box||!text)return;
+  box.classList.remove("saving","error");
+  if(state==="saving"){box.classList.add("saving");text.textContent=message||"Đang lưu…"}
+  else if(state==="error"){box.classList.add("error");text.textContent=message||"Không thể lưu"}
+  else{text.textContent=message||"Đã lưu"}
+}
+function markSaving(){
+  setSaveState("saving");
+  clearTimeout(SAVE_STATE_TIMER);
+  SAVE_STATE_TIMER=setTimeout(()=>setSaveState("saved"),500);
+}
+function safeSet(key,value){
+  try{
+    const text=String(value);
+    const previous=localStorage.getItem(key);
+    localStorage.setItem(key,text);markSaving();
+    if(previous!==text)mirrorStorageKeyToCloud(key,text,false);
+    return true;
+  }catch(error){console.error("Không thể lưu dữ liệu",error);setSaveState("error","Lỗi lưu dữ liệu");return false}
+}
+function safeGet(key,fallback=null){
+  try{const value=localStorage.getItem(key);return value===null?fallback:value}
+  catch(error){console.error("Không thể đọc dữ liệu",error);setSaveState("error","Lỗi bộ nhớ");return fallback}
+}
+function safeRemove(key){
+  try{
+    const existed=localStorage.getItem(key)!==null;
+    localStorage.removeItem(key);markSaving();
+    if(existed)mirrorStorageKeyToCloud(key,"",true);
+    return true;
+  }catch(error){console.error("Không thể xóa dữ liệu",error);setSaveState("error","Lỗi bộ nhớ");return false}
+}
+function verifyLocalStorage(){
+  try{const key="__h2_storage_test__";localStorage.setItem(key,"1");localStorage.removeItem(key);setSaveState("saved");return true}
+  catch(error){console.error("Trình duyệt đang chặn localStorage",error);setSaveState("error","Trình duyệt chặn lưu");return false}
+}
 const DEFAULT_DEALS=[
- {name:"NOVAGROUP",project:"Thanh toán đợt 3",cat:"Chắc chắn",value:986,month:"7",status:"Khách hàng đang sắp xếp dòng tiền để thanh toán trong tháng 7",next:"Khóa lịch Finance + Sponsor; hoàn tất hồ sơ thanh toán"},
- {name:"Thoát nước TP.HCM",project:"Thanh toán từ Viettel",cat:"Chắc chắn",value:196,month:"7",status:"Đợi Viettel thanh toán trong tháng 7",next:"Theo sát nghiệm thu và đầu mối thanh toán Viettel"},
- {name:"PVFCCo",project:"Phí bảo trì phần mềm",cat:"Chắc chắn",value:680,month:"9",status:"Dự kiến thanh toán phí bảo trì trong tháng 9",next:"Chuẩn bị nghiệm thu, hóa đơn và checklist chứng từ"},
- {name:"PTSC",project:"Văn phòng số — thanh toán đợt 1",cat:"Ưu tiên cao",value:1600,month:"7",status:"Đợi kết quả đấu thầu dự kiến trong tháng 7",next:"Chuẩn bị phương án thương mại, hợp đồng và kế hoạch triển khai"},
- {name:"PVFCCo",project:"API ký số tích hợp ERP",cat:"Ưu tiên cao",value:490,month:"8",status:"Khách hàng đang làm hồ sơ nội bộ để triển khai",next:"Thúc đẩy hồ sơ; làm rõ ROI và thời gian triển khai"},
- {name:"Cấp nước Tiền Giang",project:"Triển khai phần mềm",cat:"Ưu tiên cao",value:398,month:"8",status:"Đã thông qua ngân sách; Viettel bổ sung mô tả kỹ thuật",next:"Hoàn thiện hồ sơ chào giá và khóa phạm vi"},
- {name:"PHAN VŨ GROUP",project:"Văn phòng số — thanh toán đợt 1",cat:"Ưu tiên cao",value:720,month:"10",status:"Đang trình BOD thông qua chủ trương triển khai",next:"Executive Business Case và lộ trình theo giai đoạn"},
- {name:"PVFCCo",project:"Các tính năng GDD2 — thanh toán đợt 1",cat:"Ưu tiên cao",value:800,month:"11",status:"Đang đánh giá yêu cầu nghiệp vụ với khách hàng",next:"Hoàn tất Fit-Gap, phạm vi và phương án thanh toán"},
- {name:"PTSC",project:"Số hóa Quy trình điều hành",cat:"Tìm năng",value:2000,month:"12",status:"Khách hàng đang làm hồ sơ mời tham gia thầu",next:"RFP shaping; map Business, IT, Procurement và C-level"},
- {name:"SaiGon Touris Group",project:"Giải pháp quản trị doanh nghiệp",cat:"Tìm năng",value:500,month:"11",status:"Đang đàm phán phương án chi phí phù hợp quy định mua sắm",next:"Tối ưu scope/phasing và chứng minh TCO"}
+ {id:"deal-novagroup-payment-3",name:"NOVAGROUP",project:"Thanh toán đợt 3",cat:"Chắc chắn",value:986,month:"7",status:"Khách hàng đang sắp xếp dòng tiền để thanh toán trong tháng 7",next:"Khóa lịch Finance + Sponsor; hoàn tất hồ sơ thanh toán"},
+ {id:"deal-thoatnuoc-viettel",name:"Thoát nước TP.HCM",project:"Thanh toán từ Viettel",cat:"Chắc chắn",value:196,month:"7",status:"Đợi Viettel thanh toán trong tháng 7",next:"Theo sát nghiệm thu và đầu mối thanh toán Viettel"},
+ {id:"deal-pvfcco-maintenance",name:"PVFCCo",project:"Phí bảo trì phần mềm",cat:"Chắc chắn",value:680,month:"9",status:"Dự kiến thanh toán phí bảo trì trong tháng 9",next:"Chuẩn bị nghiệm thu, hóa đơn và checklist chứng từ"},
+ {id:"deal-ptsc-digital-office",name:"PTSC",project:"Văn phòng số — thanh toán đợt 1",cat:"Ưu tiên cao",value:1600,month:"7",status:"Đợi kết quả đấu thầu dự kiến trong tháng 7",next:"Chuẩn bị phương án thương mại, hợp đồng và kế hoạch triển khai"},
+ {id:"deal-pvfcco-api-sign",name:"PVFCCo",project:"API ký số tích hợp ERP",cat:"Ưu tiên cao",value:490,month:"8",status:"Khách hàng đang làm hồ sơ nội bộ để triển khai",next:"Thúc đẩy hồ sơ; làm rõ ROI và thời gian triển khai"},
+ {id:"deal-capnuoc-tiengiang",name:"Cấp nước Tiền Giang",project:"Triển khai phần mềm",cat:"Ưu tiên cao",value:398,month:"8",status:"Đã thông qua ngân sách; Viettel bổ sung mô tả kỹ thuật",next:"Hoàn thiện hồ sơ chào giá và khóa phạm vi"},
+ {id:"deal-phanvu-digital-office",name:"PHAN VŨ GROUP",project:"Văn phòng số — thanh toán đợt 1",cat:"Ưu tiên cao",value:720,month:"10",status:"Đang trình BOD thông qua chủ trương triển khai",next:"Executive Business Case và lộ trình theo giai đoạn"},
+ {id:"deal-pvfcco-gdd2",name:"PVFCCo",project:"Các tính năng GDD2 — thanh toán đợt 1",cat:"Ưu tiên cao",value:800,month:"11",status:"Đang đánh giá yêu cầu nghiệp vụ với khách hàng",next:"Hoàn tất Fit-Gap, phạm vi và phương án thanh toán"},
+ {id:"deal-ptsc-process",name:"PTSC",project:"Số hóa Quy trình điều hành",cat:"Tìm năng",value:2000,month:"12",status:"Khách hàng đang làm hồ sơ mời tham gia thầu",next:"RFP shaping; map Business, IT, Procurement và C-level"},
+ {id:"deal-saigontourist-erp",name:"SaiGon Touris Group",project:"Giải pháp quản trị doanh nghiệp",cat:"Tìm năng",value:500,month:"11",status:"Đang đàm phán phương án chi phí phù hợp quy định mua sắm",next:"Tối ưu scope/phasing và chứng minh TCO"}
 ];
+function normalizeStoredDeal(row,index){
+  const fallback=DEFAULT_DEALS[index]||{id:"deal-"+(index+1),name:"",project:"",cat:"Tìm năng",value:0,month:"12",status:"",next:""};
+  const rawValue=Number(row?.value);
+  const month=String(row?.month??fallback.month).match(/^(7|8|9|10|11|12)$/)?.[1]||fallback.month;
+  return {
+    id:String(row?.id??fallback.id??("deal-"+(index+1))),
+    name:String(row?.name??fallback.name),
+    project:String(row?.project??fallback.project),
+    cat:String(row?.cat??fallback.cat),
+    value:Number.isFinite(rawValue)?rawValue:Number(fallback.value)||0,
+    month,
+    status:String(row?.status??fallback.status),
+    next:String(row?.next??fallback.next)
+  };
+}
 function loadDealData(){
   try{
-    const saved=JSON.parse(localStorage.getItem("h2-deals-data-v6")||"null");
-    if(Array.isArray(saved)&&saved.length===DEFAULT_DEALS.length) return saved;
-  }catch(e){}
+    const saved=JSON.parse(safeGet(STORAGE_KEYS.deals,"null"));
+    if(Array.isArray(saved)) return saved.map(normalizeStoredDeal);
+  }catch(error){console.error("Không thể khôi phục danh sách Deal",error)}
   return DEFAULT_DEALS.map(d=>({...d}));
 }
-function saveDealData(){try{localStorage.setItem("h2-deals-data-v6",JSON.stringify(DEALS))}catch(e){}}
+function saveDealData(changedDeal=null){
+  safeSet(STORAGE_KEYS.deals,JSON.stringify(DEALS));
+  if(changedDeal)queueCloudOperation("deal:"+changedDeal.id,{action:"upsertDeal",deal:{...changedDeal}});
+}
 let DEALS=loadDealData();
-const JULY_ACTUALS=[
-  {name:"PVFCCo",project:"Doanh số thực đạt tháng 7",solution:"On-premise",value:750,month:"7",status:"Đã ghi nhận trong tháng 7"},
-  {name:"ACBS",project:"Doanh số thực đạt tháng 7",solution:"Private Cloud",value:568,month:"7",status:"Đã ghi nhận trong tháng 7"}
+let JULY_ACTUALS=[
+  {id:"paid-pvfcco-july",name:"PVFCCo",project:"Doanh số thực đạt tháng 7",solution:"On-premise",value:750,month:"7",status:"Đã ghi nhận trong tháng 7"},
+  {id:"paid-acbs-july",name:"ACBS",project:"Doanh số thực đạt tháng 7",solution:"Private Cloud",value:568,month:"7",status:"Đã ghi nhận trong tháng 7"}
 ];
 
 const H1_DEALS=[
@@ -1090,7 +1462,7 @@ const H1_QUARTERS=[
 const H1_KPI={target:1750,actual:629.165,gap:1120.835,detailTotal:629.165,reconcile:0,newContracts:0};
 const H1_PIPELINE=[];
 const H1_ACTIVITIES=[];
-const MONTH_TARGETS={
+let MONTH_TARGETS={
   "7":{target:692.308,focus:"Q3 chia đều · Thu NovaGroup, Thoát nước; kết quả thầu PTSC"},
   "8":{target:692.308,focus:"Q3 chia đều · PVFCCo API, Cấp nước Tiền Giang"},
   "9":{target:692.307,focus:"Q3 chia đều · Phí bảo trì PVFCCo và bù Gap"},
@@ -1098,7 +1470,7 @@ const MONTH_TARGETS={
   "11":{target:807.692,focus:"Q4 chia đều · Đàm phán thương mại, ngân sách, pháp lý"},
   "12":{target:807.693,focus:"Q4 chia đều · Ký hợp đồng và thanh toán đợt đầu"}
 };
-const H2_TARGET=4500;
+let H2_TARGET=4500;
 const pct=(n,d)=>d?Math.round(n/d*1000)/10:0;
 const pctText=n=>Number(n).toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
 function getH2Metrics(){
@@ -1169,14 +1541,33 @@ function normalizeDealValue(raw){
   const cleaned=String(raw).replace(/M/gi,"").replace(/\s/g,"").replace(/\./g,"").replace(",", ".").replace(/[^0-9.-]/g,"");
   const n=Number(cleaned);return Number.isFinite(n)?n:null;
 }
+const DEAL_SAVE_TIMERS={};
+function persistDealFieldDraft(index,field,el){
+  if(!DEALS[index]||!el)return false;
+  const value=el.textContent.trim();
+  if(field==="value"){
+    const n=normalizeDealValue(value);if(n===null)return false;DEALS[index].value=n;
+  }else if(field==="month"){
+    const match=value.match(/(?:Tháng\s*)?(7|8|9|10|11|12)/i);if(!match)return false;DEALS[index].month=match[1];
+  }else DEALS[index][field]=value;
+  saveDealData(DEALS[index]);
+  if(field==="month"||field==="value"||field==="cat")updateDashboardMetrics();
+  return true;
+}
+function scheduleDealFieldSave(index,field,el){
+  const timerKey=index+":"+field;
+  clearTimeout(DEAL_SAVE_TIMERS[timerKey]);
+  setSaveState("saving");
+  DEAL_SAVE_TIMERS[timerKey]=setTimeout(()=>persistDealFieldDraft(index,field,el),180);
+}
 function updateDealField(index,field,el){
-  if(!DEALS[index]) return;
-  let value=el.textContent.trim();
-  if(field==="value"){const n=normalizeDealValue(value);if(n===null){el.textContent=money(DEALS[index].value);return}DEALS[index].value=n;el.textContent=money(n)}
-  else if(field==="month"){const match=value.match(/(7|8|9|10|11|12)/);if(!match){el.textContent="Tháng "+DEALS[index].month;return}DEALS[index].month=match[1];el.textContent="Tháng "+match[1]}
-  else{DEALS[index][field]=value}
-  saveDealData();
-  if(document.getElementById("dealBody")) filterDeals();
+  if(!DEALS[index])return;
+  const timerKey=index+":"+field;clearTimeout(DEAL_SAVE_TIMERS[timerKey]);
+  const ok=persistDealFieldDraft(index,field,el);
+  if(field==="value")el.textContent=money(DEALS[index].value);
+  else if(field==="month")el.textContent="Tháng "+DEALS[index].month;
+  if(!ok)setSaveState("error","Giá trị chưa hợp lệ");
+  if(document.getElementById("dealBody"))filterDeals();
   updateDashboardMetrics();
 }
 function currentFilteredDeals(){
@@ -1191,9 +1582,9 @@ function renderDeals(list=DEALS){
     <td><div class="name">${escapeHtml(d.name)}</div><div class="sub">${escapeHtml(d.project)}</div></td>
     <td><span class="badge ${catBadge(d.cat)}">${escapeHtml(catText(d.cat))}</span></td>
     <td class="fw8 co">${money(d.value)}</td>
-    <td class="deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa tháng dự kiến; biểu đồ Tổng quan tự động tính lại" onblur="updateDealField(${idx},'month',this)">Tháng ${escapeHtml(d.month)}</td>
-    <td class="t2 deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" onblur="updateDealField(${idx},'status',this)">${escapeHtml(d.status)}</td>
-    <td class="t2 deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" onblur="updateDealField(${idx},'next',this)">${escapeHtml(d.next)}</td>
+    <td class="deal-edit-cell" data-deal-index="${idx}" data-deal-field="month" contenteditable="true" spellcheck="false" title="Nhấp để sửa tháng dự kiến; biểu đồ Tổng quan tự động tính lại" oninput="scheduleDealFieldSave(${idx},'month',this)" onblur="updateDealField(${idx},'month',this)">Tháng ${escapeHtml(d.month)}</td>
+    <td class="t2 deal-edit-cell" data-deal-index="${idx}" data-deal-field="status" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" oninput="scheduleDealFieldSave(${idx},'status',this)" onblur="updateDealField(${idx},'status',this)">${escapeHtml(d.status)}</td>
+    <td class="t2 deal-edit-cell" data-deal-index="${idx}" data-deal-field="next" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" oninput="scheduleDealFieldSave(${idx},'next',this)" onblur="updateDealField(${idx},'next',this)">${escapeHtml(d.next)}</td>
   </tr>`}).join("");
   const total=list.reduce((s,d)=>s+d.value,0);
   document.getElementById("dealCount").textContent=`${list.length} cơ hội · ${money(total)} · Hiện trạng/Next Step có thể sửa trực tiếp`;
@@ -1206,13 +1597,16 @@ function resetDeals(){
   document.getElementById("dealSearch").value="";
   renderDeals();
 }
-function sw(tab){
+function sw(tab,scroll=true){
+  if(!["overview","pipeline","strategy","support"].includes(tab))tab="overview";
   document.querySelectorAll(".tc").forEach(x=>x.classList.remove("on"));
   document.querySelectorAll(".ntab").forEach(x=>x.classList.remove("on"));
-  document.getElementById("tab-"+tab).classList.add("on");
-  document.querySelector(`[data-tab="${tab}"]`).classList.add("on");
-  window.scrollTo({top:0,behavior:"smooth"});
+  document.getElementById("tab-"+tab)?.classList.add("on");
+  document.querySelector(`[data-tab="${tab}"]`)?.classList.add("on");
+  safeSet(STORAGE_KEYS.activeTab,tab);
+  if(scroll)window.scrollTo({top:0,behavior:"smooth"});
 }
+function restoreActiveTab(){sw(safeGet(STORAGE_KEYS.activeTab,"overview"),false)}
 function togglePresent(){
   document.body.classList.toggle("present");
   if(document.body.classList.contains("present") && document.documentElement.requestFullscreen){
@@ -1231,19 +1625,19 @@ document.addEventListener("keydown",e=>{
   else if(e.key==="Escape"&&document.body.classList.contains("present")) togglePresent();
 });
 const DEFAULT_SUPPORT_ROWS=[
-  {issue:"1. Thu 1.862M hợp đồng đã ký",risk:"Ngày thanh toán bị lùi do dòng tiền, chứng từ hoặc phê duyệt qua nhiều đầu mối.",proposal:"BGĐ tham gia escalation với Sponsor khách hàng; Finance cùng khóa ngày thu và checklist hồ sơ.",opinion:""},
-  {issue:"2. PTSC, PVFCCo, Cấp nước chậm phê duyệt",risk:"Deal trượt tháng/quý, làm thiếu phần còn lại 1.320M.",proposal:"Hỗ trợ Executive Meeting, tiếp cận người quyết định và tháo gỡ bước phê duyệt cuối.",opinion:""},
-  {issue:"3. Nguồn lực Pre-sales / Legal / Delivery",risk:"Proposal, hồ sơ thầu và cam kết triển khai phản hồi chậm, giảm khả năng thắng.",proposal:"Ưu tiên nguồn lực cho Deal trọng điểm; áp dụng SLA nội bộ tối đa 48 giờ.",opinion:""},
-  {issue:"4. Giá và điều kiện thương mại",risk:"Đàm phán kéo dài hoặc giảm biên lợi nhuận do chờ phê duyệt ngoại lệ.",proposal:"Thiết lập Deal Desk 24–48 giờ và khung thẩm quyền rõ cho chiết khấu, milestone, SLA.",opinion:""},
-  {issue:"5. Pipeline dự phòng chưa đủ nhanh",risk:"Khi Deal lớn lùi, không có nguồn bù trong cùng tháng.",proposal:"Hỗ trợ mở cửa Key Account, cross-sell khách hàng hiện hữu và phê duyệt phương án chia phase để ký sớm.",opinion:""}
+  {id:"support-1",issue:"1. Thu 1.862M hợp đồng đã ký",risk:"Ngày thanh toán bị lùi do dòng tiền, chứng từ hoặc phê duyệt qua nhiều đầu mối.",proposal:"BGĐ tham gia escalation với Sponsor khách hàng; Finance cùng khóa ngày thu và checklist hồ sơ.",opinion:""},
+  {id:"support-2",issue:"2. PTSC, PVFCCo, Cấp nước chậm phê duyệt",risk:"Deal trượt tháng/quý, làm thiếu phần còn lại 1.320M.",proposal:"Hỗ trợ Executive Meeting, tiếp cận người quyết định và tháo gỡ bước phê duyệt cuối.",opinion:""},
+  {id:"support-3",issue:"3. Nguồn lực Pre-sales / Legal / Delivery",risk:"Proposal, hồ sơ thầu và cam kết triển khai phản hồi chậm, giảm khả năng thắng.",proposal:"Ưu tiên nguồn lực cho Deal trọng điểm; áp dụng SLA nội bộ tối đa 48 giờ.",opinion:""},
+  {id:"support-4",issue:"4. Giá và điều kiện thương mại",risk:"Đàm phán kéo dài hoặc giảm biên lợi nhuận do chờ phê duyệt ngoại lệ.",proposal:"Thiết lập Deal Desk 24–48 giờ và khung thẩm quyền rõ cho chiết khấu, milestone, SLA.",opinion:""},
+  {id:"support-5",issue:"5. Pipeline dự phòng chưa đủ nhanh",risk:"Khi Deal lớn lùi, không có nguồn bù trong cùng tháng.",proposal:"Hỗ trợ mở cửa Key Account, cross-sell khách hàng hiện hữu và phê duyệt phương án chia phase để ký sớm.",opinion:""}
 ];
 let supportRows=[];
 function cloneSupportRows(){return DEFAULT_SUPPORT_ROWS.map(row=>({...row}))}
-function saveSupportRows(){localStorage.setItem("h2-support-rows",JSON.stringify(supportRows))}
+function saveSupportRows(){safeSet(STORAGE_KEYS.support,JSON.stringify(supportRows))}
 function loadSupportRows(){
   try{
-    const saved=JSON.parse(localStorage.getItem("h2-support-rows")||"null");
-    supportRows=Array.isArray(saved)&&saved.length?saved.map(row=>({issue:String(row.issue||""),risk:String(row.risk||""),proposal:String(row.proposal||""),opinion:String(row.opinion||"")})):cloneSupportRows();
+    const saved=JSON.parse(safeGet(STORAGE_KEYS.support,"null"));
+    supportRows=Array.isArray(saved)&&saved.length?saved.map((row,index)=>normalizeCloudSupport(row,index)):cloneSupportRows();
   }catch(e){supportRows=cloneSupportRows()}
   renderSupportRows();
 }
@@ -1262,38 +1656,44 @@ function autoGrowSupportTextarea(el){el.style.height="auto";el.style.height=Math
 function updateSupportRow(index,field,el){
   if(!supportRows[index]||!["issue","risk","proposal","opinion"].includes(field))return;
   supportRows[index][field]=el.value;autoGrowSupportTextarea(el);saveSupportRows();
+  queueCloudOperation("support:"+supportRows[index].id,{action:"upsertSupport",row:{...supportRows[index],sortOrder:index+1}});
 }
 function addSupportRow(){
-  supportRows.push({issue:"",risk:"",proposal:"",opinion:""});saveSupportRows();renderSupportRows();
+  const row={id:createSupportId(),issue:"",risk:"",proposal:"",opinion:""};
+  supportRows.push(row);saveSupportRows();
+  queueCloudOperation("support:"+row.id,{action:"upsertSupport",row:{...row,sortOrder:supportRows.length}});
+  renderSupportRows();
   const inputs=document.querySelectorAll("#supportTableBody .support-input.issue");const last=inputs[inputs.length-1];if(last){last.focus();last.scrollIntoView({behavior:"smooth",block:"center"})}
 }
 function removeSupportRow(index){
   if(!supportRows[index]||!confirm("Xóa dòng đề xuất này?"))return;
-  supportRows.splice(index,1);if(!supportRows.length)supportRows.push({issue:"",risk:"",proposal:"",opinion:""});saveSupportRows();renderSupportRows();
+  const removed=supportRows[index];supportRows.splice(index,1);
+  if(!supportRows.length)supportRows.push({id:createSupportId(),issue:"",risk:"",proposal:"",opinion:""});
+  saveSupportRows();queueCloudOperation("support-delete:"+removed.id,{action:"deleteSupport",id:removed.id});renderSupportRows();
 }
 
 function loadDecision(){
-  document.getElementById("directorNote").value=localStorage.getItem("h2-director-note")||"";
+  document.getElementById("directorNote").value=safeGet(STORAGE_KEYS.note,"")||"";
   document.querySelectorAll(".check").forEach(b=>{
-    if(localStorage.getItem("h2-"+b.dataset.key)==="1") b.classList.add("on");
+    if(safeGet("h2-"+b.dataset.key)==="1") b.classList.add("on");
   });
   updateApproval();
 }
 function toggleCheck(btn){
   btn.classList.toggle("on");
-  localStorage.setItem("h2-"+btn.dataset.key,btn.classList.contains("on")?"1":"0");
+  safeSet("h2-"+btn.dataset.key,btn.classList.contains("on")?"1":"0");
   updateApproval();
 }
 function updateApproval(){
   const all=[...document.querySelectorAll(".check")],done=all.filter(x=>x.classList.contains("on")).length;
   const badge=document.getElementById("approvalCount");if(badge)badge.textContent=`${done}/${all.length}`;
 }
-function saveNote(){localStorage.setItem("h2-director-note",document.getElementById("directorNote").value)}
+function saveNote(){safeSet(STORAGE_KEYS.note,document.getElementById("directorNote")?.value||"")}
 function clearDecision(){
   if(!confirm("Xóa toàn bộ ghi chú của BGĐ?")) return;
-  localStorage.removeItem("h2-director-note");
+  safeRemove(STORAGE_KEYS.note);
   document.getElementById("directorNote").value="";
-  document.querySelectorAll(".check").forEach(b=>{b.classList.remove("on");localStorage.removeItem("h2-"+b.dataset.key)});
+  document.querySelectorAll(".check").forEach(b=>{b.classList.remove("on");safeRemove("h2-"+b.dataset.key)});
   updateApproval();
 }
 function exportDecision(){
@@ -1360,24 +1760,28 @@ function enableModalEditing(widgetId){
     el.classList.add("modal-editable");el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");el.title="Nhấp để chỉnh sửa; nội dung tự động lưu";
     const dealField=el.dataset.dealField;
     if(dealField){
-      el.addEventListener("blur",()=>updateDealField(Number(el.dataset.dealIndex),dealField,el));
+      const dealIndex=Number(el.dataset.dealIndex);
+      el.addEventListener("input",()=>scheduleDealFieldSave(dealIndex,dealField,el));
+      el.addEventListener("blur",()=>updateDealField(dealIndex,dealField,el));
       return;
     }
-    const storageKey=`widget-text-${widgetId}-${i}`;
-    const saved=localStorage.getItem(storageKey);if(saved!==null)el.textContent=saved;
-    el.addEventListener("blur",()=>localStorage.setItem(storageKey,el.textContent));
+    const storageKey=`widget-text-${widgetId}-${i}`;el.dataset.storageKey=storageKey;
+    const saved=safeGet(storageKey);if(saved!==null)el.textContent=saved;
+    const saveModalText=()=>safeSet(storageKey,el.textContent);
+    el.addEventListener("input",saveModalText);
+    el.addEventListener("blur",saveModalText);
   });
 }
 function openDetailModal(title,sub,html,widgetId="detail"){
   CURRENT_WIDGET_ID=widgetId;
   document.getElementById("detailTitle").textContent=title;
   document.getElementById("detailSub").textContent=sub||"";
-  document.getElementById("detailBody").innerHTML=`<div class="modal-edit-note">✎ Nhấp trực tiếp vào nội dung để chỉnh sửa. Thay đổi được lưu tự động trên trình duyệt này.</div>${html}`;
+  document.getElementById("detailBody").innerHTML=`<div class="modal-edit-note">✎ Nhấp trực tiếp vào nội dung để chỉnh sửa. Thay đổi được lưu tự động và đồng bộ với Google Sheets khi đã kết nối.</div>${html}`;
   enableModalEditing(widgetId);
   document.getElementById("detailModal").classList.add("on");
   document.body.style.overflow="hidden";
 }
-function closeDetailModal(){document.getElementById("detailModal").classList.remove("on");document.body.style.overflow=""}
+function closeDetailModal(){if(document.activeElement?.matches?.("#detailModal [contenteditable=true]"))document.activeElement.blur();persistAllData();document.getElementById("detailModal").classList.remove("on");document.body.style.overflow=""}
 
 function openWidget(type,key=""){
   if(EDIT_MODE) return;
@@ -1480,8 +1884,11 @@ function initEditableContent(){
     document.querySelectorAll(`#tab-${tab} ${sel}`).forEach((el,i)=>{
       if(el.closest(".edit-toolbar")||el.matches("button")||el.querySelector("button,input,textarea,select")) return;
       const key=`${tab}-${i}`;el.dataset.editKey=key;el.classList.add("editable-field");DEFAULT_EDIT_CONTENT[key]=el.innerHTML;
-      const saved=localStorage.getItem("editable-"+key);if(saved!==null) el.innerHTML=saved;
-      el.addEventListener("blur",()=>{if(EDIT_MODE)localStorage.setItem("editable-"+key,el.innerHTML)});
+      const saved=safeGet("editable-"+key);if(saved!==null)el.innerHTML=saved;
+      const saveField=()=>{if(EDIT_MODE)safeSet("editable-"+key,el.innerHTML)};
+      el.addEventListener("input",saveField);
+      el.addEventListener("compositionend",saveField);
+      el.addEventListener("blur",saveField);
       el.addEventListener("click",e=>{if(EDIT_MODE)e.stopPropagation()});
     });
   });
@@ -1497,18 +1904,41 @@ function updateEditStatus(){
   ["pipeline","strategy","support"].forEach(t=>{const el=document.getElementById("editStatus-"+t);if(el)el.textContent=EDIT_MODE?"Đang bật":"Đang tắt"});
 }
 function saveEditableContent(){
-  document.querySelectorAll(".editable-field").forEach(el=>localStorage.setItem("editable-"+el.dataset.editKey,el.innerHTML));
+  document.querySelectorAll(".editable-field").forEach(el=>safeSet("editable-"+el.dataset.editKey,el.innerHTML));
   const was=EDIT_MODE;if(was)toggleEditMode();
-  alert("Đã lưu nội dung chỉnh sửa trên trình duyệt này.");
+  alert(isCloudConfigured()?"Đã lưu và đưa vào hàng đợi đồng bộ Google Sheets.":"Đã lưu cục bộ. Hãy kết nối Google Sheets để dùng chung trên nhiều trình duyệt.");
 }
 function resetEditableTab(tab){
   if(!confirm("Khôi phục toàn bộ nội dung mặc định của tab này?"))return;
-  document.querySelectorAll(`#tab-${tab} .editable-field`).forEach(el=>{const k=el.dataset.editKey;localStorage.removeItem("editable-"+k);el.innerHTML=DEFAULT_EDIT_CONTENT[k]});
+  document.querySelectorAll(`#tab-${tab} .editable-field`).forEach(el=>{const k=el.dataset.editKey;safeRemove("editable-"+k);el.innerHTML=DEFAULT_EDIT_CONTENT[k]});
   if(tab==="support"){
-    localStorage.removeItem("h2-support-rows");supportRows=cloneSupportRows();renderSupportRows();
+    safeRemove(STORAGE_KEYS.support);supportRows=cloneSupportRows();renderSupportRows();
+    queueCloudOperation("support:replace",{action:"replaceSupport",rows:supportRows.map((row,index)=>({...row,sortOrder:index+1}))});
   }
 }
 
+function persistAllData(){
+  try{
+    Object.keys(DEAL_SAVE_TIMERS).forEach(key=>{clearTimeout(DEAL_SAVE_TIMERS[key]);delete DEAL_SAVE_TIMERS[key]});
+    document.querySelectorAll("#dealBody [data-deal-index][data-deal-field][contenteditable=true]").forEach(el=>persistDealFieldDraft(Number(el.dataset.dealIndex),el.dataset.dealField,el));
+    const modal=document.getElementById("detailModal");
+    if(modal?.classList.contains("on"))modal.querySelectorAll("[data-deal-index][data-deal-field][contenteditable=true]").forEach(el=>persistDealFieldDraft(Number(el.dataset.dealIndex),el.dataset.dealField,el));
+    document.querySelectorAll(".editable-field").forEach(el=>safeSet("editable-"+el.dataset.editKey,el.innerHTML));
+    document.querySelectorAll("#detailModal .modal-editable[data-storage-key]").forEach(el=>safeSet(el.dataset.storageKey,el.textContent));
+    document.querySelectorAll("#supportTableBody .support-input").forEach(el=>{
+      const row=el.closest("tr"),index=[...row.parentElement.children].indexOf(row);
+      const field=["issue","risk","proposal","opinion"].find(name=>el.classList.contains(name));
+      if(supportRows[index]&&field)supportRows[index][field]=el.value;
+    });
+    saveDealData();saveSupportRows();saveNote();setSaveState("saved");
+  }catch(error){console.error("Không thể lưu toàn bộ dữ liệu",error);setSaveState("error","Lỗi lưu dữ liệu")}
+}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")persistAllData()});
+window.addEventListener("pagehide",persistAllData);
+window.addEventListener("beforeunload",persistAllData);
+setInterval(persistAllData,5000);
+
+verifyLocalStorage();
 renderDeals();
 renderH1Spark();
 updateDashboardMetrics();
@@ -1516,6 +1946,9 @@ bindWidgets();
 loadSupportRows();
 initEditableContent();
 loadDecision();
+restoreActiveTab();
+persistAllData();
+initCloudSync();
 </script>
 </body>
 </html>
