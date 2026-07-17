@@ -252,9 +252,23 @@ body.edit-mode .edit-state{color:var(--b)}body.edit-mode .edit-state .dot{backgr
 .month-plan-seg{height:100%;min-width:0}.month-plan-seg.paid{background:#2563eb}.month-plan-seg.signed{background:#10a879}.month-plan-seg.pipeline{background:#f15a24}.month-target-marker{position:absolute;top:-3px;bottom:-3px;width:2px;background:#14213d;box-shadow:0 0 0 1px rgba(255,255,255,.65)}
 .month-plan-meta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:10px;color:#6f7e92}.month-plan-meta strong{margin-left:auto;color:var(--navy);font-size:11px}.month-plan-meta .ok{color:var(--g)}.month-plan-meta .warn{color:var(--a)}
 .legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}.legend-dot.paid{background:#2563eb}.legend-dot.signed{background:#10a879}.legend-dot.pipeline{background:#f15a24}
-.compact-support-table td{vertical-align:top}.compact-support-table td:nth-child(1){font-weight:800;color:var(--navy);min-width:210px}.compact-support-table td:nth-child(2){min-width:260px}.compact-support-table td:nth-child(3){min-width:320px;color:var(--navy)}
+.overview-planning-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:16px;align-items:stretch}
+.overview-planning-left{display:grid;grid-template-rows:auto 1fr;gap:16px;min-width:0}
+.overview-planning-grid>.card,.overview-planning-left>.card{height:100%;min-width:0}
+.monthly-allocation-card{display:flex;flex-direction:column}.monthly-allocation-card .month-allocation{flex:1}
+.priority-panel{display:flex;flex-direction:column}.priority-list{display:flex;flex-direction:column;gap:10px;flex:1}
+.priority-item{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 13px;border:1px solid var(--bd);border-radius:12px;background:#f8fafc;transition:.18s}
+.priority-item:hover{background:#eef5ff;border-color:#d4e3fb;transform:translateY(-1px)}
+.priority-item h3{font-size:13px;color:var(--navy);margin:0}.priority-item p{font-size:11px;color:var(--t2);margin-top:4px}
+.compact-support-table{min-width:1180px}.compact-support-table td{vertical-align:top;padding:8px}.compact-support-table td:nth-child(1){min-width:230px}.compact-support-table td:nth-child(2){min-width:260px}.compact-support-table td:nth-child(3){min-width:300px}.compact-support-table td:nth-child(4){min-width:300px}.compact-support-table td:last-child{width:44px;min-width:44px;text-align:center}
+.support-table-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.support-table-hint{font-size:11px;color:var(--t3)}
+.support-input{width:100%;min-height:86px;resize:vertical;border:1px solid transparent;background:transparent;border-radius:8px;padding:8px 9px;color:var(--t2);line-height:1.5;outline:none;transition:.15s}
+.support-input.issue{font-weight:800;color:var(--navy)}.support-input.proposal,.support-input.opinion{color:var(--navy)}
+.support-input:hover{background:#f7f9fc;border-color:#dfe6ef}.support-input:focus{background:#fff;border-color:rgba(37,99,235,.55);box-shadow:0 0 0 3px rgba(37,99,235,.09)}
+.support-delete{width:30px;height:30px;border-radius:8px;border:1px solid #ffd4d8;background:#fff0f1;color:#c43241;cursor:pointer;font-weight:900}.support-delete:hover{background:#ffe4e7}
 .personal-change-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.personal-change{border-top:4px solid var(--b)}.personal-change:nth-child(2n){border-top-color:var(--o)}.personal-change:nth-child(3n){border-top-color:var(--g)}
-@media(max-width:900px){.target-legend{grid-template-columns:1fr}.personal-change-grid{grid-template-columns:1fr}}
+@media(max-width:1000px){.overview-planning-grid{grid-template-columns:1fr}.overview-planning-left{grid-template-rows:auto auto}}
+@media(max-width:900px){.target-legend{grid-template-columns:1fr}.personal-change-grid{grid-template-columns:1fr}.priority-item{grid-template-columns:1fr}.support-table-toolbar{align-items:flex-start}}
 
 /* FOOTER */
 .footer{max-width:1440px;margin:15px auto 0;padding:0 24px 28px;color:var(--t3);font-size:10px;display:flex;justify-content:space-between;gap:10px}
@@ -592,6 +606,8 @@ body.present .page{padding:32px 4vw}
 
 @media print{
   :root{--bg:#fff;--bg2:#fff;--bg3:#f6f8fb;--bg4:#e8edf4;--bd:#dfe4eb;--bd2:#cbd3dd;--t1:#111827;--t2:#374151;--t3:#667085}
+  .support-input{border:0!important;background:transparent!important;box-shadow:none!important;resize:none;overflow:visible;color:#111827!important;padding:2px!important}
+  .compact-support-table{min-width:0!important}
   body{background:#fff!important;color:#111827}
   .card,.kpi,.month,.fstep,.hero{background:#fff!important;box-shadow:none!important;color:#111827}
   .hero{border:1px solid #dfe4eb}
@@ -694,39 +710,41 @@ body.present .page{padding:32px 4vw}
     <div class="kpi clickable" data-widget="target-contracts"><div class="kpi-label">Hợp đồng mục tiêu bổ sung</div><div class="kpi-val" id="targetContractsValue">≈ 5</div><div class="kpi-meta">Ticket SaaS/Cloud ~300M</div></div>
   </div>
 
-  <div class="section g2">
-    <div class="card">
-      <div class="sh"><div class="st">Phân bổ doanh số theo quý</div><div class="sm">Tỷ trọng năm · quy đổi H2 theo tỷ lệ 30:35</div></div>
-      <div class="g2">
-        <div class="quarter clickable" data-widget="quarter-target" data-key="Q3" style="background:var(--bg3);border-radius:12px">
-          <div class="fx ai jb"><div class="q-title">Quý III</div><span class="badge bd-o">30% kế hoạch năm</span></div>
-          <div class="q-val">2.076,923M</div>
-          <div class="q-share">46,2% mục tiêu H2 · chia đều T7–T9</div>
-          <div class="pb mt12"><div class="pbf" style="width:46.2%"></div></div>
+  <div class="section overview-planning-grid">
+    <div class="overview-planning-left">
+      <div class="card">
+        <div class="sh"><div class="st">Phân bổ doanh số theo quý</div><div class="sm">Tỷ trọng H2 theo tỷ lệ 30:35</div></div>
+        <div class="g2">
+          <div class="quarter clickable" data-widget="quarter-target" data-key="Q3" style="background:var(--bg3);border-radius:12px">
+            <div class="fx ai jb"><div class="q-title">Quý III</div><span class="badge bd-o">30% kế hoạch năm</span></div>
+            <div class="q-val">2.076,923M</div>
+            <div class="q-share">46,2% mục tiêu H2 · T7–T9</div>
+            <div class="pb mt12"><div class="pbf" style="width:46.2%"></div></div>
+          </div>
+          <div class="quarter clickable" data-widget="quarter-target" data-key="Q4" style="background:var(--bg3);border-radius:12px">
+            <div class="fx ai jb"><div class="q-title">Quý IV</div><span class="badge bd-b">35% kế hoạch năm</span></div>
+            <div class="q-val">2.423,077M</div>
+            <div class="q-share">53,8% mục tiêu H2 · T10–T12</div>
+            <div class="pb mt12"><div class="pbf" style="width:53.8%;background:var(--b)"></div></div>
+          </div>
         </div>
-        <div class="quarter clickable" data-widget="quarter-target" data-key="Q4" style="background:var(--bg3);border-radius:12px">
-          <div class="fx ai jb"><div class="q-title">Quý IV</div><span class="badge bd-b">35% kế hoạch năm</span></div>
-          <div class="q-val">2.423,077M</div>
-          <div class="q-share">53,8% mục tiêu H2 · chia đều T10–T12</div>
-          <div class="pb mt12"><div class="pbf" style="width:53.8%;background:var(--b)"></div></div>
+      </div>
+
+      <div class="card priority-panel">
+        <div class="sh"><div class="st">Vấn đề ưu tiên</div><div class="sm">Nội dung ảnh hưởng trực tiếp tới Target</div></div>
+        <div class="priority-list">
+          <div class="priority-item"><span class="badge bd-r">01</span><div><h3>Bảo vệ khoản thu 1,862 tỷ</h3><p>NovaGroup, Thoát nước TP.HCM và phí bảo trì PVFCCo cần có ngày thanh toán, checklist hồ sơ và escalation rõ ràng.</p></div></div>
+          <div class="priority-item"><span class="badge bd-o">02</span><div><h3>Chuyển đổi tối thiểu <span id="priorityGapValue">1,320 tỷ</span></h3><p>Ưu tiên PTSC Văn phòng số, PVFCCo API, Cấp nước Tiền Giang, Phan Vũ Group, GDD2 và các Deal có lịch quyết định rõ ràng.</p></div></div>
+          <div class="priority-item"><span class="badge bd-b">03</span><div><h3>Mở đường người ra quyết định</h3><p>Mỗi Key Account cần xác định Economic Buyer, Internal Champion và Mutual Action Plan theo mốc ký, nghiệm thu, thanh toán.</p></div></div>
+          <div class="priority-item"><span class="badge bd-g">04</span><div><h3>Duy trì Pipeline dự phòng</h3><p>Tạo thêm tối thiểu 600M Pipeline/tháng và giữ Coverage đủ bù cho phần chỉ tiêu còn lại.</p></div></div>
         </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card monthly-allocation-card">
       <div class="sh"><div class="st">Phân bổ doanh số theo tháng</div><div class="sm">Tự động tính theo Tháng dự kiến của từng Deal</div></div>
       <div id="monthlyAllocation" class="month-allocation"></div>
       <div class="month-plan-meta mt12"><span><i class="legend-dot paid"></i>Đã thanh toán</span><span><i class="legend-dot signed"></i>HĐ chờ thanh toán</span><span><i class="legend-dot pipeline"></i>Deal tiềm năng</span><span>Vạch đen: Target tháng</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="sh"><div class="st">Ưu tiên điều hành ngay</div><div class="sm">Top items ảnh hưởng trực tiếp tới Target</div></div>
-    <div class="ga">
-      <div class="card hover"><div class="badge bd-r">Ưu tiên cao 01</div><h3 class="mt12">Bảo vệ khoản thu 1,862 tỷ</h3><p class="t2 f12 mt8">NovaGroup, Thoát nước TP.HCM và phí bảo trì PVFCCo phải có lịch thanh toán, checklist hồ sơ và escalation rõ ràng.</p></div>
-      <div class="card hover"><div class="badge bd-o">Ưu tiên cao 02</div><h3 class="mt12">Chuyển đổi tối thiểu <span id="priorityGapValue">1,320 tỷ</span></h3><p class="t2 f12 mt8">Ưu tiên PTSC Văn phòng số, PVFCCo API, Cấp nước Tiền Giang, Phan Vũ Group, GDD2 và các Deal tiềm năng có lịch ra quyết định rõ ràng.</p></div>
-      <div class="card hover"><div class="badge bd-b">Ưu tiên cao 03</div><h3 class="mt12">Mở đường người ra quyết định</h3><p class="t2 f12 mt8">Mỗi Key Account cần xác định Economic Buyer, Internal Champion và Mutual Action Plan theo mốc ký, nghiệm thu, thanh toán.</p></div>
-      <div class="card hover"><div class="badge bd-g">Ưu tiên cao 04</div><h3 class="mt12">Duy trì Pipeline dự phòng</h3><p class="t2 f12 mt8">Tạo thêm tối thiểu 600M Pipeline/tháng và giữ Coverage đủ bù cho phần chỉ tiêu còn lại.</p></div>
     </div>
   </div>
 </section>
@@ -936,7 +954,7 @@ body.present .page{padding:32px 4vw}
     </table></div>
   </div>
 <div class="hl"></div>
-  <div class="sh"><div><div class="st">Deal Priority & Executive Support</div><h2 class="mt8">Deal cần ưu tiên · Action · Hỗ trợ từ BGĐ</h2></div><div class="sm">Tập trung trực tiếp vào phần còn thiếu 1.320M và bảo vệ khoản chờ thanh toán</div></div>
+  <div class="sh"><div><div class="st">Deal Priority & Hỗ trợ BGĐ</div><h2 class="mt8">Deal cần ưu tiên · Action · Hỗ trợ từ BGĐ</h2></div><div class="sm">Tập trung trực tiếp vào phần còn thiếu 1.320M và bảo vệ khoản chờ thanh toán</div></div>
 
   <div class="section card">
     <div class="tw"><table class="tbl action-plan-table">
@@ -991,21 +1009,19 @@ body.present .page{padding:32px 4vw}
 <!-- SUPPORT -->
 <section id="tab-support" class="tc">
   <div class="edit-toolbar no-print">
-    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Có thể sửa trực tiếp các nội dung vấn đề, rủi ro và đề xuất.</div></div>
-    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('support')">↺ Khôi phục tab</button></div>
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Bảng đề xuất có thể nhập trực tiếp, thêm dòng và tự động lưu trên trình duyệt.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Sửa tiêu đề</button><button class="btn btn-s" onclick="resetEditableTab('support')">↺ Khôi phục tab</button></div>
   </div>
-  <div class="sh"><div><div class="st">Executive Support</div><h2 class="mt8">Đề xuất BGĐ</h2></div><div class="sm">Ngắn gọn theo 3 nội dung: Vấn đề · Rủi ro · Đề xuất</div></div>
+  <div class="sh"><div><h2>Đề xuất BGĐ</h2></div><div class="sm">Vấn đề · Rủi ro · Đề xuất · Ý kiến của BGĐ</div></div>
 
   <div class="card">
+    <div class="support-table-toolbar">
+      <div class="support-table-hint">Nhập trực tiếp vào từng ô. Dữ liệu được tự động lưu sau mỗi thay đổi.</div>
+      <button class="btn btn-p no-print" onclick="addSupportRow()">＋ Thêm dòng đề xuất</button>
+    </div>
     <div class="tw"><table class="tbl compact-support-table">
-      <thead><tr><th>Vấn đề</th><th>Rủi ro</th><th>Đề xuất BGĐ</th></tr></thead>
-      <tbody>
-        <tr><td>1. Thu 1.862M hợp đồng đã ký</td><td>Ngày thanh toán bị lùi do dòng tiền, chứng từ hoặc phê duyệt qua nhiều đầu mối.</td><td>BGĐ tham gia escalation với Sponsor khách hàng; Finance cùng khóa ngày thu và checklist hồ sơ.</td></tr>
-        <tr><td>2. PTSC, PVFCCo, Cấp nước chậm phê duyệt</td><td>Deal trượt tháng/quý, làm thiếu phần còn lại 1.320M.</td><td>Hỗ trợ Executive Meeting, tiếp cận người quyết định và tháo gỡ bước phê duyệt cuối.</td></tr>
-        <tr><td>3. Nguồn lực Pre-sales / Legal / Delivery</td><td>Proposal, hồ sơ thầu và cam kết triển khai phản hồi chậm, giảm khả năng thắng.</td><td>Ưu tiên nguồn lực cho Deal trọng điểm; áp dụng SLA nội bộ tối đa 48 giờ.</td></tr>
-        <tr><td>4. Giá và điều kiện thương mại</td><td>Đàm phán kéo dài hoặc giảm biên lợi nhuận do chờ phê duyệt ngoại lệ.</td><td>Thiết lập Deal Desk 24–48 giờ và khung thẩm quyền rõ cho chiết khấu, milestone, SLA.</td></tr>
-        <tr><td>5. Pipeline dự phòng chưa đủ nhanh</td><td>Khi Deal lớn lùi, không có nguồn bù trong cùng tháng.</td><td>Hỗ trợ mở cửa Key Account, cross-sell khách hàng hiện hữu và phê duyệt phương án chia phase để ký sớm.</td></tr>
-      </tbody>
+      <thead><tr><th>Vấn đề</th><th>Rủi ro</th><th>Đề xuất BGĐ</th><th>Ý kiến của BGĐ</th><th class="no-print"></th></tr></thead>
+      <tbody id="supportTableBody"></tbody>
     </table></div>
   </div>
 
@@ -1214,6 +1230,48 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Escape"&&document.getElementById("detailModal")?.classList.contains("on")) closeDetailModal();
   else if(e.key==="Escape"&&document.body.classList.contains("present")) togglePresent();
 });
+const DEFAULT_SUPPORT_ROWS=[
+  {issue:"1. Thu 1.862M hợp đồng đã ký",risk:"Ngày thanh toán bị lùi do dòng tiền, chứng từ hoặc phê duyệt qua nhiều đầu mối.",proposal:"BGĐ tham gia escalation với Sponsor khách hàng; Finance cùng khóa ngày thu và checklist hồ sơ.",opinion:""},
+  {issue:"2. PTSC, PVFCCo, Cấp nước chậm phê duyệt",risk:"Deal trượt tháng/quý, làm thiếu phần còn lại 1.320M.",proposal:"Hỗ trợ Executive Meeting, tiếp cận người quyết định và tháo gỡ bước phê duyệt cuối.",opinion:""},
+  {issue:"3. Nguồn lực Pre-sales / Legal / Delivery",risk:"Proposal, hồ sơ thầu và cam kết triển khai phản hồi chậm, giảm khả năng thắng.",proposal:"Ưu tiên nguồn lực cho Deal trọng điểm; áp dụng SLA nội bộ tối đa 48 giờ.",opinion:""},
+  {issue:"4. Giá và điều kiện thương mại",risk:"Đàm phán kéo dài hoặc giảm biên lợi nhuận do chờ phê duyệt ngoại lệ.",proposal:"Thiết lập Deal Desk 24–48 giờ và khung thẩm quyền rõ cho chiết khấu, milestone, SLA.",opinion:""},
+  {issue:"5. Pipeline dự phòng chưa đủ nhanh",risk:"Khi Deal lớn lùi, không có nguồn bù trong cùng tháng.",proposal:"Hỗ trợ mở cửa Key Account, cross-sell khách hàng hiện hữu và phê duyệt phương án chia phase để ký sớm.",opinion:""}
+];
+let supportRows=[];
+function cloneSupportRows(){return DEFAULT_SUPPORT_ROWS.map(row=>({...row}))}
+function saveSupportRows(){localStorage.setItem("h2-support-rows",JSON.stringify(supportRows))}
+function loadSupportRows(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("h2-support-rows")||"null");
+    supportRows=Array.isArray(saved)&&saved.length?saved.map(row=>({issue:String(row.issue||""),risk:String(row.risk||""),proposal:String(row.proposal||""),opinion:String(row.opinion||"")})):cloneSupportRows();
+  }catch(e){supportRows=cloneSupportRows()}
+  renderSupportRows();
+}
+function renderSupportRows(){
+  const body=document.getElementById("supportTableBody");if(!body)return;
+  body.innerHTML=supportRows.map((row,i)=>`<tr>
+    <td><textarea class="support-input issue" rows="3" placeholder="Nhập vấn đề..." oninput="updateSupportRow(${i},'issue',this)">${escapeHtml(row.issue)}</textarea></td>
+    <td><textarea class="support-input risk" rows="3" placeholder="Nhập rủi ro..." oninput="updateSupportRow(${i},'risk',this)">${escapeHtml(row.risk)}</textarea></td>
+    <td><textarea class="support-input proposal" rows="3" placeholder="Nhập đề xuất BGĐ..." oninput="updateSupportRow(${i},'proposal',this)">${escapeHtml(row.proposal)}</textarea></td>
+    <td><textarea class="support-input opinion" rows="3" placeholder="BGĐ nhập ý kiến / quyết định..." oninput="updateSupportRow(${i},'opinion',this)">${escapeHtml(row.opinion)}</textarea></td>
+    <td class="no-print"><button class="support-delete" onclick="removeSupportRow(${i})" title="Xóa dòng">×</button></td>
+  </tr>`).join("");
+  body.querySelectorAll("textarea").forEach(autoGrowSupportTextarea);
+}
+function autoGrowSupportTextarea(el){el.style.height="auto";el.style.height=Math.max(86,el.scrollHeight)+"px"}
+function updateSupportRow(index,field,el){
+  if(!supportRows[index]||!["issue","risk","proposal","opinion"].includes(field))return;
+  supportRows[index][field]=el.value;autoGrowSupportTextarea(el);saveSupportRows();
+}
+function addSupportRow(){
+  supportRows.push({issue:"",risk:"",proposal:"",opinion:""});saveSupportRows();renderSupportRows();
+  const inputs=document.querySelectorAll("#supportTableBody .support-input.issue");const last=inputs[inputs.length-1];if(last){last.focus();last.scrollIntoView({behavior:"smooth",block:"center"})}
+}
+function removeSupportRow(index){
+  if(!supportRows[index]||!confirm("Xóa dòng đề xuất này?"))return;
+  supportRows.splice(index,1);if(!supportRows.length)supportRows.push({issue:"",risk:"",proposal:"",opinion:""});saveSupportRows();renderSupportRows();
+}
+
 function loadDecision(){
   document.getElementById("directorNote").value=localStorage.getItem("h2-director-note")||"";
   document.querySelectorAll(".check").forEach(b=>{
@@ -1239,16 +1297,13 @@ function clearDecision(){
   updateApproval();
 }
 function exportDecision(){
-  const rows=[...document.querySelectorAll(".compact-support-table tbody tr")].map((row,i)=>{
-    const cells=[...row.querySelectorAll("td")].map(td=>td.textContent.trim());
-    return `${i+1}. Vấn đề: ${cells[0]}\n   Rủi ro: ${cells[1]}\n   Đề xuất: ${cells[2]}`;
-  });
+  const rows=supportRows.map((row,i)=>`${i+1}. Vấn đề: ${row.issue||"(chưa nhập)"}\n   Rủi ro: ${row.risk||"(chưa nhập)"}\n   Đề xuất: ${row.proposal||"(chưa nhập)"}\n   Ý kiến BGĐ: ${row.opinion||"(chưa có)"}`);
   const note=document.getElementById("directorNote").value||"(chưa có ghi chú)";
   const text=[
     "1OFFICE — GIANG TẤN VĂN — ĐỀ XUẤT BGĐ",
     "Ngày xuất: "+new Date().toLocaleString("vi-VN"),
     "",
-    "VẤN ĐỀ — RỦI RO — ĐỀ XUẤT:",
+    "VẤN ĐỀ — RỦI RO — ĐỀ XUẤT — Ý KIẾN BGĐ:",
     ...rows,
     "",
     "GHI CHÚ / QUYẾT ĐỊNH CỦA BGĐ:",
@@ -1449,12 +1504,16 @@ function saveEditableContent(){
 function resetEditableTab(tab){
   if(!confirm("Khôi phục toàn bộ nội dung mặc định của tab này?"))return;
   document.querySelectorAll(`#tab-${tab} .editable-field`).forEach(el=>{const k=el.dataset.editKey;localStorage.removeItem("editable-"+k);el.innerHTML=DEFAULT_EDIT_CONTENT[k]});
+  if(tab==="support"){
+    localStorage.removeItem("h2-support-rows");supportRows=cloneSupportRows();renderSupportRows();
+  }
 }
 
 renderDeals();
 renderH1Spark();
 updateDashboardMetrics();
 bindWidgets();
+loadSupportRows();
 initEditableContent();
 loadDecision();
 </script>
