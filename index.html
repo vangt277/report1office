@@ -236,6 +236,26 @@ body.edit-mode .edit-state{color:var(--b)}body.edit-mode .edit-state .dot{backgr
 @media(max-width:1180px){.h1-kpis{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.h1-kpis{grid-template-columns:repeat(2,1fr)}.detail-item{grid-template-columns:1fr}.detail-val{text-align:left}.modal-summary{grid-template-columns:1fr}}
 
+
+/* TARGET COMPOSITION & DYNAMIC MONTHLY ALLOCATION */
+.target-composition{margin-top:16px;border:1px solid rgba(255,255,255,.16);background:rgba(5,25,51,.28);padding:14px;border-radius:13px}
+.target-stack{height:18px;border-radius:999px;overflow:hidden;display:flex;background:rgba(255,255,255,.13);box-shadow:0 0 0 1px rgba(255,255,255,.08) inset}
+.target-seg{height:100%;min-width:0;transition:width .28s ease}.target-seg.paid{background:linear-gradient(90deg,#4f91f2,#2563eb)}.target-seg.signed{background:linear-gradient(90deg,#31c795,#10a879)}.target-seg.gap{background:linear-gradient(90deg,#ffb36f,#f15a24)}
+.target-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.target-legend-item{min-width:0;padding:9px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09)}
+.target-legend-label{font-size:9px;color:#c5d5e7;text-transform:uppercase;letter-spacing:.055em}.target-legend-value{font-size:15px;font-weight:900;color:#fff;margin-top:3px}.target-legend-pct{font-size:10px;color:#d8e5f2;margin-top:2px}
+.month-allocation{display:flex;flex-direction:column;gap:13px}
+.month-plan-row{padding:13px 14px;border:1px solid var(--bd);border-radius:12px;background:#f8fafc;cursor:pointer;transition:.18s}
+.month-plan-row:hover{background:#eef5ff;border-color:#d4e3fb;transform:translateY(-1px)}
+.month-plan-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;color:var(--navy)}
+.month-plan-head strong{font-size:12px}.month-plan-track{height:15px;display:flex;position:relative;overflow:hidden;background:#e5ebf2;border-radius:999px;margin-top:9px;box-shadow:0 0 0 1px rgba(15,35,65,.05) inset}
+.month-plan-seg{height:100%;min-width:0}.month-plan-seg.paid{background:#2563eb}.month-plan-seg.signed{background:#10a879}.month-plan-seg.pipeline{background:#f15a24}.month-target-marker{position:absolute;top:-3px;bottom:-3px;width:2px;background:#14213d;box-shadow:0 0 0 1px rgba(255,255,255,.65)}
+.month-plan-meta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:10px;color:#6f7e92}.month-plan-meta strong{margin-left:auto;color:var(--navy);font-size:11px}.month-plan-meta .ok{color:var(--g)}.month-plan-meta .warn{color:var(--a)}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}.legend-dot.paid{background:#2563eb}.legend-dot.signed{background:#10a879}.legend-dot.pipeline{background:#f15a24}
+.compact-support-table td{vertical-align:top}.compact-support-table td:nth-child(1){font-weight:800;color:var(--navy);min-width:210px}.compact-support-table td:nth-child(2){min-width:260px}.compact-support-table td:nth-child(3){min-width:320px;color:var(--navy)}
+.personal-change-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.personal-change{border-top:4px solid var(--b)}.personal-change:nth-child(2n){border-top-color:var(--o)}.personal-change:nth-child(3n){border-top-color:var(--g)}
+@media(max-width:900px){.target-legend{grid-template-columns:1fr}.personal-change-grid{grid-template-columns:1fr}}
+
 /* FOOTER */
 .footer{max-width:1440px;margin:15px auto 0;padding:0 24px 28px;color:var(--t3);font-size:10px;display:flex;justify-content:space-between;gap:10px}
 
@@ -643,27 +663,35 @@ body.present .page{padding:32px 4vw}
         <div class="eyebrow">H2 Business Plan · Giang Tấn Văn</div>
         <h1>Hoàn thành tối thiểu <span class="co">4,5 tỷ đồng</span> doanh số trong 6 tháng cuối năm</h1>
         <p>Kế hoạch tập trung vào thu hồi doanh số từ hợp đồng đã ký, chuyển đổi Pipeline hiện hữu và mở rộng Key Account trong nhóm dầu khí – năng lượng, hạ tầng công ích và tập đoàn đa ngành.</p>
-        <div class="commit">Cam kết điều hành: bảo vệ 1,862 tỷ đồng hợp đồng đã ký — chờ thanh toán, chuyển đổi tối thiểu 2,638 tỷ đồng từ Pipeline Deal tiềm năng và chủ động kích hoạt Deal dự phòng khi dự báo có dấu hiệu trễ.</div>
+        <div class="commit" id="h2CommitText">Cam kết điều hành: ghi nhận 1,318 tỷ đồng đã thanh toán, bảo vệ 1,862 tỷ đồng hợp đồng đã ký — chờ thanh toán và chuyển đổi tối thiểu 1,320 tỷ đồng từ Pipeline Deal tiềm năng.</div>
       </div>
-      <div class="hero-side">
+      <div class="hero-side clickable" data-widget="target-progress">
         <div class="target-sub">Mục tiêu H2</div>
-        <div class="big-target">4.500M</div>
-        <div class="metric-pair" style="border-color:rgba(255,255,255,.14)"><span class="t3 f11">HĐ đã ký — Chờ thanh toán</span><strong class="cg">1.862M</strong></div>
-        <div class="metric-pair" style="border-color:rgba(255,255,255,.14)"><span class="t3 f11">Pipeline — Deal tiềm năng</span><strong style="color:#ffd4c2">6.508M</strong></div>
-        <div class="fx ai jb mt12"><span class="t3 f11">Tổng Coverage</span><span class="badge bd-o">8.370M · 1,86×</span></div>
-        <div class="pb mt8"><div class="pbf" style="width:100%"></div></div>
-        <div class="fx ai jb mt12"><span class="t3 f11">Mức chuyển đổi Pipeline cần thiết</span><strong class="cg">40,5%</strong></div>
+        <div class="big-target" id="h2TargetHero">4.500M</div>
+        <div class="target-composition">
+          <div class="target-stack" aria-label="Cơ cấu hoàn thành mục tiêu H2">
+            <div class="target-seg paid" id="targetPaidSeg" style="width:29.3%"></div>
+            <div class="target-seg signed" id="targetSignedSeg" style="width:41.4%"></div>
+            <div class="target-seg gap" id="targetGapSeg" style="width:29.3%"></div>
+          </div>
+          <div class="target-legend">
+            <div class="target-legend-item"><div class="target-legend-label">HĐ đã thanh toán</div><div class="target-legend-value" id="targetPaidValue">1.318M</div><div class="target-legend-pct" id="targetPaidPct">29,3% mục tiêu</div></div>
+            <div class="target-legend-item"><div class="target-legend-label">Đã ký · Chờ thanh toán</div><div class="target-legend-value" id="targetSignedValue">1.862M</div><div class="target-legend-pct" id="targetSignedPct">41,4% mục tiêu</div></div>
+            <div class="target-legend-item"><div class="target-legend-label">Còn thiếu</div><div class="target-legend-value" id="targetGapValue">1.320M</div><div class="target-legend-pct" id="targetGapPct">29,3% mục tiêu</div></div>
+          </div>
+        </div>
+        <div class="fx ai jb mt12"><span class="t3 f11">Mức chuyển đổi Pipeline cần thiết</span><strong class="cg" id="targetConversionPct">20,3%</strong></div>
       </div>
     </div>
   </div>
 
   <div class="kpi-strip">
-    <div class="kpi clickable" data-widget="h2-target"><div class="kpi-label">Mục tiêu doanh số H2</div><div class="kpi-val co">4.500M</div><div class="kpi-meta">100% chỉ tiêu H2</div></div>
-    <div class="kpi clickable" data-widget="commit"><div class="kpi-label">HĐ đã ký · Chờ thanh toán</div><div class="kpi-val cg">1.862M</div><div class="kpi-meta"><span class="badge bd-g">41,4% target</span></div></div>
-    <div class="kpi clickable" data-widget="new-pipeline"><div class="kpi-label">Pipeline · Deal tiềm năng</div><div class="kpi-val">6.508M</div><div class="kpi-meta"><span class="badge bd-b">7 cơ hội</span></div></div>
-    <div class="kpi clickable" data-widget="all-pipeline"><div class="kpi-label">Tổng Coverage</div><div class="kpi-val">8.370M</div><div class="kpi-meta"><span class="badge bd-o">186% target · 1,86×</span></div></div>
-    <div class="kpi clickable" data-widget="gap-plan"><div class="kpi-label">Gap cần chuyển đổi</div><div class="kpi-val ca">2.638M</div><div class="kpi-meta">Từ Pipeline Deal tiềm năng</div></div>
-    <div class="kpi clickable" data-widget="target-contracts"><div class="kpi-label">Hợp đồng mục tiêu</div><div class="kpi-val">≈ 9</div><div class="kpi-meta">Ticket SaaS/Cloud ~300M</div></div>
+    <div class="kpi clickable" data-widget="h2-target"><div class="kpi-label">Mục tiêu doanh số H2</div><div class="kpi-val co" id="h2TargetKpi">4.500M</div><div class="kpi-meta">100% chỉ tiêu H2</div></div>
+    <div class="kpi clickable" data-widget="paid"><div class="kpi-label">HĐ đã thanh toán</div><div class="kpi-val cb" id="paidKpiValue">1.318M</div><div class="kpi-meta"><span class="badge bd-b" id="paidKpiPct">29,3% target</span></div></div>
+    <div class="kpi clickable" data-widget="commit"><div class="kpi-label">HĐ đã ký · Chờ thanh toán</div><div class="kpi-val cg" id="signedKpiValue">1.862M</div><div class="kpi-meta"><span class="badge bd-g" id="signedKpiPct">41,4% target</span></div></div>
+    <div class="kpi clickable" data-widget="new-pipeline"><div class="kpi-label">Pipeline · Deal tiềm năng</div><div class="kpi-val" id="pipelineKpiValue">6.508M</div><div class="kpi-meta"><span class="badge bd-o" id="pipelineKpiCount">7 cơ hội</span></div></div>
+    <div class="kpi clickable" data-widget="gap-plan"><div class="kpi-label">Còn thiếu để đạt Target</div><div class="kpi-val ca" id="gapKpiValue">1.320M</div><div class="kpi-meta" id="gapKpiMeta">Cần chuyển đổi 20,3% Pipeline</div></div>
+    <div class="kpi clickable" data-widget="target-contracts"><div class="kpi-label">Hợp đồng mục tiêu bổ sung</div><div class="kpi-val" id="targetContractsValue">≈ 5</div><div class="kpi-meta">Ticket SaaS/Cloud ~300M</div></div>
   </div>
 
   <div class="section g2">
@@ -686,15 +714,9 @@ body.present .page{padding:32px 4vw}
     </div>
 
     <div class="card">
-      <div class="sh"><div class="st">Điểm rơi doanh số theo tháng</div><div class="sm">Chia đều trong từng quý · triệu VNĐ</div></div>
-      <div class="bar-list">
-        <div class="bar-row clickable-row" data-widget="month-target" data-key="7"><div class="bar-label">Tháng 7</div><div class="bar-track"><div class="bar-fill" style="width:85.7%"></div></div><div class="bar-value">692,308M</div></div>
-        <div class="bar-row clickable-row" data-widget="month-target" data-key="8"><div class="bar-label">Tháng 8</div><div class="bar-track"><div class="bar-fill" style="width:85.7%"></div></div><div class="bar-value">692,308M</div></div>
-        <div class="bar-row clickable-row" data-widget="month-target" data-key="9"><div class="bar-label">Tháng 9</div><div class="bar-track"><div class="bar-fill" style="width:85.7%"></div></div><div class="bar-value">692,307M</div></div>
-        <div class="bar-row clickable-row" data-widget="month-target" data-key="10"><div class="bar-label">Tháng 10</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807,692M</div></div>
-        <div class="bar-row clickable-row" data-widget="month-target" data-key="11"><div class="bar-label">Tháng 11</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807,692M</div></div>
-        <div class="bar-row clickable-row" data-widget="month-target" data-key="12"><div class="bar-label">Tháng 12</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807,693M</div></div>
-      </div>
+      <div class="sh"><div class="st">Phân bổ doanh số theo tháng</div><div class="sm">Tự động tính theo Tháng dự kiến của từng Deal</div></div>
+      <div id="monthlyAllocation" class="month-allocation"></div>
+      <div class="month-plan-meta mt12"><span><i class="legend-dot paid"></i>Đã thanh toán</span><span><i class="legend-dot signed"></i>HĐ chờ thanh toán</span><span><i class="legend-dot pipeline"></i>Deal tiềm năng</span><span>Vạch đen: Target tháng</span></div>
     </div>
   </div>
 
@@ -702,7 +724,7 @@ body.present .page{padding:32px 4vw}
     <div class="sh"><div class="st">Ưu tiên điều hành ngay</div><div class="sm">Top items ảnh hưởng trực tiếp tới Target</div></div>
     <div class="ga">
       <div class="card hover"><div class="badge bd-r">Ưu tiên cao 01</div><h3 class="mt12">Bảo vệ khoản thu 1,862 tỷ</h3><p class="t2 f12 mt8">NovaGroup, Thoát nước TP.HCM và phí bảo trì PVFCCo phải có lịch thanh toán, checklist hồ sơ và escalation rõ ràng.</p></div>
-      <div class="card hover"><div class="badge bd-o">Ưu tiên cao 02</div><h3 class="mt12">Chuyển đổi tối thiểu 2,638 tỷ</h3><p class="t2 f12 mt8">Ưu tiên PTSC Văn phòng số, PVFCCo API, Cấp nước Tiền Giang, Phan Vũ Group, GDD2 và các Deal tìm năng.</p></div>
+      <div class="card hover"><div class="badge bd-o">Ưu tiên cao 02</div><h3 class="mt12">Chuyển đổi tối thiểu <span id="priorityGapValue">1,320 tỷ</span></h3><p class="t2 f12 mt8">Ưu tiên PTSC Văn phòng số, PVFCCo API, Cấp nước Tiền Giang, Phan Vũ Group, GDD2 và các Deal tiềm năng có lịch ra quyết định rõ ràng.</p></div>
       <div class="card hover"><div class="badge bd-b">Ưu tiên cao 03</div><h3 class="mt12">Mở đường người ra quyết định</h3><p class="t2 f12 mt8">Mỗi Key Account cần xác định Economic Buyer, Internal Champion và Mutual Action Plan theo mốc ký, nghiệm thu, thanh toán.</p></div>
       <div class="card hover"><div class="badge bd-g">Ưu tiên cao 04</div><h3 class="mt12">Duy trì Pipeline dự phòng</h3><p class="t2 f12 mt8">Tạo thêm tối thiểu 600M Pipeline/tháng và giữ Coverage đủ bù cho phần chỉ tiêu còn lại.</p></div>
     </div>
@@ -726,19 +748,11 @@ body.present .page{padding:32px 4vw}
     <div class="month clickable" data-widget="month-target" data-key="12"><div class="month-name">Tháng 12</div><div class="month-val">807,693M</div><div class="month-focus">Q4 chia đều · ký HĐ · thanh toán đợt đầu</div></div>
   </div>
 
-  <div class="section card clickable july-actual-card" data-widget="july-actual">
-    <div class="sh"><div><div class="st">Thực đạt tháng 7</div><h3 class="mt8">Doanh số đã ghi nhận: 1.318M</h3></div><span class="badge bd-g">190,4% kế hoạch tháng</span></div>
-    <div class="actual-grid">
-      <div class="actual-stat"><div class="kpi-label">Tổng thực đạt</div><div class="actual-value cg">1.318M</div><div class="actual-note">Kế hoạch tháng 7: 692,308M · vượt 625,692M</div></div>
-      <div class="actual-stat"><div class="kpi-label">PVFCCo · On-premise</div><div class="actual-value co">750M</div><div class="actual-note">Doanh số thực đạt tháng 7</div></div>
-      <div class="actual-stat"><div class="kpi-label">ACBS · Private Cloud</div><div class="actual-value cb">568M</div><div class="actual-note">Doanh số thực đạt tháng 7</div></div>
-    </div>
-  </div>
 
   <div class="section g3">
-    <div class="card clickable" data-widget="commit"><div class="kpi-label">HĐ đã ký · Chờ thanh toán</div><div class="kpi-val cg">1.862M</div><div class="kpi-meta">3 khoản thanh toán · 41,4% Target</div><div class="pb mt12"><div class="pbf" style="width:41.4%;background:var(--g)"></div></div></div>
-    <div class="card clickable" data-widget="pipeline-category" data-key="Ưu tiên cao"><div class="kpi-label">Ưu tiên cao · Cơ hội chính</div><div class="kpi-val co">4.008M</div><div class="kpi-meta">5 cơ hội cần tăng tốc</div><div class="pb mt12"><div class="pbf" style="width:61.6%"></div></div></div>
-    <div class="card clickable" data-widget="pipeline-category" data-key="Tìm năng"><div class="kpi-label">Tìm năng</div><div class="kpi-val cb">2.500M</div><div class="kpi-meta">2 cơ hội giá trị lớn</div><div class="pb mt12"><div class="pbf" style="width:38.4%;background:var(--b)"></div></div></div>
+    <div class="card clickable" data-widget="commit"><div class="kpi-label">HĐ đã ký · Chờ thanh toán</div><div class="kpi-val cg" id="pipelineSignedValue">1.862M</div><div class="kpi-meta" id="pipelineSignedMeta">3 khoản thanh toán · 41,4% Target</div><div class="pb mt12"><div class="pbf" id="pipelineSignedBar" style="width:41.4%;background:var(--g)"></div></div></div>
+    <div class="card clickable" data-widget="pipeline-category" data-key="Ưu tiên cao"><div class="kpi-label">Ưu tiên cao · Cơ hội chính</div><div class="kpi-val co" id="highPriorityValue">4.008M</div><div class="kpi-meta" id="highPriorityMeta">5 cơ hội cần tăng tốc</div><div class="pb mt12"><div class="pbf" id="highPriorityBar" style="width:61.6%"></div></div></div>
+    <div class="card clickable" data-widget="pipeline-category" data-key="Tìm năng"><div class="kpi-label">Tiềm năng · Dự phòng</div><div class="kpi-val cb" id="potentialValue">2.500M</div><div class="kpi-meta" id="potentialMeta">2 cơ hội giá trị lớn</div><div class="pb mt12"><div class="pbf" id="potentialBar" style="width:38.4%;background:var(--b)"></div></div></div>
   </div>
 
   <div class="section">
@@ -764,24 +778,14 @@ body.present .page{padding:32px 4vw}
     </table></div></div>
   </div>
 
-  <div class="section g2">
-    <div class="card">
-      <div class="sh"><div class="st">Logic hoàn thành Target</div><span class="badge bd-g">Có cơ sở</span></div>
-      <div class="bar-list">
-        <div class="bar-row"><div class="bar-label">Đã ký</div><div class="bar-track"><div class="bar-fill" style="width:41.4%;background:var(--g)"></div></div><div class="bar-value">1.862M</div></div>
-        <div class="bar-row"><div class="bar-label">Cần convert</div><div class="bar-track"><div class="bar-fill" style="width:58.6%"></div></div><div class="bar-value">2.638M</div></div>
-      </div>
-      <div class="mt16 f12 t2">Cần chuyển đổi <strong class="cg">40,5%</strong> Pipeline Deal tiềm năng hiện tại để hoàn thành 100% chỉ tiêu H2.</div>
+  <div class="section card">
+    <div class="sh"><div class="st">Logic hoàn thành Target</div><span class="badge bd-g">Tự động cập nhật</span></div>
+    <div class="bar-list">
+      <div class="bar-row"><div class="bar-label">Đã thanh toán</div><div class="bar-track"><div class="bar-fill" id="logicPaidBar" style="width:29.3%;background:var(--b)"></div></div><div class="bar-value" id="logicPaidValue">1.318M</div></div>
+      <div class="bar-row"><div class="bar-label">Đã ký</div><div class="bar-track"><div class="bar-fill" id="logicSignedBar" style="width:41.4%;background:var(--g)"></div></div><div class="bar-value" id="logicSignedValue">1.862M</div></div>
+      <div class="bar-row"><div class="bar-label">Cần convert</div><div class="bar-track"><div class="bar-fill" id="logicGapBar" style="width:29.3%"></div></div><div class="bar-value" id="logicGapValue">1.320M</div></div>
     </div>
-    <div class="card">
-      <div class="sh"><div class="st">Nguyên tắc dự báo</div><span class="badge bd-o">Weekly Review</span></div>
-      <div class="mini-list">
-        <div class="mini-item"><span><strong>Chắc chắn:</strong> có thời gian và điều kiện thanh toán rõ ràng.</span></div>
-        <div class="mini-item"><span><strong>Best Case:</strong> có nhu cầu, ngân sách và người quyết định.</span></div>
-        <div class="mini-item"><span><strong>Tìm năng:</strong> tiềm năng lớn nhưng chưa đủ điều kiện dự báo.</span></div>
-        <div class="mini-item"><span>Deal không tiến triển 14 ngày phải chuyển cảnh báo và kích hoạt phương án bù.</span></div>
-      </div>
-    </div>
+    <div class="mt16 f12 t2" id="logicConversionText">Cần chuyển đổi <strong class="cg">20,3%</strong> Pipeline Deal tiềm năng hiện tại để hoàn thành 100% chỉ tiêu H2.</div>
   </div>
   <div class="hl"></div><div class="sh"><div><div class="st">Risk Management</div><h2 class="mt8">Rủi ro doanh số và phương án phòng ngừa</h2></div><div class="sm">Cảnh báo sớm · Escalation · Deal dự phòng</div></div>
 
@@ -802,7 +806,7 @@ body.present .page{padding:32px 4vw}
         <div class="mini-item">Deal Chắc chắn đổi ngày ký / thanh toán: báo cáo trong 24 giờ.</div>
         <div class="mini-item">Deal không có tiến triển 14 ngày: chuyển cảnh báo.</div>
         <div class="mini-item">Khoản thu chậm >10 ngày: Giám đốc + Finance tham gia.</div>
-        <div class="mini-item">Gap dự báo >10% target tháng: kích hoạt Best Case Pipeline.</div>
+        <div class="mini-item">Gap dự báo >10% target tháng: kích hoạt Pipeline dự phòng.</div>
         <div class="mini-item">Deal >500M chưa gặp Economic Buyer: không đưa vào Chắc chắn.</div>
       </div>
     </div>
@@ -851,6 +855,22 @@ body.present .page{padding:32px 4vw}
     </div>
   </div>
 
+  <div class="section card">
+    <div class="sh"><div><div class="st">Deal Risk Register</div><h3 class="mt8">Deal rủi ro và phương án xử lý / dự phòng</h3></div><div class="sm">Ưu tiên theo ảnh hưởng tới phần còn thiếu của Target</div></div>
+    <div class="tw"><table class="tbl risk-deal-table">
+      <thead><tr><th>Deal</th><th>Rủi ro chính</th><th>Phương án xử lý</th><th>Phương án dự phòng</th></tr></thead>
+      <tbody>
+        <tr><td class="name">PTSC · Văn phòng số · 1.600M</td><td>Kết quả đấu thầu hoặc lịch ký bị lùi; hồ sơ thương mại chưa chốt.</td><td>Khóa checklist hồ sơ, lịch quyết định, người phê duyệt; chuẩn bị sẵn hợp đồng và kế hoạch triển khai.</td><td>Kích hoạt PTSC Số hóa Quy trình hoặc tổ hợp PVFCCo GDD2 + Phan Vũ để bù.</td></tr>
+        <tr><td class="name">PVFCCo · API ký số · 490M</td><td>Hồ sơ nội bộ và tích hợp ERP kéo dài.</td><td>Chốt Fit-Gap, kiến trúc tích hợp, ROI và mốc phê duyệt với IT/Business.</td><td>Đẩy Cấp nước Tiền Giang và các gói mở rộng/bảo trì khách hàng hiện hữu.</td></tr>
+        <tr><td class="name">Cấp nước Tiền Giang · 398M</td><td>Mô tả kỹ thuật hoặc phạm vi chưa đủ để phát hành hồ sơ.</td><td>Phối hợp Viettel hoàn thiện mô tả, bảng đáp ứng và phương án giá trong một phiên làm việc.</td><td>Chuyển nguồn lực sang PVFCCo API hoặc Deal SaaS ngắn hạn 200–500M.</td></tr>
+        <tr><td class="name">Phan Vũ Group · 720M</td><td>Chủ trương triển khai chưa được BOD thông qua.</td><td>Chuẩn bị Business Case, ROI, lộ trình theo phase và Executive Meeting.</td><td>Ưu tiên PVFCCo GDD2; tách Deal Phan Vũ thành phase nhỏ để ký trước.</td></tr>
+        <tr><td class="name">PVFCCo · GDD2 · 800M</td><td>Yêu cầu nghiệp vụ chưa ổn định, dễ phát sinh thay đổi phạm vi.</td><td>Baseline Must-have/Nice-to-have, khóa Fit-Gap và điều kiện thanh toán theo phase.</td><td>Tách gói ưu tiên để ghi nhận sớm; giữ Phan Vũ và Saigontourist làm nguồn bù.</td></tr>
+        <tr><td class="name">PTSC · Số hóa Quy trình · 2.000M</td><td>Chưa phát hành RFP hoặc tiêu chí thầu chưa thuận lợi.</td><td>RFP shaping, Account Map đa tầng và Executive Workshop về hiệu quả điều hành.</td><td>Không đưa toàn bộ vào dự báo; chia phase và dùng làm nguồn dự phòng cho Q4.</td></tr>
+        <tr><td class="name">Saigontourist · 500M</td><td>Giới hạn mua sắm và áp lực chi phí.</td><td>Đề xuất 3 phương án phạm vi, TCO và milestone thanh toán phù hợp quy định.</td><td>Chuyển sang gói nhỏ/phase 1 hoặc thay bằng cross-sell khách hàng hiện hữu.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
 </section>
 
 <!-- STRATEGY -->
@@ -867,7 +887,7 @@ body.present .page{padding:32px 4vw}
       <h3>Protect & Accelerate</h3>
       <p>Tập trung phần lớn thời gian vào Deal đã có nhu cầu, ngân sách, hồ sơ hoặc hợp đồng.</p>
       <div class="mini-list">
-        <div class="mini-item">Mỗi Deal có Next Step, Owner và Deadline.</div>
+        <div class="mini-item">Mỗi Deal ưu tiên chỉ giữ một mục tiêu đầu ra quan trọng nhất trong từng tuần.</div>
         <div class="mini-item">Bám sát hồ sơ, lịch phê duyệt, ký, nghiệm thu và thanh toán.</div>
         <div class="mini-item">Deal không tiến triển 14 ngày phải chuyển cảnh báo và có phương án thay thế.</div>
       </div>
@@ -916,47 +936,53 @@ body.present .page{padding:32px 4vw}
     </table></div>
   </div>
 <div class="hl"></div>
-  <div class="sh"><div><div class="st">Action Plan</div><h2 class="mt8">Kế hoạch hành động theo Deal và mốc thực hiện</h2></div><div class="sm">Tập trung đầu ra cần hoàn tất, không quản trị bằng số lượng hoạt động</div></div>
+  <div class="sh"><div><div class="st">Deal Priority & Executive Support</div><h2 class="mt8">Deal cần ưu tiên · Action · Hỗ trợ từ BGĐ</h2></div><div class="sm">Tập trung trực tiếp vào phần còn thiếu 1.320M và bảo vệ khoản chờ thanh toán</div></div>
 
   <div class="section card">
-    <div class="sh"><div class="st">Danh sách công việc trọng tâm</div><div class="sm">Rà soát theo tiến độ thực tế và điểm nghẽn của từng Deal</div></div>
     <div class="tw"><table class="tbl action-plan-table">
-      <thead><tr><th>Giai đoạn</th><th>Khách hàng / Dự án</th><th>Việc cần làm</th><th>Kết quả đầu ra</th><th>Thời điểm / Điều kiện</th><th>Phối hợp</th></tr></thead>
+      <thead><tr><th>Deal ưu tiên</th><th>Giá trị</th><th>Action cần hoàn tất</th><th>Điểm nghẽn / Rủi ro</th><th>Hỗ trợ từ BGĐ</th></tr></thead>
       <tbody>
-        <tr><td class="action-phase">Xác nhận thực đạt</td><td class="name">PVFCCo · On-premise 750M<br>ACBS · Private Cloud 568M</td><td>Đối soát hợp đồng, nghiệm thu, hóa đơn và điều kiện ghi nhận doanh số.</td><td>Hồ sơ tháng 7 đầy đủ; số liệu thống nhất giữa Sales, Finance và Delivery.</td><td>Hoàn tất ngay trong kỳ tháng 7</td><td>Sales · Finance · PM/Delivery</td></tr>
-        <tr><td class="action-phase">Thu hồi khoản đã ký</td><td class="name">NovaGroup · Thoát nước TP.HCM · PVFCCo bảo trì</td><td>Khóa lịch thanh toán, rà soát chứng từ còn thiếu và xác định đầu mối phê duyệt cuối.</td><td>Mỗi khoản có ngày thanh toán, bộ hồ sơ hoàn chỉnh và phương án escalation.</td><td>NovaGroup/Thoát nước: ưu tiên ngay<br>PVFCCo bảo trì: trước kỳ thanh toán T9</td><td>Sales · Finance · Sponsor khách hàng</td></tr>
-        <tr><td class="action-phase">Chốt Deal ưu tiên cao</td><td class="name">PTSC Văn phòng số · PVFCCo API · Cấp nước Tiền Giang</td><td>Hoàn tất hồ sơ kỹ thuật, phạm vi, phương án giá và điều kiện triển khai.</td><td>Hồ sơ đủ để khách hàng ra quyết định; không còn điểm mở về scope và thương mại.</td><td>Theo lịch thầu/phê duyệt của từng khách hàng</td><td>Sales · Pre-sales · Legal · Delivery</td></tr>
-        <tr><td class="action-phase">Chuẩn bị điểm rơi Q4</td><td class="name">Phan Vũ Group · PVFCCo GDD2</td><td>Xác nhận bài toán, người phê duyệt, ngân sách và phương án triển khai theo giai đoạn.</td><td>Business Case, phạm vi và lịch trình ký/triển khai được khách hàng xác nhận.</td><td>Hoàn tất trước khi bước vào đàm phán cuối</td><td>Sales · Sponsor · Pre-sales</td></tr>
-        <tr><td class="action-phase">Nuôi dưỡng Deal tìm năng</td><td class="name">PTSC Số hóa Quy trình · Saigontourist</td><td>Làm rõ nhu cầu, quy trình mua sắm, tiêu chí lựa chọn và phạm vi có thể triển khai trước.</td><td>Chuyển từ cơ hội tìm năng sang cơ hội có lịch làm việc, đầu mối và bước tiếp theo rõ ràng.</td><td>Chỉ đưa vào dự báo khi đủ điều kiện</td><td>Sales · Marketing · Pre-sales</td></tr>
-        <tr><td class="action-phase">Bù Gap khi Deal trễ</td><td class="name">Khách hàng hiện hữu và công ty thành viên</td><td>Ưu tiên mở rộng user, phân hệ, API, bảo trì hoặc triển khai theo phase ngắn.</td><td>Có danh sách Deal thay thế đủ điều kiện để kích hoạt khi khoản thu/Deal lớn bị lùi.</td><td>Kích hoạt khi Gap dự báo tháng vượt 10%</td><td>Sales · CS · Marketing · Product</td></tr>
+        <tr><td class="name">NovaGroup · Thoát nước TP.HCM · PVFCCo bảo trì</td><td class="fw8 co">1.862M</td><td>Khóa ngày thanh toán, hồ sơ nghiệm thu/hóa đơn và đầu mối phê duyệt cuối.</td><td>Dòng tiền khách hàng, chứng từ hoặc thanh toán qua đối tác bị trễ.</td><td>Executive escalation với Sponsor; Finance cùng xác nhận lịch thu.</td></tr>
+        <tr><td class="name">PTSC · Văn phòng số</td><td class="fw8 co">1.600M</td><td>Hoàn tất hồ sơ thầu, phương án thương mại, hợp đồng và kế hoạch triển khai.</td><td>Lịch công bố thầu và phê duyệt có thể lùi.</td><td>Executive meeting; ưu tiên Pre-sales, Legal và Delivery phản hồi trong 48 giờ.</td></tr>
+        <tr><td class="name">PVFCCo API · Cấp nước Tiền Giang</td><td class="fw8 co">888M</td><td>Khóa Fit-Gap, mô tả kỹ thuật, phạm vi và phương án giá.</td><td>Hồ sơ nội bộ/tích hợp chưa hoàn chỉnh.</td><td>Chỉ định Solution Consultant; tháo gỡ điểm nghẽn với đối tác Viettel.</td></tr>
+        <tr><td class="name">Phan Vũ Group · PVFCCo GDD2</td><td class="fw8 co">1.520M</td><td>Chốt Business Case, người quyết định, scope theo phase và lịch đàm phán.</td><td>BOD chưa duyệt hoặc yêu cầu nghiệp vụ thay đổi.</td><td>Executive Sponsor; phê duyệt phương án triển khai theo giai đoạn.</td></tr>
+        <tr><td class="name">PTSC Số hóa Quy trình · Saigontourist</td><td class="fw8 cb">2.500M</td><td>RFP shaping, Account Map, phương án TCO và scope tối thiểu có thể ký.</td><td>Deal dài, quy trình mua sắm và tiêu chí lựa chọn chưa rõ.</td><td>Mở cửa C-level; hỗ trợ Case Study và khung thương mại linh hoạt.</td></tr>
       </tbody>
     </table></div>
   </div>
 
-  <div class="section g3">
-    <div class="card hover"><div class="badge bd-r">0–30 ngày</div><h3 class="mt12">Khóa số đã thực đạt và khoản phải thu</h3><p class="f12 t2 mt8">Đối soát PVFCCo, ACBS; hoàn thiện hồ sơ NovaGroup và Thoát nước; xác nhận lịch thanh toán với từng đầu mối.</p></div>
-    <div class="card hover"><div class="badge bd-o">31–60 ngày</div><h3 class="mt12">Hoàn tất điều kiện ra quyết định</h3><p class="f12 t2 mt8">Tập trung PTSC, PVFCCo API và Cấp nước Tiền Giang; xử lý triệt để điểm mở kỹ thuật, giá, pháp lý và nguồn lực triển khai.</p></div>
-    <div class="card hover"><div class="badge bd-b">61–90 ngày</div><h3 class="mt12">Khóa điểm rơi Q4 và Deal dự phòng</h3><p class="f12 t2 mt8">Đưa Phan Vũ và PVFCCo GDD2 vào lộ trình ký rõ ràng; duy trì PTSC Số hóa Quy trình và Saigontourist làm nguồn bù.</p></div>
-  </div>
-
   <div class="section g2">
     <div class="card">
-      <div class="sh"><div class="st">Nhịp điều hành thực tế</div><span class="badge bd-b">Theo điểm nghẽn</span></div>
+      <div class="sh"><div class="st">Công việc phải thực hiện để đạt mục tiêu</div><span class="badge bd-g">Execution</span></div>
       <div class="mini-list">
-        <div class="mini-item">Đầu tuần: rà soát khoản phải thu, lịch khách hàng và việc cần quyết định.</div>
-        <div class="mini-item">Trong tuần: tổ chức phiên làm việc riêng cho Deal có điểm mở kỹ thuật, pháp lý hoặc thương mại.</div>
-        <div class="mini-item">Cuối tuần: cập nhật Hiện trạng, Next Step, Owner, Deadline và phương án thay thế.</div>
-        <div class="mini-item">Escalation ngay khi ngày ký/thanh toán đổi hoặc hồ sơ bị treo quá thời hạn cam kết.</div>
+        <div class="mini-item">Mỗi ngày chốt 3 đầu ra quan trọng nhất: khoản thu, quyết định khách hàng hoặc hồ sơ cần hoàn tất.</div>
+        <div class="mini-item">Dành tối thiểu 70% thời gian cho Deal đã thanh toán/chờ thanh toán và Deal có khả năng bù 1.320M.</div>
+        <div class="mini-item">Tổ chức phiên xử lý riêng trong 48 giờ cho điểm nghẽn kỹ thuật, pháp lý, giá hoặc nguồn lực.</div>
+        <div class="mini-item">Cập nhật Tháng dự kiến ngay khi lịch khách hàng thay đổi để Dashboard tự tính lại khả năng đạt.</div>
+        <div class="mini-item">Chuẩn bị trước agenda, mục tiêu quyết định và tài liệu cho mọi cuộc họp khách hàng.</div>
       </div>
     </div>
     <div class="card">
-      <div class="sh"><div class="st">Điều kiện chuyển giai đoạn</div><span class="badge bd-o">Dựa trên bằng chứng</span></div>
+      <div class="sh"><div class="st">Công việc dự phòng rủi ro</div><span class="badge bd-o">Backup</span></div>
       <div class="mini-list">
-        <div class="mini-item">Có bài toán, phạm vi và giá trị kinh doanh được khách hàng xác nhận.</div>
-        <div class="mini-item">Biết người phê duyệt, quy trình mua sắm và nguồn ngân sách.</div>
-        <div class="mini-item">Điểm mở kỹ thuật, bảo mật, pháp lý và thương mại có người xử lý và hạn hoàn tất.</div>
-        <div class="mini-item">Có ngày dự kiến cho bước kế tiếp; Deal không có lịch cụ thể không đưa vào dự báo chắc chắn.</div>
+        <div class="mini-item">Mỗi Deal trọng điểm có tối thiểu một Deal thay thế hoặc phương án chia phase để ghi nhận sớm.</div>
+        <div class="mini-item">Khi Deal trễ 14 ngày hoặc đổi tháng, kích hoạt ngay Deal dự phòng thay vì chờ đến cuối kỳ.</div>
+        <div class="mini-item">Duy trì danh sách cross-sell/upsell 200–500M tại khách hàng hiện hữu để bù Gap ngắn hạn.</div>
+        <div class="mini-item">Không đưa Deal >500M vào dự báo chắc chắn khi chưa gặp Economic Buyer và chưa có lịch quyết định.</div>
+        <div class="mini-item">Escalation trong 24 giờ khi khoản thu trễ hoặc forecast tháng thiếu trên 10%.</div>
       </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div><div class="st">Personal Operating Model</div><h2 class="mt8">PHƯƠNG ÁN THAY ĐỔI CÁCH LÀM VIỆC CỦA BẢN THÂN</h2></div><div class="sm">Tăng thời gian tạo kết quả, giảm hoạt động không tạo quyết định</div></div>
+    <div class="personal-change-grid">
+      <div class="card personal-change"><h3>1. Quản trị theo đầu ra</h3><p class="f12 t2 mt8">Mỗi ngày chỉ chọn 3 đầu ra quan trọng; không dùng số cuộc gọi/cuộc họp làm thước đo chính.</p></div>
+      <div class="card personal-change"><h3>2. Time-block Deal trọng điểm</h3><p class="f12 t2 mt8">Khóa các khung 90–120 phút không họp để xử lý Proposal, Account Plan và hồ sơ quyết định.</p></div>
+      <div class="card personal-change"><h3>3. Chuẩn bị trước khi gặp khách hàng</h3><p class="f12 t2 mt8">Luôn xác định mục tiêu quyết định, người cần tham gia, câu hỏi khó và bước tiếp theo mong muốn.</p></div>
+      <div class="card personal-change"><h3>4. Giao tiếp ngắn và có yêu cầu rõ</h3><p class="f12 t2 mt8">Mỗi báo cáo chỉ nêu dữ kiện, rủi ro, việc đã làm và quyết định/hỗ trợ đang cần.</p></div>
+      <div class="card personal-change"><h3>5. Cập nhật dữ liệu trong ngày</h3><p class="f12 t2 mt8">Cập nhật Tháng dự kiến, hiện trạng và Next Step ngay sau tương tác để forecast luôn phản ánh thực tế.</p></div>
+      <div class="card personal-change"><h3>6. Rà soát và học từ Deal</h3><p class="f12 t2 mt8">Cuối tuần đánh giá điều gì tạo tiến triển, điều gì gây lãng phí và thay đổi một thói quen cho tuần sau.</p></div>
     </div>
   </div>
 
@@ -965,64 +991,30 @@ body.present .page{padding:32px 4vw}
 <!-- SUPPORT -->
 <section id="tab-support" class="tc">
   <div class="edit-toolbar no-print">
-    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Các trường văn bản trong tab Đề xuất BGĐ có thể sửa trực tiếp và lưu trên trình duyệt.</div></div>
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Có thể sửa trực tiếp các nội dung vấn đề, rủi ro và đề xuất.</div></div>
     <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('support')">↺ Khôi phục tab</button></div>
   </div>
-  <div class="sh"><div><div class="st">Resources & Support Needed</div><h2 class="mt8">Đề xuất hỗ trợ và quyết định từ Giám đốc</h2></div><div class="sm">Tick để ghi nhận nội dung đã thống nhất</div></div>
+  <div class="sh"><div><div class="st">Executive Support</div><h2 class="mt8">Đề xuất BGĐ</h2></div><div class="sm">Ngắn gọn theo 3 nội dung: Vấn đề · Rủi ro · Đề xuất</div></div>
 
-  <div class="g2" style="align-items:start">
-    <div>
-      <div class="card mb16">
-        <div class="st mb8">A. Hỗ trợ trực tiếp từ Giám đốc</div>
-        <div class="ask"><div class="ask-ic">👔</div><div><h3>Executive Sponsorship cho Key Account</h3><p>Tham gia tối thiểu 2 Executive Meeting/tháng với PTSC, PVFCCo, Phan Vũ, Saigontourist và NovaGroup khi cần escalation.</p></div><button class="check" data-key="a1" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">🔁</div><div><h3>Deal Review cố định hằng tuần</h3><p>30–45 phút để review dự báo, công nợ, Next Step, Risk và điểm nghẽn cần quyết định.</p></div><button class="check" data-key="a2" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">⚡</div><div><h3>Deal Desk SLA 24–48 giờ</h3><p>Phê duyệt chiết khấu, milestone thanh toán, SLA, phạm vi đặc biệt và ngoại lệ hợp đồng.</p></div><button class="check" data-key="a3" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">🧩</div><div><h3>Khung thẩm quyền thương mại</h3><p>Thống nhất mức chiết khấu, phương án thanh toán và chi phí Workshop/POC Sales được chủ động.</p></div><button class="check" data-key="a4" onclick="toggleCheck(this)">✓</button></div>
-      </div>
+  <div class="card">
+    <div class="tw"><table class="tbl compact-support-table">
+      <thead><tr><th>Vấn đề</th><th>Rủi ro</th><th>Đề xuất BGĐ</th></tr></thead>
+      <tbody>
+        <tr><td>1. Thu 1.862M hợp đồng đã ký</td><td>Ngày thanh toán bị lùi do dòng tiền, chứng từ hoặc phê duyệt qua nhiều đầu mối.</td><td>BGĐ tham gia escalation với Sponsor khách hàng; Finance cùng khóa ngày thu và checklist hồ sơ.</td></tr>
+        <tr><td>2. PTSC, PVFCCo, Cấp nước chậm phê duyệt</td><td>Deal trượt tháng/quý, làm thiếu phần còn lại 1.320M.</td><td>Hỗ trợ Executive Meeting, tiếp cận người quyết định và tháo gỡ bước phê duyệt cuối.</td></tr>
+        <tr><td>3. Nguồn lực Pre-sales / Legal / Delivery</td><td>Proposal, hồ sơ thầu và cam kết triển khai phản hồi chậm, giảm khả năng thắng.</td><td>Ưu tiên nguồn lực cho Deal trọng điểm; áp dụng SLA nội bộ tối đa 48 giờ.</td></tr>
+        <tr><td>4. Giá và điều kiện thương mại</td><td>Đàm phán kéo dài hoặc giảm biên lợi nhuận do chờ phê duyệt ngoại lệ.</td><td>Thiết lập Deal Desk 24–48 giờ và khung thẩm quyền rõ cho chiết khấu, milestone, SLA.</td></tr>
+        <tr><td>5. Pipeline dự phòng chưa đủ nhanh</td><td>Khi Deal lớn lùi, không có nguồn bù trong cùng tháng.</td><td>Hỗ trợ mở cửa Key Account, cross-sell khách hàng hiện hữu và phê duyệt phương án chia phase để ký sớm.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
 
-      <div class="card mb16">
-        <div class="st mb8">B. Marketing & Pre-sales</div>
-        <div class="ask"><div class="ask-ic">📣</div><div><h3>Account-Based Marketing theo 3 ngành</h3><p>Case Study, Business Case, ROI, Executive Workshop và chiến dịch tiếp cận công ty thành viên.</p></div><button class="check" data-key="b1" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">🛠️</div><div><h3>Solution Consultant cho Deal trọng điểm</h3><p>Phụ trách xuyên suốt PTSC/PVFCCo; SLA Demo, Fit-Gap và phản hồi RFP trong 48 giờ.</p></div><button class="check" data-key="b2" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">🧪</div><div><h3>Demo Environment theo ngành</h3><p>Chuẩn hóa kịch bản Văn phòng số, quy trình điều hành, ERP/ký số và Private Cloud.</p></div><button class="check" data-key="b3" onclick="toggleCheck(this)">✓</button></div>
-      </div>
-
-      <div class="card">
-        <div class="st mb8">C. Finance · Legal · Delivery</div>
-        <div class="ask"><div class="ask-ic">💰</div><div><h3>Escalation công nợ trọng điểm</h3><p>NovaGroup, Viettel/Thoát nước và PVFCCo được cập nhật hằng tuần; escalation khi trễ >10 ngày.</p></div><button class="check" data-key="c1" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">📄</div><div><h3>Bộ hồ sơ đấu thầu chuẩn hóa</h3><p>Hồ sơ năng lực, bảo mật, kiến trúc, SLA, hợp đồng mẫu, dự án tham chiếu và checklist dự thầu.</p></div><button class="check" data-key="c2" onclick="toggleCheck(this)">✓</button></div>
-        <div class="ask"><div class="ask-ic">🚀</div><div><h3>Xác nhận năng lực Delivery trước cam kết</h3><p>Khóa nguồn lực và timeline triển khai đối với các dự án Private Cloud / On-premise.</p></div><button class="check" data-key="c3" onclick="toggleCheck(this)">✓</button></div>
-      </div>
-    </div>
-
-    <aside class="decision-panel">
-      <div class="card">
-        <div class="sh"><div class="st">Decision Center</div><span class="badge bd-o" id="approvalCount">0/10</span></div>
-        <div class="decision-status"><span class="live-dot"></span><span>Nội dung được lưu tự động trên trình duyệt này.</span></div>
-        <label class="f11 t3" style="display:block;margin-top:14px;margin-bottom:6px">Ghi chú / quyết định của Giám đốc</label>
-        <textarea class="note" id="directorNote" placeholder="Ví dụ: Phê duyệt Deal Review vào thứ Hai hàng tuần; ưu tiên Pre-sales cho PTSC và PVFCCo..." oninput="saveNote()"></textarea>
-        <div class="fx g8 mt12 wr">
-          <button class="btn btn-p" onclick="exportDecision()">⬇ Export ghi chú</button>
-          <button class="btn btn-s" onclick="clearDecision()">Xóa</button>
-        </div>
-      </div>
-      <div class="card mt16">
-        <div class="st mb12">8 quyết định đề nghị phê duyệt</div>
-        <div class="mini-list">
-          <div class="mini-item">Executive Sponsorship cho Key Account.</div>
-          <div class="mini-item">Deal Review cố định hằng tuần.</div>
-          <div class="mini-item">SLA 24–48 giờ cho giá và Pre-sales.</div>
-          <div class="mini-item">Ưu tiên Solution Consultant cho Deal >500M.</div>
-          <div class="mini-item">Escalation công nợ trọng điểm.</div>
-          <div class="mini-item">Ngân sách Account-Based Marketing.</div>
-          <div class="mini-item">Khung thẩm quyền thương mại.</div>
-          <div class="mini-item">Cơ chế ghi nhận doanh số vượt 100% kế hoạch.</div>
-        </div>
-      </div>
-    </aside>
+  <div class="card section">
+    <div class="sh"><div class="st">Ghi chú / Quyết định của BGĐ</div><span class="badge bd-o">Decision Note</span></div>
+    <textarea class="note" id="directorNote" placeholder="Ghi ngắn gọn quyết định, người phụ trách và thời hạn..." oninput="saveNote()"></textarea>
+    <div class="fx g8 mt12 wr"><button class="btn btn-p" onclick="exportDecision()">⬇ Export ghi chú</button><button class="btn btn-s" onclick="clearDecision()">Xóa</button></div>
   </div>
 </section>
-
 </main>
 
 
@@ -1036,7 +1028,7 @@ body.present .page{padding:32px 4vw}
   </div>
 </div>
 
-<footer class="footer"><span>1Office · Giang Tấn Văn · H2 Business Plan</span><span>Dữ liệu kế hoạch: 4.500M Target · 1.862M đã ký · 6.508M Pipeline tiềm năng</span></footer>
+<footer class="footer"><span>1Office · Giang Tấn Văn · H2 Business Plan</span><span id="footerMetrics">Dữ liệu kế hoạch: 4.500M Target · 1.318M đã thanh toán · 1.862M chờ thanh toán · còn thiếu 1.320M</span></footer>
 
 <script>
 const DEFAULT_DEALS=[
@@ -1061,8 +1053,8 @@ function loadDealData(){
 function saveDealData(){try{localStorage.setItem("h2-deals-data-v6",JSON.stringify(DEALS))}catch(e){}}
 let DEALS=loadDealData();
 const JULY_ACTUALS=[
-  {name:"PVFCCo",project:"Doanh số thực đạt tháng 7",solution:"On-premise",value:750,status:"Đã ghi nhận trong tháng 7"},
-  {name:"ACBS",project:"Doanh số thực đạt tháng 7",solution:"Private Cloud",value:568,status:"Đã ghi nhận trong tháng 7"}
+  {name:"PVFCCo",project:"Doanh số thực đạt tháng 7",solution:"On-premise",value:750,month:"7",status:"Đã ghi nhận trong tháng 7"},
+  {name:"ACBS",project:"Doanh số thực đạt tháng 7",solution:"Private Cloud",value:568,month:"7",status:"Đã ghi nhận trong tháng 7"}
 ];
 
 const H1_DEALS=[
@@ -1090,6 +1082,67 @@ const MONTH_TARGETS={
   "11":{target:807.692,focus:"Q4 chia đều · Đàm phán thương mại, ngân sách, pháp lý"},
   "12":{target:807.693,focus:"Q4 chia đều · Ký hợp đồng và thanh toán đợt đầu"}
 };
+const H2_TARGET=4500;
+const pct=(n,d)=>d?Math.round(n/d*1000)/10:0;
+const pctText=n=>Number(n).toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+function getH2Metrics(){
+  const paid=JULY_ACTUALS.reduce((s,d)=>s+d.value,0);
+  const signed=DEALS.filter(d=>d.cat==="Chắc chắn").reduce((s,d)=>s+d.value,0);
+  const pipeline=DEALS.filter(d=>d.cat!=="Chắc chắn").reduce((s,d)=>s+d.value,0);
+  const secured=paid+signed;
+  const gap=Math.max(H2_TARGET-secured,0);
+  const conversion=pct(gap,pipeline);
+  return {target:H2_TARGET,paid,signed,pipeline,secured,gap,conversion,totalCoverage:paid+signed+pipeline};
+}
+function getMonthBreakdown(month){
+  const paid=JULY_ACTUALS.filter(d=>d.month===month).reduce((s,d)=>s+d.value,0);
+  const signed=DEALS.filter(d=>d.month===month&&d.cat==="Chắc chắn").reduce((s,d)=>s+d.value,0);
+  const pipeline=DEALS.filter(d=>d.month===month&&d.cat!=="Chắc chắn").reduce((s,d)=>s+d.value,0);
+  const target=MONTH_TARGETS[month].target;
+  const total=paid+signed+pipeline;
+  return {paid,signed,pipeline,target,total,ability:pct(total,target)};
+}
+function setText(id,value){const el=document.getElementById(id);if(el)el.textContent=value}
+function setWidth(id,value){const el=document.getElementById(id);if(el)el.style.width=Math.max(0,Math.min(100,value))+"%"}
+function renderMonthlyAllocation(){
+  const el=document.getElementById("monthlyAllocation");if(!el)return;
+  el.innerHTML=Object.keys(MONTH_TARGETS).map(month=>{
+    const x=getMonthBreakdown(month),scale=Math.max(x.target,x.total,1);
+    const paidW=x.paid/scale*100,signedW=x.signed/scale*100,pipelineW=x.pipeline/scale*100,targetW=x.target/scale*100;
+    const cls=x.ability>=100?"ok":"warn";
+    return `<div class="month-plan-row" onclick="openWidget('month-target','${month}')">
+      <div class="month-plan-head"><span>Tháng ${month}</span><strong>Target ${money(x.target)}</strong></div>
+      <div class="month-plan-track" title="Tổng khả năng ${money(x.total)} / Target ${money(x.target)}">
+        <div class="month-plan-seg paid" style="width:${paidW}%"></div><div class="month-plan-seg signed" style="width:${signedW}%"></div><div class="month-plan-seg pipeline" style="width:${pipelineW}%"></div><i class="month-target-marker" style="left:${Math.min(99.5,targetW)}%"></i>
+      </div>
+      <div class="month-plan-meta"><span>Đã TT ${money(x.paid)}</span><span>Chờ TT ${money(x.signed)}</span><span>Deal tiềm năng ${money(x.pipeline)}</span><strong class="${cls}">Khả năng đạt ${pctText(x.ability)}</strong></div>
+    </div>`;
+  }).join("");
+}
+function updateDashboardMetrics(){
+  const m=getH2Metrics(),paidPct=pct(m.paid,m.target),signedPct=pct(m.signed,m.target),gapPct=pct(m.gap,m.target);
+  setText("h2TargetHero",money(m.target));setText("h2TargetKpi",money(m.target));
+  setText("targetPaidValue",money(m.paid));setText("targetPaidPct",pctText(paidPct)+" mục tiêu");setWidth("targetPaidSeg",paidPct);
+  setText("targetSignedValue",money(m.signed));setText("targetSignedPct",pctText(signedPct)+" mục tiêu");setWidth("targetSignedSeg",signedPct);
+  setText("targetGapValue",money(m.gap));setText("targetGapPct",pctText(gapPct)+" mục tiêu");setWidth("targetGapSeg",gapPct);
+  setText("targetConversionPct",pctText(m.conversion));
+  setText("paidKpiValue",money(m.paid));setText("paidKpiPct",pctText(paidPct)+" target");
+  setText("signedKpiValue",money(m.signed));setText("signedKpiPct",pctText(signedPct)+" target");
+  setText("pipelineKpiValue",money(m.pipeline));setText("pipelineKpiCount",DEALS.filter(d=>d.cat!=="Chắc chắn").length+" cơ hội");
+  setText("gapKpiValue",money(m.gap));setText("gapKpiMeta","Cần chuyển đổi "+pctText(m.conversion)+" Pipeline");
+  setText("targetContractsValue","≈ "+Math.max(0,Math.ceil(m.gap/300)));
+  setText("priorityGapValue",(m.gap/1000).toLocaleString("vi-VN",{minimumFractionDigits:3,maximumFractionDigits:3})+" tỷ");
+  setText("h2CommitText",`Cam kết điều hành: ghi nhận ${(m.paid/1000).toLocaleString("vi-VN",{minimumFractionDigits:3,maximumFractionDigits:3})} tỷ đồng đã thanh toán, bảo vệ ${(m.signed/1000).toLocaleString("vi-VN",{minimumFractionDigits:3,maximumFractionDigits:3})} tỷ đồng hợp đồng đã ký — chờ thanh toán và chuyển đổi tối thiểu ${(m.gap/1000).toLocaleString("vi-VN",{minimumFractionDigits:3,maximumFractionDigits:3})} tỷ đồng từ Pipeline Deal tiềm năng.`);
+  setText("pipelineSignedValue",money(m.signed));setText("pipelineSignedMeta",DEALS.filter(d=>d.cat==="Chắc chắn").length+" khoản thanh toán · "+pctText(signedPct)+" Target");setWidth("pipelineSignedBar",signedPct);
+  const high=DEALS.filter(d=>d.cat==="Ưu tiên cao"),potential=DEALS.filter(d=>d.cat==="Tìm năng");
+  const highVal=high.reduce((s,d)=>s+d.value,0),potentialVal=potential.reduce((s,d)=>s+d.value,0);
+  setText("highPriorityValue",money(highVal));setText("highPriorityMeta",high.length+" cơ hội cần tăng tốc");setWidth("highPriorityBar",pct(highVal,m.pipeline));
+  setText("potentialValue",money(potentialVal));setText("potentialMeta",potential.length+" cơ hội dự phòng");setWidth("potentialBar",pct(potentialVal,m.pipeline));
+  setText("logicPaidValue",money(m.paid));setWidth("logicPaidBar",paidPct);setText("logicSignedValue",money(m.signed));setWidth("logicSignedBar",signedPct);setText("logicGapValue",money(m.gap));setWidth("logicGapBar",gapPct);
+  const logic=document.getElementById("logicConversionText");if(logic)logic.innerHTML=`Cần chuyển đổi <strong class="cg">${pctText(m.conversion)}</strong> Pipeline Deal tiềm năng hiện tại để hoàn thành 100% chỉ tiêu H2.`;
+  setText("footerMetrics",`Dữ liệu kế hoạch: ${money(m.target)} Target · ${money(m.paid)} đã thanh toán · ${money(m.signed)} chờ thanh toán · còn thiếu ${money(m.gap)}`);
+  renderMonthlyAllocation();
+}
 
 const money=n=>n.toLocaleString("vi-VN")+"M";
 const catBadge=c=>c==="Chắc chắn"?"bd-g":c==="Ưu tiên cao"?"bd-o":"bd-b";
@@ -1108,6 +1161,7 @@ function updateDealField(index,field,el){
   else{DEALS[index][field]=value}
   saveDealData();
   if(document.getElementById("dealBody")) filterDeals();
+  updateDashboardMetrics();
 }
 function currentFilteredDeals(){
   const cat=document.getElementById("catFilter")?.value||"ALL";
@@ -1121,7 +1175,7 @@ function renderDeals(list=DEALS){
     <td><div class="name">${escapeHtml(d.name)}</div><div class="sub">${escapeHtml(d.project)}</div></td>
     <td><span class="badge ${catBadge(d.cat)}">${escapeHtml(catText(d.cat))}</span></td>
     <td class="fw8 co">${money(d.value)}</td>
-    <td><span class="badge bd-n">Tháng ${escapeHtml(d.month)}</span></td>
+    <td class="deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa tháng dự kiến; biểu đồ Tổng quan tự động tính lại" onblur="updateDealField(${idx},'month',this)">Tháng ${escapeHtml(d.month)}</td>
     <td class="t2 deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" onblur="updateDealField(${idx},'status',this)">${escapeHtml(d.status)}</td>
     <td class="t2 deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" onblur="updateDealField(${idx},'next',this)">${escapeHtml(d.next)}</td>
   </tr>`}).join("");
@@ -1174,27 +1228,30 @@ function toggleCheck(btn){
 }
 function updateApproval(){
   const all=[...document.querySelectorAll(".check")],done=all.filter(x=>x.classList.contains("on")).length;
-  document.getElementById("approvalCount").textContent=`${done}/${all.length}`;
+  const badge=document.getElementById("approvalCount");if(badge)badge.textContent=`${done}/${all.length}`;
 }
 function saveNote(){localStorage.setItem("h2-director-note",document.getElementById("directorNote").value)}
 function clearDecision(){
-  if(!confirm("Xóa ghi chú và trạng thái đã phê duyệt?")) return;
+  if(!confirm("Xóa toàn bộ ghi chú của BGĐ?")) return;
   localStorage.removeItem("h2-director-note");
   document.getElementById("directorNote").value="";
   document.querySelectorAll(".check").forEach(b=>{b.classList.remove("on");localStorage.removeItem("h2-"+b.dataset.key)});
   updateApproval();
 }
 function exportDecision(){
-  const checked=[...document.querySelectorAll(".check.on")].map(b=>b.parentElement.querySelector("h3").textContent);
+  const rows=[...document.querySelectorAll(".compact-support-table tbody tr")].map((row,i)=>{
+    const cells=[...row.querySelectorAll("td")].map(td=>td.textContent.trim());
+    return `${i+1}. Vấn đề: ${cells[0]}\n   Rủi ro: ${cells[1]}\n   Đề xuất: ${cells[2]}`;
+  });
   const note=document.getElementById("directorNote").value||"(chưa có ghi chú)";
   const text=[
-    "1OFFICE — GIANG TẤN VĂN — H2 DECISION NOTES",
+    "1OFFICE — GIANG TẤN VĂN — ĐỀ XUẤT BGĐ",
     "Ngày xuất: "+new Date().toLocaleString("vi-VN"),
     "",
-    "NỘI DUNG ĐÃ THỐNG NHẤT:",
-    ...(checked.length?checked.map((x,i)=>`${i+1}. ${x}`):["(chưa đánh dấu nội dung nào)"]),
+    "VẤN ĐỀ — RỦI RO — ĐỀ XUẤT:",
+    ...rows,
     "",
-    "GHI CHÚ / QUYẾT ĐỊNH CỦA GIÁM ĐỐC:",
+    "GHI CHÚ / QUYẾT ĐỊNH CỦA BGĐ:",
     note
   ].join("\n");
   const a=document.createElement("a");
@@ -1270,14 +1327,15 @@ function closeDetailModal(){document.getElementById("detailModal").classList.rem
 function openWidget(type,key=""){
   if(EDIT_MODE) return;
   let title="Chi tiết dữ liệu",sub="",items=[],summary="",customHtml="";
-  if(type==="july-actual"){
-    title="Thực đạt tháng 7";sub="Tổng doanh số đã ghi nhận: 1.318M · 190,4% kế hoạch tháng";
-    summary=`<div class="modal-summary">${statBox("Kế hoạch tháng 7","692,308M")}${statBox("Thực đạt","1.318M","cg")}${statBox("Vượt kế hoạch","625,692M","co")}</div>`;
+  if(type==="july-actual"||type==="paid"){
+    const paid=JULY_ACTUALS.reduce((s,d)=>s+d.value,0),july=MONTH_TARGETS["7"].target;
+    title="Hợp đồng đã thanh toán";sub=`Tổng đã ghi nhận ${money(paid)} · ${pctText(pct(paid,H2_TARGET))} mục tiêu H2`;
+    summary=`<div class="modal-summary">${statBox("Mục tiêu H2",money(H2_TARGET))}${statBox("Đã thanh toán",money(paid),"cb")}${statBox("Tỷ lệ",pctText(pct(paid,H2_TARGET)),"cg")}</div>`;
     items=JULY_ACTUALS.map(d=>detailItem(d.name,`${d.project} · ${d.solution} · ${d.status}`,money(d.value),`<span class="badge ${d.solution==="On-premise"?'bd-o':'bd-b'}">${d.solution}</span>`));
-  }else if(type==="h2-target"){
-    title="Phân bổ mục tiêu doanh số H2";sub="4.500M · Q3/Q4 theo tỷ lệ kế hoạch năm 30:35";
-    summary=`<div class="modal-summary">${statBox("Mục tiêu H2","4.500M","co")}${statBox("Quý III","2.076,923M")}${statBox("Quý IV","2.423,077M","cb")}</div>`;
-    items=Object.entries(MONTH_TARGETS).map(([m,x])=>detailItem(`Tháng ${m}`,x.focus,`${x.target}M`,m<10?'<span class="badge bd-o">Q3</span>':'<span class="badge bd-b">Q4</span>'));
+  }else if(type==="h2-target"||type==="target-progress"){
+    const m=getH2Metrics();title="Tiến độ hoàn thành mục tiêu H2";sub=`${money(m.target)} · đã bảo đảm ${money(m.secured)} · còn thiếu ${money(m.gap)}`;
+    summary=`<div class="modal-summary">${statBox("Đã thanh toán",money(m.paid),"cb")}${statBox("Đã ký — Chờ TT",money(m.signed),"cg")}${statBox("Còn thiếu",money(m.gap),"co")}</div>`;
+    items=Object.entries(MONTH_TARGETS).map(([mon,x])=>{const d=getMonthBreakdown(mon);return detailItem(`Tháng ${mon}`,`${x.focus} · Deal theo tháng ${money(d.total)}`,money(x.target),`<span class="badge ${d.ability>=100?'bd-g':'bd-a'}">Khả năng ${pctText(d.ability)}</span>`)});
   }else if(type==="commit"){
     const list=DEALS.filter(d=>d.cat==="Chắc chắn");title="Hợp đồng đã ký — Chờ thanh toán";sub=`${list.length} khoản thu · ${money(list.reduce((s,d)=>s+d.value,0))}`;
     customHtml=dealListTable(list);
@@ -1285,19 +1343,19 @@ function openWidget(type,key=""){
     const list=DEALS.filter(d=>d.cat!=="Chắc chắn");title="Pipeline dự án mới";sub=`${list.length} cơ hội · ${money(list.reduce((s,d)=>s+d.value,0))}`;
     customHtml=dealListTable(list);
   }else if(type==="all-pipeline"){
-    title="Tổng Pipeline Coverage";sub="Bao gồm hợp đồng đã ký và cơ hội mới";
-    summary=`<div class="modal-summary">${statBox("Đã ký — Chờ thanh toán","1.862M","cg")}${statBox("Pipeline tiềm năng","6.508M","co")}${statBox("Tổng Coverage","8.370M","cb")}</div>`;
+    const m=getH2Metrics();title="Tổng nguồn doanh số H2";sub="Bao gồm đã thanh toán, đã ký chờ thanh toán và Pipeline tiềm năng";
+    summary=`<div class="modal-summary">${statBox("Đã thanh toán",money(m.paid),"cb")}${statBox("Đã ký — Chờ TT",money(m.signed),"cg")}${statBox("Pipeline",money(m.pipeline),"co")}</div>`;
     customHtml=dealListTable(DEALS);
   }else if(type==="gap-plan"){
-    title="Phương án bù Gap 2.638M";sub="Các tổ hợp Deal có thể giúp hoàn thành Target 4.500M";
+    const m=getH2Metrics();title=`Phương án bù Gap ${money(m.gap)}`;sub=`Cần chuyển đổi ${pctText(m.conversion)} Pipeline để hoàn thành Target ${money(m.target)}`;
     items=[
-      detailItem("Phương án A","PTSC Văn phòng số + PVFCCo API + PVFCCo GDD2","2.890M",'<span class="badge bd-g">Cân bằng</span>'),
-      detailItem("Phương án B","PTSC Số hóa Quy trình + Phan Vũ","2.720M",'<span class="badge bd-o">Ưu tiên</span>'),
-      detailItem("Phương án C","PTSC Số hóa Quy trình + Saigontourist + Cấp nước TG","2.898M",'<span class="badge bd-b">Best Case</span>'),
-      detailItem("Phương án D","PVFCCo API + GDD2 + Phan Vũ + Cấp nước TG + Saigontourist","2.908M",'<span class="badge bd-a">Phân tán rủi ro</span>')];
+      detailItem("Phương án A","PTSC Văn phòng số","1.600M",'<span class="badge bd-g">Đủ bù Gap</span>'),
+      detailItem("Phương án B","PVFCCo GDD2 + Phan Vũ Group","1.520M",'<span class="badge bd-o">Phân tán 2 Deal</span>'),
+      detailItem("Phương án C","PVFCCo API + Cấp nước TG + Saigontourist","1.388M",'<span class="badge bd-b">3 Deal vừa</span>'),
+      detailItem("Phương án D","Tách phase PTSC Số hóa Quy trình hoặc Deal lớn khác","≥ 1.320M",'<span class="badge bd-a">Dự phòng Q4</span>')];
   }else if(type==="target-contracts"){
-    const list=DEALS.filter(d=>d.cat!=="Chắc chắn").sort((a,b)=>Math.abs(a.value-300)-Math.abs(b.value-300));
-    title="Danh sách cơ hội cho mục tiêu khoảng 9 hợp đồng";sub="7 cơ hội hiện hữu; cần bổ sung thêm Deal để đạt số lượng mục tiêu với Ticket khoảng 300M";
+    const m=getH2Metrics(),list=DEALS.filter(d=>d.cat!=="Chắc chắn").sort((a,b)=>Math.abs(a.value-300)-Math.abs(b.value-300));
+    title=`Danh sách cơ hội cho khoảng ${Math.ceil(m.gap/300)} hợp đồng bổ sung`;sub=`Gap ${money(m.gap)} với Ticket tham chiếu khoảng 300M`;
     customHtml=dealListTable(list);
   }else if(type==="h1-ote"){
     title="Chỉ tiêu OTE H1";sub="Kế hoạch 6 tháng đầu năm";
@@ -1333,8 +1391,10 @@ function openWidget(type,key=""){
     title=`Mục tiêu ${key}`;sub=money(months.reduce((s,m)=>s+MONTH_TARGETS[m].target,0));
     items=months.map(m=>detailItem(`Tháng ${m}`,MONTH_TARGETS[m].focus,money(MONTH_TARGETS[m].target)));
   }else if(type==="month-target"){
-    const d=MONTH_TARGETS[key],list=DEALS.filter(x=>x.month===key);title=`Kế hoạch doanh số tháng ${key}`;sub=`Target ${money(d.target)} · ${d.focus}`;
-    customHtml=list.length?dealListTable(list):`<div class="detail-list">${detailItem("Pipeline bổ sung",d.focus,money(d.target))}</div>`;
+    const d=MONTH_TARGETS[key],x=getMonthBreakdown(key),list=DEALS.filter(row=>row.month===key);title=`Phân bổ doanh số tháng ${key}`;sub=`Target ${money(d.target)} · Khả năng theo dữ liệu hiện tại ${pctText(x.ability)}`;
+    summary=`<div class="modal-summary">${statBox("Đã thanh toán",money(x.paid),"cb")}${statBox("Chờ thanh toán",money(x.signed),"cg")}${statBox("Deal tiềm năng",money(x.pipeline),"co")}</div>`;
+    const actualItems=JULY_ACTUALS.filter(row=>row.month===key).map(row=>detailItem(row.name,`${row.project} · ${row.solution}`,money(row.value),'<span class="badge bd-b">Đã thanh toán</span>')).join("");
+    customHtml=(actualItems?`<div class="detail-list mb16">${actualItems}</div>`:"")+(list.length?dealListTable(list):`<div class="detail-list">${detailItem("Chưa có Deal",d.focus,"0M")}</div>`);
   }else if(type==="pipeline-category"){
     const list=DEALS.filter(d=>d.cat===key);title=`Pipeline — ${catText(key)}`;sub=`${list.length} cơ hội · ${money(list.reduce((s,d)=>s+d.value,0))}`;
     customHtml=dealListTable(list);
@@ -1357,9 +1417,9 @@ function bindWidgets(){
 
 function initEditableContent(){
   const selectors={
-    pipeline:"h2,.sm,.month-focus,.card .st,.card .mini-item,.heat>div:not(.hlab),.risk h3,.risk-meta,.risk p,.risk-action,.actual-value,.actual-note,.july-actual-card h3",
+    pipeline:"h2,.sm,.month-focus,.card .st,.card .mini-item,.heat>div:not(.hlab),.risk h3,.risk-meta,.risk p,.risk-action,.risk-deal-table tbody td",
     strategy:"h2,.sm,.strategy h3,.strategy p,.strategy .mini-item,.fstep .flbl,.card .st,.card h3,.card p,.card .mini-item,.tbl tbody td",
-    support:"h2,.sm,.ask h3,.ask p,.card .st,.card .mini-item,label"
+    support:"h2,.sm,.card .st,.tbl tbody td,label"
   };
   Object.entries(selectors).forEach(([tab,sel])=>{
     document.querySelectorAll(`#tab-${tab} ${sel}`).forEach((el,i)=>{
@@ -1393,6 +1453,7 @@ function resetEditableTab(tab){
 
 renderDeals();
 renderH1Spark();
+updateDashboardMetrics();
 bindWidgets();
 initEditableContent();
 loadDecision();
