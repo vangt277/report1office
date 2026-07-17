@@ -1188,8 +1188,8 @@ function applyCloudSnapshot(snapshot,force=false){
       const months={};
       Object.entries(snapshot.monthTargets).forEach(([month,row])=>{
         if(!/^(7|8|9|10|11|12)$/.test(month))return;
-        const target=Number(row?.target);
-        months[month]={target:Number.isFinite(target)?target:0,focus:String(row?.focus||"")};
+        const target=normalizeMonthlyTargetValue(row?.target);
+        months[month]={target,focus:String(row?.focus||"")};
       });
       if(Object.keys(months).length)MONTH_TARGETS=months;
     }
@@ -1511,6 +1511,18 @@ let MONTH_TARGETS={
 let H2_TARGET=4500;
 const pct=(n,d)=>d?Math.round(n/d*1000)/10:0;
 const pctText=n=>Number(n).toLocaleString("vi-VN",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+/**
+ * Google Sheets dùng locale Việt Nam có thể hiểu 692.308 là 692308
+ * (dấu chấm phân cách hàng nghìn). Mục tiêu một tháng không thể lớn
+ * hơn toàn bộ mục tiêu H2 nhiều lần, vì vậy tự đưa giá trị về đơn vị triệu.
+ */
+function normalizeMonthlyTargetValue(raw){
+  let value=Number(raw);
+  if(!Number.isFinite(value)||value<0)return 0;
+  const h2=Number.isFinite(Number(H2_TARGET))&&Number(H2_TARGET)>0?Number(H2_TARGET):4500;
+  while(value>h2*2&&value/1000>0)value/=1000;
+  return value;
+}
 function getH2Metrics(){
   const paid=JULY_ACTUALS.reduce((s,d)=>s+d.value,0);
   const signed=DEALS.filter(d=>d.cat==="Chắc chắn").reduce((s,d)=>s+d.value,0);
@@ -1524,7 +1536,8 @@ function getMonthBreakdown(month){
   const paid=JULY_ACTUALS.filter(d=>d.month===month).reduce((s,d)=>s+d.value,0);
   const signed=DEALS.filter(d=>d.month===month&&d.cat==="Chắc chắn").reduce((s,d)=>s+d.value,0);
   const pipeline=DEALS.filter(d=>d.month===month&&d.cat!=="Chắc chắn").reduce((s,d)=>s+d.value,0);
-  const target=MONTH_TARGETS[month].target;
+  const target=normalizeMonthlyTargetValue(MONTH_TARGETS[month]?.target);
+  if(MONTH_TARGETS[month]&&MONTH_TARGETS[month].target!==target)MONTH_TARGETS[month].target=target;
   const total=paid+signed+pipeline;
   return {paid,signed,pipeline,target,total,ability:pct(total,target)};
 }
