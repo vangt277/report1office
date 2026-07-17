@@ -253,10 +253,16 @@ body.edit-mode .edit-state{color:var(--b)}body.edit-mode .edit-state .dot{backgr
 .month-plan-row{padding:13px 14px;border:1px solid var(--bd);border-radius:12px;background:#f8fafc;cursor:pointer;transition:.18s}
 .month-plan-row:hover{background:#eef5ff;border-color:#d4e3fb;transform:translateY(-1px)}
 .month-plan-head{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;color:var(--navy)}
-.month-plan-head strong{font-size:12px}.month-plan-track{height:15px;display:flex;position:relative;overflow:hidden;background:#e5ebf2;border-radius:999px;margin-top:9px;box-shadow:0 0 0 1px rgba(15,35,65,.05) inset}
-.month-plan-seg{height:100%;min-width:0}.month-plan-seg.paid{background:#2563eb}.month-plan-seg.signed{background:#10a879}.month-plan-seg.pipeline{background:#f15a24}.month-target-marker{position:absolute;top:-3px;bottom:-3px;width:2px;background:#14213d;box-shadow:0 0 0 1px rgba(255,255,255,.65)}
+.month-plan-head strong{font-size:12px}
+.month-plan-track{height:16px;display:flex;position:relative;overflow:hidden;isolation:isolate;background:#e5ebf2;border-radius:999px;margin-top:9px;box-shadow:0 0 0 1px rgba(15,35,65,.08) inset;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.month-plan-seg{height:100%;width:var(--segment-width,0%);flex:0 0 var(--segment-width,0%);min-width:0;position:relative;z-index:1;transition:flex-basis .28s ease,width .28s ease;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.month-plan-seg+.month-plan-seg{box-shadow:-1px 0 rgba(255,255,255,.72)}
+.month-plan-seg--paid{background:linear-gradient(90deg,#4f91f2,#2563eb)}
+.month-plan-seg--signed{background:linear-gradient(90deg,#31c795,#0b9f73)}
+.month-plan-seg--pipeline{background:linear-gradient(90deg,#ff9a67,#f15a24)}
+.month-target-marker{position:absolute;z-index:4;top:-3px;bottom:-3px;width:3px;border-radius:2px;background:#14213d;box-shadow:0 0 0 1px rgba(255,255,255,.82),0 1px 4px rgba(15,35,65,.25);transform:translateX(-1px)}
 .month-plan-meta{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:10px;color:#6f7e92}.month-plan-meta strong{margin-left:auto;color:var(--navy);font-size:11px}.month-plan-meta .ok{color:var(--g)}.month-plan-meta .warn{color:var(--a)}
-.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}.legend-dot.paid{background:#2563eb}.legend-dot.signed{background:#10a879}.legend-dot.pipeline{background:#f15a24}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.legend-dot--paid{background:#2563eb}.legend-dot--signed{background:#10a879}.legend-dot--pipeline{background:#f15a24}
 .overview-planning-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:16px;align-items:stretch}
 .overview-planning-left{display:grid;grid-template-rows:auto 1fr;gap:16px;min-width:0}
 .overview-planning-grid>.card,.overview-planning-left>.card{height:100%;min-width:0}
@@ -633,8 +639,9 @@ body.present .page{padding:32px 4vw}
   <div class="hdr-title">Giang Tấn Văn — Kế hoạch Kinh doanh H2</div>
   <div class="hdr-space"></div>
   <div class="save-state-pill" id="saveState" title="Trạng thái lưu và đồng bộ dữ liệu"><span class="save-state-dot"></span><span id="saveStateText">Đang khởi tạo…</span></div>
-  <button class="btn btn-g" onclick="configureCloudSync()" title="Kết nối và đồng bộ Google Sheets">☁ <span class="hide-sm">Google Sheets</span></button>
-  <button class="btn btn-g" id="globalEditBtn" onclick="toggleEditMode()">✎ <span class="hide-sm">Chỉnh sửa</span></button>
+  <button class="btn btn-g" onclick="configureCloudSync()" title="Kết nối và đồng bộ Google Sheets — yêu cầu mật khẩu truy cập">☁ <span class="hide-sm">Google Sheets</span></button>
+  <button class="btn btn-g" id="globalEditBtn" onclick="toggleEditMode()" title="Bật hoặc tắt chỉnh sửa toàn bộ trường văn bản trên Dashboard">✎ <span class="hide-sm">Chỉnh sửa</span></button>
+  <button class="btn btn-p" id="globalSaveBtn" onclick="saveAllChanges()" title="Chỉ gửi các trường đã thay đổi lên Google Sheets">💾 <span class="hide-sm">Lưu thay đổi</span></button>
   <button class="btn btn-g" onclick="togglePresent()">⛶ <span class="hide-sm">Trình chiếu</span></button>
   <button class="btn btn-p" onclick="window.print()">↗ <span class="hide-sm">In / PDF</span></button>
 </header>
@@ -752,7 +759,7 @@ body.present .page{padding:32px 4vw}
     <div class="card monthly-allocation-card">
       <div class="sh"><div class="st">Phân bổ doanh số theo tháng</div><div class="sm">Tự động tính theo Tháng dự kiến của từng Deal</div></div>
       <div id="monthlyAllocation" class="month-allocation"></div>
-      <div class="month-plan-meta mt12"><span><i class="legend-dot paid"></i>Đã thanh toán</span><span><i class="legend-dot signed"></i>HĐ chờ thanh toán</span><span><i class="legend-dot pipeline"></i>Deal tiềm năng</span><span>Vạch đen: Target tháng</span></div>
+      <div class="month-plan-meta mt12"><span><i class="legend-dot legend-dot--paid"></i>Đã thanh toán</span><span><i class="legend-dot legend-dot--signed"></i>HĐ chờ thanh toán</span><span><i class="legend-dot legend-dot--pipeline"></i>Deal tiềm năng</span><span>Vạch đen: Target tháng</span></div>
     </div>
   </div>
 </section>
@@ -760,8 +767,8 @@ body.present .page{padding:32px 4vw}
 <!-- PIPELINE -->
 <section id="tab-pipeline" class="tc">
   <div class="edit-toolbar no-print">
-    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-pipeline">Đang tắt</strong></span></div><div class="edit-hint mt8">Các trường văn bản trong phần Pipeline và Rủi ro có thể sửa trực tiếp và lưu trên trình duyệt.</div></div>
-    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('pipeline')">↺ Khôi phục tab</button></div>
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-pipeline">Đang tắt</strong></span></div><div class="edit-hint mt8">Mọi thay đổi được lưu tạm trên trình duyệt. Chỉ các trường đã sửa mới được gửi lên Google Sheets khi bấm Lưu.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveAllChanges()">💾 Lưu thay đổi</button><button class="btn btn-s" onclick="resetEditableTab('pipeline')">↺ Khôi phục tab</button></div>
   </div>
   <div class="sh"><div><div class="st">Pipeline & Risk Management</div><h2 class="mt8">Pipeline H2 và quản trị rủi ro</h2></div><div class="sm">Đơn vị: triệu VNĐ</div></div>
 
@@ -902,8 +909,8 @@ body.present .page{padding:32px 4vw}
 <!-- STRATEGY -->
 <section id="tab-strategy" class="tc">
   <div class="edit-toolbar no-print">
-    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-strategy">Đang tắt</strong></span></div><div class="edit-hint mt8">Các trường văn bản trong phần Chiến lược và Hành động có thể sửa trực tiếp và lưu trên trình duyệt.</div></div>
-    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('strategy')">↺ Khôi phục tab</button></div>
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-strategy">Đang tắt</strong></span></div><div class="edit-hint mt8">Mọi thay đổi được lưu tạm trên trình duyệt. Chỉ các trường đã sửa mới được gửi lên Google Sheets khi bấm Lưu.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveAllChanges()">💾 Lưu thay đổi</button><button class="btn btn-s" onclick="resetEditableTab('strategy')">↺ Khôi phục tab</button></div>
   </div>
   <div class="sh"><div><div class="st">Strategy & Execution</div><h2 class="mt8">Chiến lược và Hành động H2</h2></div><div class="sm">Tập trung chất lượng cơ hội, nhịp vận hành và khả năng chuyển đổi</div></div>
 
@@ -1017,14 +1024,14 @@ body.present .page{padding:32px 4vw}
 <!-- SUPPORT -->
 <section id="tab-support" class="tc">
   <div class="edit-toolbar no-print">
-    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Bảng đề xuất có thể nhập trực tiếp, thêm dòng và tự động lưu trên trình duyệt.</div></div>
-    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Sửa tiêu đề</button><button class="btn btn-s" onclick="resetEditableTab('support')">↺ Khôi phục tab</button></div>
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Bảng đề xuất được lưu tạm trên trình duyệt. Bấm Lưu thay đổi để gửi đúng các dòng đã sửa lên Google Sheets.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Sửa tiêu đề</button><button class="btn btn-p" onclick="saveAllChanges()">💾 Lưu thay đổi</button><button class="btn btn-s" onclick="resetEditableTab('support')">↺ Khôi phục tab</button></div>
   </div>
   <div class="sh"><div><h2>Đề xuất BGĐ</h2></div><div class="sm">Vấn đề · Rủi ro · Đề xuất · Ý kiến của BGĐ</div></div>
 
   <div class="card">
     <div class="support-table-toolbar">
-      <div class="support-table-hint">Nhập trực tiếp vào từng ô. Dữ liệu được tự động lưu sau mỗi thay đổi.</div>
+      <div class="support-table-hint">Nhập trực tiếp vào từng ô. Dữ liệu chỉ gửi lên Google Sheets khi bấm Lưu thay đổi.</div>
       <button class="btn btn-p no-print" onclick="addSupportRow()">＋ Thêm dòng đề xuất</button>
     </div>
     <div class="tw"><table class="tbl compact-support-table">
@@ -1036,7 +1043,7 @@ body.present .page{padding:32px 4vw}
   <div class="card section">
     <div class="sh"><div class="st">Ghi chú / Quyết định của BGĐ</div><span class="badge bd-o">Decision Note</span></div>
     <textarea class="note" id="directorNote" placeholder="Ghi ngắn gọn quyết định, người phụ trách và thời hạn..." oninput="saveNote()"></textarea>
-    <div class="fx g8 mt12 wr"><button class="btn btn-p" onclick="exportDecision()">⬇ Export ghi chú</button><button class="btn btn-s" onclick="clearDecision()">Xóa</button></div>
+    <div class="fx g8 mt12 wr"><button class="btn btn-p" onclick="saveAllChanges()">💾 Lưu thay đổi</button><button class="btn btn-g" onclick="exportDecision()">⬇ Export ghi chú</button><button class="btn btn-s" onclick="clearDecision()">Xóa</button></div>
   </div>
 </section>
 </main>
@@ -1063,6 +1070,7 @@ body.present .page{padding:32px 4vw}
       button in the header to save a local endpoint override.
    ============================================================ */
 const GOOGLE_SHEETS_DEFAULT_URL = "https://script.google.com/macros/s/AKfycbwGwDou6EwjYZQIT2LlbmC4S9e_v86Onb7Gwi4_GaOPXqaxx4rJS5cD23VKFMJQRleIcg/exec";
+const GOOGLE_SHEETS_PANEL_PASSWORD = "3579";
 const CLOUD_KEYS = {
   endpoint: "h2-cloud-endpoint",
   token: "h2-cloud-write-token",
@@ -1074,11 +1082,14 @@ let CLOUD_CLIENT_ID = "";
 let CLOUD_VERSION = 0;
 let CLOUD_SYNC_INTERVAL_MS = 15000;
 let CLOUD_POLL_TIMER = null;
-let CLOUD_FLUSH_TIMER = null;
 let CLOUD_SYNCING = false;
 let CLOUD_APPLYING = false;
 let CLOUD_DEFERRED_SNAPSHOT = null;
+let CLOUD_FLUSHING = false;
 const CLOUD_PENDING = new Map();
+const CLOUD_CONTENT_BASELINE = new Map();
+const CLOUD_CONTENT_REMOTE_KEYS = new Set();
+let CLOUD_DECISION_BASELINE = "";
 
 function initCloudConfigValues(){
   try{
@@ -1154,18 +1165,8 @@ function cacheRemoveDirect(key){try{localStorage.removeItem(key)}catch(error){co
 function applyEditableCloudContent(content){
   document.querySelectorAll(".editable-field").forEach(el=>{
     const storageKey="editable-"+el.dataset.editKey;
-    if(Object.prototype.hasOwnProperty.call(content,storageKey))el.innerHTML=String(content[storageKey]||"");
+    if(Object.prototype.hasOwnProperty.call(content,storageKey))writeEditableHtml(el,content[storageKey]);
   });
-}
-function clearMissingCloudContent(content){
-  try{
-    const keys=[];
-    for(let i=0;i<localStorage.length;i++){
-      const key=localStorage.key(i);
-      if(key&&(key.startsWith("editable-")||key.startsWith("widget-text-")))keys.push(key);
-    }
-    keys.forEach(key=>{if(!Object.prototype.hasOwnProperty.call(content,key))localStorage.removeItem(key)});
-  }catch(error){console.warn("Không thể dọn cache nội dung",error)}
 }
 function applyCloudSnapshot(snapshot,force=false){
   if(!snapshot||snapshot.ok!==true)throw new Error(snapshot?.error||"Dữ liệu Google Sheets không hợp lệ");
@@ -1202,10 +1203,17 @@ function applyCloudSnapshot(snapshot,force=false){
       cacheSetDirect(STORAGE_KEYS.support,JSON.stringify(supportRows));
     }
     const content=snapshot.content&&typeof snapshot.content==="object"?snapshot.content:{};
-    clearMissingCloudContent(content);
-    Object.entries(content).forEach(([key,value])=>cacheSetDirect(key,value));
+    // Chỉ áp dụng những key thực sự có trong Sheet; key không có vẫn giữ nguyên cục bộ.
+    CLOUD_CONTENT_REMOTE_KEYS.clear();
+    Object.entries(content).forEach(([key,value])=>{
+      const text=String(value??"");
+      cacheSetDirect(key,text);
+      CLOUD_CONTENT_BASELINE.set(key,text);
+      CLOUD_CONTENT_REMOTE_KEYS.add(key);
+    });
     applyEditableCloudContent(content);
     const note=String(snapshot.decisions?.directorNote||"");
+    CLOUD_DECISION_BASELINE=note;
     cacheSetDirect(STORAGE_KEYS.note,note);
     const noteEl=document.getElementById("directorNote");if(noteEl&&!noteEl.matches(":focus"))noteEl.value=note;
     if(document.getElementById("dealBody"))filterDeals();
@@ -1240,58 +1248,93 @@ function restartCloudPolling(){
 }
 function queueCloudOperation(key,operation){
   if(CLOUD_APPLYING)return;
-  if(!isCloudConfigured()){
-    cloudStatus("Đã lưu cục bộ · Chưa kết nối Sheets","error");
+  CLOUD_PENDING.set(key,operation);
+  const suffix=isCloudConfigured()?"Bấm Lưu để đồng bộ":"Chưa kết nối Google Sheets";
+  cloudStatus(`Có ${CLOUD_PENDING.size} thay đổi chưa lưu · ${suffix}`,"saving");
+}
+function removeCloudOperation(key){
+  if(!CLOUD_PENDING.delete(key))return;
+  if(CLOUD_PENDING.size)cloudStatus(`Có ${CLOUD_PENDING.size} thay đổi chưa lưu · Bấm Lưu để đồng bộ`,"saving");
+  else cloudStatus("Không có thay đổi chờ lưu","saved");
+}
+function stageContentOperation(key,value,deleted=false){
+  if(CLOUD_APPLYING)return;
+  const operationKey="content:"+key;
+  const baseline=CLOUD_CONTENT_BASELINE.has(key)?CLOUD_CONTENT_BASELINE.get(key):null;
+  const text=String(value??"");
+  if(deleted){
+    if(!CLOUD_CONTENT_REMOTE_KEYS.has(key)){removeCloudOperation(operationKey);return}
+    queueCloudOperation(operationKey,{action:"deleteContent",key});
     return;
   }
-  CLOUD_PENDING.set(key,operation);
-  cloudStatus(CLOUD_WRITE_TOKEN?"Đang đồng bộ…":"Cần mã ghi Sheets",CLOUD_WRITE_TOKEN?"saving":"error");
-  clearTimeout(CLOUD_FLUSH_TIMER);
-  CLOUD_FLUSH_TIMER=setTimeout(flushCloudQueue,650);
+  if(baseline!==null&&text===baseline){removeCloudOperation(operationKey);return}
+  queueCloudOperation(operationKey,{action:"saveContent",key,tab:inferContentTab(key),html:text});
+}
+function stageDecisionOperation(value){
+  const text=String(value??"");
+  if(text===CLOUD_DECISION_BASELINE){removeCloudOperation("decision:directorNote");return}
+  queueCloudOperation("decision:directorNote",{action:"saveDecision",key:"directorNote",value:text});
 }
 async function postCloudPayload(payload){
   const request={...payload,token:CLOUD_WRITE_TOKEN,clientId:CLOUD_CLIENT_ID};
   const body=JSON.stringify(request);
+  let response;
   try{
-    const response=await fetch(CLOUD_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body,redirect:"follow"});
-    if(!response.ok)throw new Error("HTTP "+response.status);
-    const result=await response.json();
-    if(!result.ok)throw new Error(result.error||"Google Sheets từ chối ghi dữ liệu");
-    return result;
-  }catch(error){
-    console.warn("POST có phản hồi thất bại; thử gửi no-cors và xác nhận lại bằng lần đọc tiếp theo",error);
+    response=await fetch(CLOUD_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body,redirect:"follow"});
+  }catch(networkError){
+    console.warn("Không đọc được phản hồi POST; thử gửi no-cors và xác nhận lại bằng lần đọc tiếp theo",networkError);
     await fetch(CLOUD_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body,redirect:"follow"});
     return {ok:true,opaque:true};
   }
+  if(!response.ok)throw new Error("HTTP "+response.status);
+  const result=await response.json();
+  if(!result.ok)throw new Error(result.error||"Google Sheets từ chối ghi dữ liệu");
+  return result;
 }
 async function flushCloudQueue(){
-  if(!CLOUD_PENDING.size||!isCloudConfigured())return;
-  if(!CLOUD_WRITE_TOKEN){
-    cloudStatus("Cần cấu hình mã ghi Sheets","error");
-    return;
+  if(CLOUD_FLUSHING)return false;
+  if(!CLOUD_PENDING.size){cloudStatus("Không có thay đổi mới để lưu","saved");return true}
+  if(!isCloudConfigured()){
+    cloudStatus("Chưa kết nối Google Sheets","error");
+    alert("Các thay đổi đã được lưu tạm trên trình duyệt nhưng chưa gửi lên Google Sheets. Hãy mở mục Google Sheets để cấu hình kết nối.");
+    return false;
   }
+  if(!CLOUD_WRITE_TOKEN){
+    cloudStatus("Thiếu mã ghi dữ liệu Sheets","error");
+    alert("Chưa có mã ghi dữ liệu Apps Script. Hãy mở mục Google Sheets và nhập mã ghi dữ liệu.");
+    return false;
+  }
+  CLOUD_FLUSHING=true;
   const entries=[...CLOUD_PENDING.entries()];
   CLOUD_PENDING.clear();
   const operations=entries.map(([,operation])=>operation);
-  cloudStatus("Đang ghi lên Sheets…","saving");
+  cloudStatus(`Đang ghi ${operations.length} thay đổi lên Sheets…`,"saving");
   try{
     const result=await postCloudPayload({action:"batch",operations});
     if(result.version)CLOUD_VERSION=Number(result.version);
-    cloudStatus(result.opaque?"Đã gửi · Đang xác nhận…":"Đã đồng bộ Sheets","saved");
+    operations.forEach(operation=>{
+      if(operation.action==="saveContent"){
+        const key=String(operation.key);
+        CLOUD_CONTENT_BASELINE.set(key,String(operation.html??""));
+        CLOUD_CONTENT_REMOTE_KEYS.add(key);
+      }else if(operation.action==="deleteContent"){
+        const key=String(operation.key);
+        CLOUD_CONTENT_REMOTE_KEYS.delete(key);
+        const editKey=key.startsWith("editable-")?key.slice("editable-".length):"";
+        CLOUD_CONTENT_BASELINE.set(key,editKey&&Object.prototype.hasOwnProperty.call(DEFAULT_EDIT_CONTENT,editKey)?sanitizeEditableHtml(DEFAULT_EDIT_CONTENT[editKey]):"");
+      }
+      else if(operation.action==="saveDecision"&&operation.key==="directorNote")CLOUD_DECISION_BASELINE=String(operation.value??"");
+    });
+    cloudStatus(result.opaque?"Đã gửi thay đổi · Đang xác nhận…":`Đã lưu ${operations.length} thay đổi lên Sheets`,"saved");
     setTimeout(()=>syncFromCloud(true),result.opaque?1800:700);
+    return true;
   }catch(error){
     console.error("Không thể ghi Google Sheets",error);
     entries.forEach(([key,operation])=>CLOUD_PENDING.set(key,operation));
-    cloudStatus("Ghi Sheets thất bại","error");
-  }
-}
-function mirrorStorageKeyToCloud(key,value,deleted=false){
-  if(CLOUD_APPLYING)return;
-  if(key.startsWith("editable-")||key.startsWith("widget-text-")){
-    queueCloudOperation("content:"+key,deleted?{action:"deleteContent",key}:{action:"saveContent",key,tab:key.split("-")[1]||"general",html:String(value||"")});
-  }else if(key===STORAGE_KEYS.note){
-    queueCloudOperation("decision:directorNote",{action:"saveDecision",key:"directorNote",value:deleted?"":String(value||"")});
-  }
+    cloudStatus(`Ghi Sheets thất bại · Còn ${CLOUD_PENDING.size} thay đổi`,"error");
+    alert("Không thể lưu lên Google Sheets: "+error.message);
+    return false;
+  }finally{CLOUD_FLUSHING=false}
 }
 function createSupportId(){return "support-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,7)}
 function collectCloudContent(){
@@ -1302,7 +1345,7 @@ function collectCloudContent(){
       if(key&&(key.startsWith("editable-")||key.startsWith("widget-text-")))content[key]=localStorage.getItem(key)||"";
     }
   }catch(error){console.warn(error)}
-  document.querySelectorAll(".editable-field").forEach(el=>{content["editable-"+el.dataset.editKey]=el.innerHTML});
+  document.querySelectorAll(".editable-field").forEach(el=>{content["editable-"+el.dataset.editKey]=readEditableHtml(el)});
   return content;
 }
 async function bootstrapGoogleSheets(){
@@ -1323,6 +1366,9 @@ async function bootstrapGoogleSheets(){
   }catch(error){console.error(error);cloudStatus("Khởi tạo Sheets thất bại","error");alert("Không thể khởi tạo Sheets: "+error.message)}
 }
 async function configureCloudSync(){
+  const panelPassword=prompt("Nhập mật khẩu để mở phần Google Sheets:","");
+  if(panelPassword===null)return;
+  if(panelPassword!==GOOGLE_SHEETS_PANEL_PASSWORD){alert("Mật khẩu không đúng. Không thể mở cấu hình Google Sheets.");return}
   const endpoint=prompt("Dán URL Apps Script Web App kết thúc bằng /exec:",isCloudConfigured()?CLOUD_ENDPOINT:"");
   if(endpoint===null)return;
   const clean=endpoint.trim();
@@ -1335,13 +1381,11 @@ async function configureCloudSync(){
   if(token!==null){CLOUD_WRITE_TOKEN=token.trim();if(CLOUD_WRITE_TOKEN)localStorage.setItem(CLOUD_KEYS.token,CLOUD_WRITE_TOKEN);else localStorage.removeItem(CLOUD_KEYS.token)}
   restartCloudPolling();
   const choice=prompt("Chọn thao tác:\n1 = Tải dữ liệu từ Google Sheets về web\n2 = Đẩy dữ liệu web hiện tại lên Google Sheets (chỉ dùng lần đầu)","1");
-  if(choice==="2")await bootstrapGoogleSheets();else await syncFromCloud(true);
-}
-function sendPendingWithBeacon(){
-  if(!navigator.sendBeacon||!isCloudConfigured()||!CLOUD_WRITE_TOKEN||!CLOUD_PENDING.size)return;
-  const operations=[...CLOUD_PENDING.values()];
-  const body=JSON.stringify({action:"batch",operations,token:CLOUD_WRITE_TOKEN,clientId:CLOUD_CLIENT_ID});
-  try{navigator.sendBeacon(CLOUD_ENDPOINT,new Blob([body],{type:"text/plain;charset=utf-8"}))}catch(error){console.warn("Beacon Sheets thất bại",error)}
+  if(choice==="2")await bootstrapGoogleSheets();
+  else{
+    if(CLOUD_PENDING.size&&!confirm(`Đang có ${CLOUD_PENDING.size} thay đổi chưa lưu. Tải từ Google Sheets có thể ghi đè phần đang sửa. Bạn vẫn muốn tiếp tục?`))return;
+    await syncFromCloud(true);
+  }
 }
 function initCloudSync(){
   initCloudConfigValues();
@@ -1349,9 +1393,7 @@ function initCloudSync(){
   window.addEventListener("focus",()=>syncFromCloud(false));
   document.addEventListener("visibilitychange",()=>{
     if(document.visibilityState==="visible")syncFromCloud(false);
-    else sendPendingWithBeacon();
   });
-  window.addEventListener("pagehide",sendPendingWithBeacon);
   if(isCloudConfigured())syncFromCloud(true);else cloudStatus("Chưa kết nối Sheets","error");
 }
 
@@ -1379,9 +1421,7 @@ function markSaving(){
 function safeSet(key,value){
   try{
     const text=String(value);
-    const previous=localStorage.getItem(key);
     localStorage.setItem(key,text);markSaving();
-    if(previous!==text)mirrorStorageKeyToCloud(key,text,false);
     return true;
   }catch(error){console.error("Không thể lưu dữ liệu",error);setSaveState("error","Lỗi lưu dữ liệu");return false}
 }
@@ -1391,9 +1431,7 @@ function safeGet(key,fallback=null){
 }
 function safeRemove(key){
   try{
-    const existed=localStorage.getItem(key)!==null;
     localStorage.removeItem(key);markSaving();
-    if(existed)mirrorStorageKeyToCloud(key,"",true);
     return true;
   }catch(error){console.error("Không thể xóa dữ liệu",error);setSaveState("error","Lỗi bộ nhớ");return false}
 }
@@ -1496,12 +1534,15 @@ function renderMonthlyAllocation(){
   const el=document.getElementById("monthlyAllocation");if(!el)return;
   el.innerHTML=Object.keys(MONTH_TARGETS).map(month=>{
     const x=getMonthBreakdown(month),scale=Math.max(x.target,x.total,1);
-    const paidW=x.paid/scale*100,signedW=x.signed/scale*100,pipelineW=x.pipeline/scale*100,targetW=x.target/scale*100;
+    const width=value=>Math.max(0,Math.min(100,value/scale*100));
+    const paidW=width(x.paid),signedW=width(x.signed),pipelineW=width(x.pipeline),targetW=width(x.target);
     const cls=x.ability>=100?"ok":"warn";
+    const segment=(kind,value,segmentWidth,label)=>value>0?`<div class="month-plan-seg month-plan-seg--${kind}" style="--segment-width:${segmentWidth.toFixed(4)}%" title="${label}: ${money(value)}"></div>`:"";
+    const aria=`Tháng ${month}: đã thanh toán ${money(x.paid)}, hợp đồng chờ thanh toán ${money(x.signed)}, Deal tiềm năng ${money(x.pipeline)}, Target ${money(x.target)}`;
     return `<div class="month-plan-row" onclick="openWidget('month-target','${month}')">
       <div class="month-plan-head"><span>Tháng ${month}</span><strong>Target ${money(x.target)}</strong></div>
-      <div class="month-plan-track" title="Tổng khả năng ${money(x.total)} / Target ${money(x.target)}">
-        <div class="month-plan-seg paid" style="width:${paidW}%"></div><div class="month-plan-seg signed" style="width:${signedW}%"></div><div class="month-plan-seg pipeline" style="width:${pipelineW}%"></div><i class="month-target-marker" style="left:${Math.min(99.5,targetW)}%"></i>
+      <div class="month-plan-track" role="img" aria-label="${aria}" title="Tổng khả năng ${money(x.total)} / Target ${money(x.target)}">
+        ${segment("paid",x.paid,paidW,"Đã thanh toán")}${segment("signed",x.signed,signedW,"HĐ chờ thanh toán")}${segment("pipeline",x.pipeline,pipelineW,"Deal tiềm năng")}<i class="month-target-marker" style="left:${Math.min(99.5,targetW).toFixed(4)}%" aria-hidden="true"></i>
       </div>
       <div class="month-plan-meta"><span>Đã TT ${money(x.paid)}</span><span>Chờ TT ${money(x.signed)}</span><span>Deal tiềm năng ${money(x.pipeline)}</span><strong class="${cls}">Khả năng đạt ${pctText(x.ability)}</strong></div>
     </div>`;
@@ -1545,13 +1586,17 @@ const DEAL_SAVE_TIMERS={};
 function persistDealFieldDraft(index,field,el){
   if(!DEALS[index]||!el)return false;
   const value=el.textContent.trim();
+  const previous=DEALS[index][field];
+  let next=value;
   if(field==="value"){
-    const n=normalizeDealValue(value);if(n===null)return false;DEALS[index].value=n;
+    const n=normalizeDealValue(value);if(n===null)return false;next=n;
   }else if(field==="month"){
-    const match=value.match(/(?:Tháng\s*)?(7|8|9|10|11|12)/i);if(!match)return false;DEALS[index].month=match[1];
-  }else DEALS[index][field]=value;
-  saveDealData(DEALS[index]);
-  if(field==="month"||field==="value"||field==="cat")updateDashboardMetrics();
+    const match=value.match(/(?:Tháng\s*)?(7|8|9|10|11|12)/i);if(!match)return false;next=match[1];
+  }
+  const changed=String(previous??"")!==String(next??"");
+  DEALS[index][field]=next;
+  saveDealData(changed?DEALS[index]:null);
+  if(changed&&(field==="month"||field==="value"||field==="cat"))updateDashboardMetrics();
   return true;
 }
 function scheduleDealFieldSave(index,field,el){
@@ -1583,8 +1628,8 @@ function renderDeals(list=DEALS){
     <td><span class="badge ${catBadge(d.cat)}">${escapeHtml(catText(d.cat))}</span></td>
     <td class="fw8 co">${money(d.value)}</td>
     <td class="deal-edit-cell" data-deal-index="${idx}" data-deal-field="month" contenteditable="true" spellcheck="false" title="Nhấp để sửa tháng dự kiến; biểu đồ Tổng quan tự động tính lại" oninput="scheduleDealFieldSave(${idx},'month',this)" onblur="updateDealField(${idx},'month',this)">Tháng ${escapeHtml(d.month)}</td>
-    <td class="t2 deal-edit-cell" data-deal-index="${idx}" data-deal-field="status" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" oninput="scheduleDealFieldSave(${idx},'status',this)" onblur="updateDealField(${idx},'status',this)">${escapeHtml(d.status)}</td>
-    <td class="t2 deal-edit-cell" data-deal-index="${idx}" data-deal-field="next" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" oninput="scheduleDealFieldSave(${idx},'next',this)" onblur="updateDealField(${idx},'next',this)">${escapeHtml(d.next)}</td>
+    <td class="t2 deal-edit-cell" data-deal-index="${idx}" data-deal-field="status" contenteditable="true" spellcheck="false" title="Nhấp để sửa; bấm Lưu thay đổi để gửi lên Google Sheets" oninput="scheduleDealFieldSave(${idx},'status',this)" onblur="updateDealField(${idx},'status',this)">${escapeHtml(d.status)}</td>
+    <td class="t2 deal-edit-cell" data-deal-index="${idx}" data-deal-field="next" contenteditable="true" spellcheck="false" title="Nhấp để sửa; bấm Lưu thay đổi để gửi lên Google Sheets" oninput="scheduleDealFieldSave(${idx},'next',this)" onblur="updateDealField(${idx},'next',this)">${escapeHtml(d.next)}</td>
   </tr>`}).join("");
   const total=list.reduce((s,d)=>s+d.value,0);
   document.getElementById("dealCount").textContent=`${list.length} cơ hội · ${money(total)} · Hiện trạng/Next Step có thể sửa trực tiếp`;
@@ -1688,11 +1733,16 @@ function updateApproval(){
   const all=[...document.querySelectorAll(".check")],done=all.filter(x=>x.classList.contains("on")).length;
   const badge=document.getElementById("approvalCount");if(badge)badge.textContent=`${done}/${all.length}`;
 }
-function saveNote(){safeSet(STORAGE_KEYS.note,document.getElementById("directorNote")?.value||"")}
+function saveNote(stageCloud=true){
+  const value=document.getElementById("directorNote")?.value||"";
+  safeSet(STORAGE_KEYS.note,value);
+  if(stageCloud)stageDecisionOperation(value);
+}
 function clearDecision(){
   if(!confirm("Xóa toàn bộ ghi chú của BGĐ?")) return;
   safeRemove(STORAGE_KEYS.note);
   document.getElementById("directorNote").value="";
+  stageDecisionOperation("");
   document.querySelectorAll(".check").forEach(b=>{b.classList.remove("on");safeRemove("h2-"+b.dataset.key)});
   updateApproval();
 }
@@ -1719,6 +1769,98 @@ function exportDecision(){
 
 const DEFAULT_EDIT_CONTENT={};
 let EDIT_MODE=false;
+const DYNAMIC_TEXT_IDS=new Set([
+  "saveStateText","footerMetrics","h2CommitText","h2TargetHero","h2TargetKpi","paidKpiValue","paidKpiPct",
+  "signedKpiValue","signedKpiPct","pipelineKpiValue","pipelineKpiCount","gapKpiValue","gapKpiMeta",
+  "targetContractsValue","targetPaidValue","targetPaidPct","targetSignedValue","targetSignedPct","targetGapValue",
+  "targetGapPct","targetConversionPct","priorityGapValue","pipelineSignedValue","pipelineSignedMeta","highPriorityValue",
+  "highPriorityMeta","potentialValue","potentialMeta","logicPaidValue","logicSignedValue","logicGapValue","dealCount",
+  "detailTitle","detailSub","editStatus-pipeline","editStatus-strategy","editStatus-support","approvalCount"
+]);
+const TEXT_SYNC_SKIP_SELECTOR="script,style,button,input,textarea,select,option,a,.nav,.edit-toolbar,.filters,#detailModal,#h1Spark,#monthlyAllocation,#dealBody,#supportTableBody,[data-no-text-sync]";
+const TEXT_SYNC_SELECTOR="h1,h2,h3,h4,p,li,th,td,label,.brand-name,.hdr-title,.st,.sm,.h1-note,.kpi-label,.kpi-val,.kpi-meta,.eyebrow,.commit,.target-sub,.target-legend-label,.target-legend-value,.target-legend-pct,.q-title,.q-val,.q-share,.month-name,.month-val,.month-focus,.fw7,.f11,.f12,.f13,.badge,.bar-label,.bar-value,.flbl,.risk-meta,.risk-action,.footer span";
+
+function inferContentTab(key){
+  if(String(key).startsWith("widget-text-"))return "widget";
+  const raw=String(key).replace(/^editable-/,"");
+  const tab=raw.split("-")[0];
+  return ["overview","pipeline","strategy","support","header","footer"].includes(tab)?tab:"general";
+}
+function sanitizeEditableHtml(value){
+  const template=document.createElement("template");
+  template.innerHTML=String(value??"");
+  template.content.querySelectorAll("script,style,iframe,object,embed,link,meta,form,input,textarea,select,button").forEach(node=>node.remove());
+  template.content.querySelectorAll("*").forEach(node=>{
+    [...node.attributes].forEach(attr=>{
+      const name=attr.name.toLowerCase();
+      if(name==="class"||name==="title"||name==="aria-label")return;
+      node.removeAttribute(attr.name);
+    });
+  });
+  return template.innerHTML;
+}
+function readEditableHtml(el){return sanitizeEditableHtml(el?.innerHTML||"")}
+function writeEditableHtml(el,value){if(el)el.innerHTML=sanitizeEditableHtml(value)}
+function hashTextKey(value){
+  let hash=2166136261;
+  for(let i=0;i<value.length;i++){hash^=value.charCodeAt(i);hash=Math.imul(hash,16777619)}
+  return (hash>>>0).toString(36);
+}
+function getTextSyncScope(el){
+  const tab=el.closest(".tc")?.id?.replace(/^tab-/,"");
+  if(tab)return tab;
+  if(el.closest(".hdr"))return "header";
+  if(el.closest(".footer"))return "footer";
+  return "general";
+}
+function getTextElementPath(el){
+  const root=el.closest(".tc,.hdr,.footer,body")||document.body;
+  const parts=[];let node=el;
+  while(node&&node!==root&&parts.length<9){
+    let part=node.tagName.toLowerCase();
+    if(node.id){part+="#"+node.id;parts.unshift(part);break}
+    const useful=[...node.classList].filter(name=>!/^(mt|mb|g|f|fw|t)[0-9]/.test(name)&&!["fx","ai","jb","wr","clickable","hover","on"].includes(name)).slice(0,2);
+    if(useful.length)part+="."+useful.join(".");
+    const siblings=node.parentElement?[...node.parentElement.children].filter(item=>item.tagName===node.tagName):[];
+    if(siblings.length>1)part+=`:nth-of-type(${siblings.indexOf(node)+1})`;
+    parts.unshift(part);node=node.parentElement;
+  }
+  return parts.join(">");
+}
+function canSyncTextElement(el){
+  if(!el||el.classList.contains("editable-field")||el.closest(".editable-field")||!el.textContent.trim())return false;
+  if(el.id&&DYNAMIC_TEXT_IDS.has(el.id))return false;
+  if(el.matches(TEXT_SYNC_SKIP_SELECTOR)||el.closest(TEXT_SYNC_SKIP_SELECTOR))return false;
+  if(el.querySelector("button,input,textarea,select,[contenteditable=true]"))return false;
+  const allowedInline=new Set(["SPAN","STRONG","B","EM","I","U","SMALL","BR","SUP","SUB"]);
+  if([...el.children].some(child=>!allowedInline.has(child.tagName)))return false;
+  return true;
+}
+function attachEditableField(el,key){
+  if(!el||el.classList.contains("editable-field"))return;
+  el.dataset.editKey=key;el.classList.add("editable-field");DEFAULT_EDIT_CONTENT[key]=el.innerHTML;
+  const storageKey="editable-"+key;
+  const saved=safeGet(storageKey);if(saved!==null)writeEditableHtml(el,saved);
+  if(!CLOUD_CONTENT_BASELINE.has(storageKey))CLOUD_CONTENT_BASELINE.set(storageKey,saved!==null?String(saved):readEditableHtml(el));
+  const saveField=()=>{
+    if(!EDIT_MODE)return;
+    const value=readEditableHtml(el);
+    safeSet(storageKey,value);
+    stageContentOperation(storageKey,value,false);
+  };
+  el.addEventListener("input",saveField);
+  el.addEventListener("compositionend",saveField);
+  el.addEventListener("blur",saveField);
+  el.addEventListener("click",event=>{if(EDIT_MODE)event.stopPropagation()});
+}
+function initAdditionalTextSyncFields(){
+  document.querySelectorAll(TEXT_SYNC_SELECTOR).forEach(el=>{
+    if(!canSyncTextElement(el))return;
+    const scope=getTextSyncScope(el);
+    const key=`${scope}-extra-${hashTextKey(getTextElementPath(el))}`;
+    attachEditableField(el,key);
+  });
+}
 
 function renderH1Spark(){
   const el=document.getElementById("h1Spark"); if(!el) return;
@@ -1757,7 +1899,7 @@ function enableModalEditing(widgetId){
   const modal=document.getElementById("detailModal");
   const nodes=[document.getElementById("detailTitle"),document.getElementById("detailSub"),...modal.querySelectorAll("#detailBody .detail-name,#detailBody .detail-desc,#detailBody .detail-val,#detailBody .modal-stat .kpi-label,#detailBody .modal-stat .v,#detailBody .deal-modal-table th,#detailBody [data-deal-field],#detailBody .detail-item .badge")];
   nodes.filter(Boolean).forEach((el,i)=>{
-    el.classList.add("modal-editable");el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");el.title="Nhấp để chỉnh sửa; nội dung tự động lưu";
+    el.classList.add("modal-editable");el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");el.title="Nhấp để chỉnh sửa; bấm Lưu thay đổi để gửi lên Google Sheets";
     const dealField=el.dataset.dealField;
     if(dealField){
       const dealIndex=Number(el.dataset.dealIndex);
@@ -1767,7 +1909,12 @@ function enableModalEditing(widgetId){
     }
     const storageKey=`widget-text-${widgetId}-${i}`;el.dataset.storageKey=storageKey;
     const saved=safeGet(storageKey);if(saved!==null)el.textContent=saved;
-    const saveModalText=()=>safeSet(storageKey,el.textContent);
+    if(!CLOUD_CONTENT_BASELINE.has(storageKey))CLOUD_CONTENT_BASELINE.set(storageKey,saved!==null?String(saved):el.textContent);
+    const saveModalText=()=>{
+      const value=el.textContent;
+      safeSet(storageKey,value);
+      stageContentOperation(storageKey,value,false);
+    };
     el.addEventListener("input",saveModalText);
     el.addEventListener("blur",saveModalText);
   });
@@ -1776,7 +1923,7 @@ function openDetailModal(title,sub,html,widgetId="detail"){
   CURRENT_WIDGET_ID=widgetId;
   document.getElementById("detailTitle").textContent=title;
   document.getElementById("detailSub").textContent=sub||"";
-  document.getElementById("detailBody").innerHTML=`<div class="modal-edit-note">✎ Nhấp trực tiếp vào nội dung để chỉnh sửa. Thay đổi được lưu tự động và đồng bộ với Google Sheets khi đã kết nối.</div>${html}`;
+  document.getElementById("detailBody").innerHTML=`<div class="modal-edit-note">✎ Nhấp trực tiếp vào nội dung để chỉnh sửa. Thay đổi được lưu tạm trên trình duyệt. Bấm Lưu thay đổi để gửi các trường đã sửa lên Google Sheets.</div>${html}`;
   enableModalEditing(widgetId);
   document.getElementById("detailModal").classList.add("on");
   document.body.style.overflow="hidden";
@@ -1876,22 +2023,23 @@ function bindWidgets(){
 
 function initEditableContent(){
   const selectors={
+    overview:"h1,.h1-note,.kpi-label,.kpi-meta,.card .st,.card .sm,.metric-pair .fw7,.metric-pair .f11,.eyebrow,.hero p,.target-sub,.target-legend-label,.q-title,.q-share,.priority-item h3,.priority-item p,.monthly-allocation-card>.sh .st,.monthly-allocation-card>.sh .sm",
     pipeline:"h2,.sm,.month-focus,.card .st,.card .mini-item,.heat>div:not(.hlab),.risk h3,.risk-meta,.risk p,.risk-action,.risk-deal-table tbody td",
     strategy:"h2,.sm,.strategy h3,.strategy p,.strategy .mini-item,.fstep .flbl,.card .st,.card h3,.card p,.card .mini-item,.tbl tbody td",
-    support:"h2,.sm,.card .st,.tbl tbody td,label"
+    support:"h2,.sm,.card .st,.tbl tbody td,label",
+    header:".brand-name,.hdr-title",
+    footer:".footer span:not(#footerMetrics)"
   };
   Object.entries(selectors).forEach(([tab,sel])=>{
-    document.querySelectorAll(`#tab-${tab} ${sel}`).forEach((el,i)=>{
-      if(el.closest(".edit-toolbar")||el.matches("button")||el.querySelector("button,input,textarea,select")) return;
-      const key=`${tab}-${i}`;el.dataset.editKey=key;el.classList.add("editable-field");DEFAULT_EDIT_CONTENT[key]=el.innerHTML;
-      const saved=safeGet("editable-"+key);if(saved!==null)el.innerHTML=saved;
-      const saveField=()=>{if(EDIT_MODE)safeSet("editable-"+key,el.innerHTML)};
-      el.addEventListener("input",saveField);
-      el.addEventListener("compositionend",saveField);
-      el.addEventListener("blur",saveField);
-      el.addEventListener("click",e=>{if(EDIT_MODE)e.stopPropagation()});
+    const root=tab==="header"||tab==="footer"?document:document.getElementById("tab-"+tab);
+    if(!root)return;
+    root.querySelectorAll(sel).forEach((el,i)=>{
+      if(el.closest(".edit-toolbar")||el.matches("button")||el.querySelector("button,input,textarea,select"))return;
+      if(el.id&&DYNAMIC_TEXT_IDS.has(el.id))return;
+      attachEditableField(el,`${tab}-${i}`);
     });
   });
+  initAdditionalTextSyncFields();
   updateEditStatus();
 }
 function toggleEditMode(){
@@ -1903,14 +2051,30 @@ function toggleEditMode(){
 function updateEditStatus(){
   ["pipeline","strategy","support"].forEach(t=>{const el=document.getElementById("editStatus-"+t);if(el)el.textContent=EDIT_MODE?"Đang bật":"Đang tắt"});
 }
-function saveEditableContent(){
-  document.querySelectorAll(".editable-field").forEach(el=>safeSet("editable-"+el.dataset.editKey,el.innerHTML));
-  const was=EDIT_MODE;if(was)toggleEditMode();
-  alert(isCloudConfigured()?"Đã lưu và đưa vào hàng đợi đồng bộ Google Sheets.":"Đã lưu cục bộ. Hãy kết nối Google Sheets để dùng chung trên nhiều trình duyệt.");
+async function saveAllChanges(){
+  // Ghi bản đang hiển thị vào cache cục bộ nhưng không tạo cập nhật hàng loạt.
+  persistAllData();
+  const count=CLOUD_PENDING.size;
+  if(!count){
+    const was=EDIT_MODE;if(was)toggleEditMode();
+    alert("Không có thông tin mới được chỉnh sửa để cập nhật lên Google Sheets.");
+    return;
+  }
+  const ok=await flushCloudQueue();
+  if(ok){
+    const was=EDIT_MODE;if(was)toggleEditMode();
+    alert(`Đã gửi ${count} thay đổi lên Google Sheets. Các nội dung không chỉnh sửa được giữ nguyên.`);
+  }
 }
+function saveEditableContent(){return saveAllChanges()}
 function resetEditableTab(tab){
   if(!confirm("Khôi phục toàn bộ nội dung mặc định của tab này?"))return;
-  document.querySelectorAll(`#tab-${tab} .editable-field`).forEach(el=>{const k=el.dataset.editKey;safeRemove("editable-"+k);el.innerHTML=DEFAULT_EDIT_CONTENT[k]});
+  document.querySelectorAll(`#tab-${tab} .editable-field`).forEach(el=>{
+    const k=el.dataset.editKey,storageKey="editable-"+k;
+    const existed=safeGet(storageKey)!==null||CLOUD_CONTENT_BASELINE.has(storageKey);
+    safeRemove(storageKey);el.innerHTML=DEFAULT_EDIT_CONTENT[k];
+    if(existed)stageContentOperation(storageKey,"",true);
+  });
   if(tab==="support"){
     safeRemove(STORAGE_KEYS.support);supportRows=cloneSupportRows();renderSupportRows();
     queueCloudOperation("support:replace",{action:"replaceSupport",rows:supportRows.map((row,index)=>({...row,sortOrder:index+1}))});
@@ -1923,14 +2087,16 @@ function persistAllData(){
     document.querySelectorAll("#dealBody [data-deal-index][data-deal-field][contenteditable=true]").forEach(el=>persistDealFieldDraft(Number(el.dataset.dealIndex),el.dataset.dealField,el));
     const modal=document.getElementById("detailModal");
     if(modal?.classList.contains("on"))modal.querySelectorAll("[data-deal-index][data-deal-field][contenteditable=true]").forEach(el=>persistDealFieldDraft(Number(el.dataset.dealIndex),el.dataset.dealField,el));
-    document.querySelectorAll(".editable-field").forEach(el=>safeSet("editable-"+el.dataset.editKey,el.innerHTML));
+    document.querySelectorAll(".editable-field").forEach(el=>safeSet("editable-"+el.dataset.editKey,readEditableHtml(el)));
     document.querySelectorAll("#detailModal .modal-editable[data-storage-key]").forEach(el=>safeSet(el.dataset.storageKey,el.textContent));
     document.querySelectorAll("#supportTableBody .support-input").forEach(el=>{
       const row=el.closest("tr"),index=[...row.parentElement.children].indexOf(row);
       const field=["issue","risk","proposal","opinion"].find(name=>el.classList.contains(name));
       if(supportRows[index]&&field)supportRows[index][field]=el.value;
     });
-    saveDealData();saveSupportRows();saveNote();setSaveState("saved");
+    saveDealData();saveSupportRows();saveNote(false);
+    if(CLOUD_PENDING.size)cloudStatus(`Có ${CLOUD_PENDING.size} thay đổi chưa lưu · Bấm Lưu để đồng bộ`,"saving");
+    else setSaveState("saved");
   }catch(error){console.error("Không thể lưu toàn bộ dữ liệu",error);setSaveState("error","Lỗi lưu dữ liệu")}
 }
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")persistAllData()});
