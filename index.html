@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Kế hoạch kinh doanh 6 tháng cuối năm — Giang Tấn Văn"/>
+<meta name="theme-color" content="#0b1f3a"/>
+<title>Giang Tấn Văn — Kế hoạch Kinh doanh H2</title>
+<style>
+:root{
+  --o:#f0500a;--o2:rgba(240,80,10,.18);--o3:rgba(240,80,10,.08);
+  --bg:#09090b;--bg2:#111114;--bg3:#18181c;--bg4:#202026;--bg5:#292930;
+  --bd:rgba(255,255,255,.075);--bd2:rgba(255,255,255,.14);
+  --t1:#f3f3f6;--t2:#aaaab7;--t3:#686877;
+  --g:#10b981;--a:#f59e0b;--r:#ef4444;--b:#3b82f6;--p:#8b5cf6;
+  --rad:14px;--rads:9px;--shadow:0 16px 55px rgba(0,0,0,.42);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+radial-gradient(circle at 75% -15%,rgba(240,80,10,.11),transparent 28%),
+var(--bg);color:var(--t1);font-size:14px;line-height:1.55}
+button,input,textarea,select{font:inherit}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:10px}
+a{color:inherit}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:1000;height:60px;padding:0 24px;display:flex;align-items:center;gap:14px;
+background:rgba(9,9,11,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--bd)}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--o);display:grid;place-items:center;font-weight:900;color:#fff;letter-spacing:-.8px;overflow:hidden;flex:none}
+.logo img{width:100%;height:100%;display:block;object-fit:contain;background:#fff;padding:2px}
+.brand-name{font-size:15px;font-weight:850}
+.sep-v{height:20px;width:1px;background:var(--bd2)}
+.hdr-title{font-size:12px;color:var(--t3)}
+.hdr-space{flex:1}
+.pill-live{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t3)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px rgba(16,185,129,.09)}
+.btn{border:0;border-radius:9px;padding:8px 13px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+font-size:12px;font-weight:750;transition:.18s;white-space:nowrap}
+.btn-p{background:var(--o);color:white}.btn-p:hover{background:#d84605;transform:translateY(-1px)}
+.btn-g{background:var(--bg3);border:1px solid var(--bd);color:var(--t2)}.btn-g:hover{background:var(--bg4);color:var(--t1)}
+.btn-s{background:transparent;border:1px solid var(--bd);color:var(--t2);padding:6px 10px}.btn-s:hover{border-color:var(--bd2);color:var(--t1)}
+
+/* NAV */
+.nav{position:sticky;top:60px;z-index:900;background:rgba(9,9,11,.96);border-bottom:1px solid var(--bd);padding:0 24px;display:flex;overflow:auto}
+.nav::-webkit-scrollbar{height:0}
+.ntab{border:0;background:none;color:var(--t3);padding:13px 16px;border-bottom:2px solid transparent;cursor:pointer;
+font-size:12px;font-weight:650;display:flex;gap:7px;align-items:center;white-space:nowrap}
+.ntab:hover{color:var(--t2)}.ntab.on{color:var(--o);border-bottom-color:var(--o)}
+
+/* LAYOUT */
+.page{max-width:1440px;margin:0 auto;padding:24px}
+.tc{display:none;animation:fade .24s ease}.tc.on{display:block}
+@keyframes fade{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:none}}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.ga{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.015),transparent),var(--bg2);border:1px solid var(--bd);
+border-radius:var(--rad);padding:20px;box-shadow:0 1px 0 rgba(255,255,255,.02) inset}
+.card.hover{transition:.18s}.card.hover:hover{border-color:rgba(240,80,10,.28);transform:translateY(-2px);box-shadow:var(--shadow)}
+.section{margin-top:24px}
+.sh{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:13px}
+.st{font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.105em;color:var(--t3)}
+.sm{font-size:12px;color:var(--t3)}
+.hl{height:1px;background:var(--bd);margin:24px 0}
+.fx{display:flex}.ai{align-items:center}.jb{justify-content:space-between}.wr{flex-wrap:wrap}
+.g6{gap:6px}.g8{gap:8px}.g10{gap:10px}.g12{gap:12px}.g16{gap:16px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}
+.mb6{margin-bottom:6px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}
+.t2{color:var(--t2)}.t3{color:var(--t3)}.co{color:var(--o)}.cg{color:var(--g)}.ca{color:var(--a)}.cr{color:var(--r)}.cb{color:var(--b)}
+.f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.fw7{font-weight:750}.fw8{font-weight:850}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:28px;background:
+linear-gradient(112deg,rgba(240,80,10,.13),transparent 42%),var(--bg2)}
+.hero:after{content:"";position:absolute;width:310px;height:310px;border-radius:50%;right:-130px;top:-180px;
+background:radial-gradient(circle,rgba(240,80,10,.22),transparent 65%);pointer-events:none}
+.eyebrow{font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;color:var(--o);margin-bottom:10px}
+.hero h1{font-size:clamp(26px,4vw,44px);line-height:1.06;letter-spacing:-.04em;max-width:820px}
+.hero p{max-width:850px;color:var(--t2);font-size:14px;margin-top:14px}
+.commit{margin-top:18px;border-left:3px solid var(--o);padding:11px 14px;background:rgba(240,80,10,.06);border-radius:0 9px 9px 0;
+font-size:13px;color:var(--t1);font-weight:650}
+.hero-side{min-width:260px;border:1px solid var(--bd);background:rgba(9,9,11,.55);padding:18px;border-radius:13px}
+.big-target{font-size:38px;font-weight:900;letter-spacing:-.04em;color:var(--o);line-height:1}
+.target-sub{font-size:11px;color:var(--t3);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
+
+/* KPI */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,minmax(160px,1fr));gap:12px;margin-top:16px}
+.kpi{position:relative;overflow:hidden;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rad);padding:17px}
+.kpi:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--o);opacity:.75}
+.kpi-label{font-size:10px;color:var(--t3);font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.kpi-val{font-size:24px;line-height:1.05;font-weight:900;letter-spacing:-.03em}
+.kpi-meta{font-size:11px;color:var(--t3);margin-top:8px}
+.badge{display:inline-flex;align-items:center;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:800;white-space:nowrap}
+.bd-o{background:var(--o2);color:var(--o)}.bd-g{background:rgba(16,185,129,.14);color:var(--g)}
+.bd-a{background:rgba(245,158,11,.14);color:var(--a)}.bd-r{background:rgba(239,68,68,.14);color:var(--r)}
+.bd-b{background:rgba(59,130,246,.14);color:var(--b)}.bd-p{background:rgba(139,92,246,.14);color:var(--p)}
+.bd-n{background:var(--bg4);color:var(--t2)}
+
+/* PROGRESS & BARS */
+.pb{height:4px;border-radius:8px;background:var(--bg4);overflow:hidden}
+.pbf{height:100%;border-radius:8px;background:var(--o)}
+.bar-list{display:flex;flex-direction:column;gap:11px}
+.bar-row{display:grid;grid-template-columns:100px 1fr 75px;gap:10px;align-items:center}
+.bar-label{font-size:12px;color:var(--t2)}
+.bar-track{height:7px;background:var(--bg4);border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--o),#ff7b40)}
+.bar-value{text-align:right;font-size:11px;color:var(--t3);font-variant-numeric:tabular-nums}
+
+/* TARGET */
+.quarter{padding:20px}
+.q-title{font-size:13px;font-weight:800}
+.q-val{font-size:30px;font-weight:900;letter-spacing:-.035em;margin-top:5px}
+.q-share{font-size:11px;color:var(--t3)}
+.month-grid{display:grid;grid-template-columns:repeat(6,minmax(110px,1fr));gap:10px}
+.month{background:var(--bg3);border:1px solid var(--bd);border-radius:11px;padding:14px}
+.month-name{font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:800;letter-spacing:.07em}
+.month-val{font-size:20px;font-weight:900;margin-top:5px}
+.month-focus{font-size:10px;color:var(--t3);margin-top:7px;min-height:31px}
+
+/* TABLE */
+.tw{overflow:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:860px}
+.tbl th{text-align:left;padding:9px 11px;border-bottom:1px solid var(--bd);font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+.tbl td{padding:12px 11px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr{transition:.13s}.tbl tbody tr:hover td{background:var(--bg3)}
+.name{font-weight:750;color:var(--t1)}.sub{font-size:10px;color:var(--t3);margin-top:2px}
+.nr{text-align:right;font-variant-numeric:tabular-nums}
+
+/* FILTERS */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.fsel,.fsrch{background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:7px 10px;color:var(--t2);outline:0;font-size:12px}
+.fsel:focus,.fsrch:focus{border-color:var(--o);color:var(--t1)}
+.fsrch{min-width:220px;flex:1}
+
+/* STRATEGY */
+.strategy-num{width:34px;height:34px;border-radius:9px;background:var(--o2);color:var(--o);display:grid;place-items:center;font-weight:900}
+.strategy h3{font-size:15px;margin-top:13px}
+.strategy p{font-size:12px;color:var(--t2);margin-top:8px}
+.mini-list{margin-top:12px;display:flex;flex-direction:column;gap:7px}
+.mini-item{display:flex;gap:8px;font-size:11px;color:var(--t2)}
+.mini-item:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--o);margin-top:6px;flex:none}
+
+/* ACTION */
+.funnel{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;align-items:stretch}
+.fstep{position:relative;text-align:center;padding:16px 9px;background:var(--bg3);border:1px solid var(--bd);border-radius:11px}
+.fstep:not(:last-child):after{content:"›";position:absolute;right:-8px;top:29px;color:var(--t3);z-index:2}
+.fnum{font-size:26px;font-weight:900}.flbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+
+/* RISK */
+.risk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.risk{border-left:3px solid var(--a)}
+.risk.high{border-left-color:var(--r)}.risk.medium{border-left-color:var(--a)}
+.risk-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.risk h3{font-size:14px}
+.risk-meta{font-size:11px;color:var(--t3);margin-top:5px}
+.risk p{font-size:12px;color:var(--t2);margin-top:10px}
+.risk-actions{display:flex;flex-direction:column;gap:7px;margin-top:11px}
+.risk-action{font-size:11px;color:var(--t2);display:flex;gap:8px}
+.risk-action:before{content:"✓";color:var(--g);font-weight:900}
+.heat{display:grid;grid-template-columns:90px repeat(3,1fr);gap:5px}
+.heat>div{min-height:58px;border-radius:8px;display:grid;place-items:center;text-align:center;padding:7px;font-size:10px}
+.hlab{background:transparent;color:var(--t3);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.hgreen{background:rgba(16,185,129,.12);color:var(--g)}.hamber{background:rgba(245,158,11,.13);color:var(--a)}
+.hred{background:rgba(239,68,68,.13);color:var(--r)}
+
+/* SUPPORT */
+.ask{display:grid;grid-template-columns:42px 1fr auto;gap:13px;align-items:start;padding:15px 0;border-bottom:1px solid var(--bd)}
+.ask:last-child{border-bottom:0}
+.ask-ic{width:38px;height:38px;border-radius:10px;background:var(--o2);display:grid;place-items:center;font-size:17px}
+.ask h3{font-size:13px}.ask p{font-size:11px;color:var(--t3);margin-top:4px}
+.check{width:25px;height:25px;border:1px solid var(--bd2);border-radius:7px;background:var(--bg3);cursor:pointer;color:transparent;font-weight:900}
+.check.on{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.35);color:var(--g)}
+.decision-panel{position:sticky;top:126px}
+.note{width:100%;min-height:150px;resize:vertical;background:var(--bg3);border:1px solid var(--bd);border-radius:9px;color:var(--t1);padding:12px;outline:0}
+.note:focus{border-color:var(--o)}
+.decision-status{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg3);border-radius:9px;font-size:11px;color:var(--t2)}
+
+
+
+/* INTERACTIVE WIDGETS */
+.clickable{cursor:pointer;transition:.18s;position:relative}
+.clickable:hover{border-color:rgba(240,80,10,.34)!important;transform:translateY(-2px);box-shadow:var(--shadow)}
+.clickable:after{content:"↗";position:absolute;right:11px;top:10px;color:var(--t3);font-size:10px;opacity:0;transition:.18s}
+.clickable:hover:after{opacity:1;color:var(--o)}
+.clickable-row{cursor:pointer;transition:.15s;border-radius:8px;padding:3px 0}
+.clickable-row:hover{background:rgba(240,80,10,.055)}
+
+/* H1 PERFORMANCE */
+.h1-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.h1-note{font-size:10px;color:var(--a);background:rgba(245,158,11,.12);padding:4px 8px;border-radius:6px;font-weight:800}
+.h1-kpis{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:11px}
+.spark{height:74px;display:flex;align-items:flex-end;gap:9px;padding-top:8px}
+.spark-col{flex:1;min-width:0;text-align:center}
+.spark-bar{width:100%;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#ff7b40,var(--o));min-height:6px;cursor:pointer;transition:.18s}
+.spark-bar:hover{filter:brightness(1.18);transform:translateY(-2px)}
+.spark-label{font-size:9px;color:var(--t3);margin-top:5px}
+.spark-val{font-size:9px;color:var(--t2);margin-bottom:4px}
+.metric-pair{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.metric-pair:last-child{border-bottom:0}
+
+/* EDITABLE CONTENT */
+.edit-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:11px 13px;
+background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.17);border-radius:11px}
+.edit-hint{font-size:11px;color:var(--t2)}
+.edit-actions{display:flex;gap:7px;flex-wrap:wrap}
+.editable-field{transition:.15s;border-radius:5px;outline:none}
+body.edit-mode .editable-field{background:rgba(59,130,246,.08);box-shadow:0 0 0 1px rgba(59,130,246,.25) inset;padding:2px 4px;cursor:text}
+body.edit-mode .editable-field:hover{box-shadow:0 0 0 1px rgba(240,80,10,.5) inset;background:rgba(240,80,10,.07)}
+body.edit-mode .editable-field:focus{box-shadow:0 0 0 2px rgba(240,80,10,.55) inset;background:rgba(240,80,10,.09)}
+.edit-state{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--t3)}
+.edit-state .dot{width:6px;height:6px;border-radius:50%;background:var(--t3)}
+body.edit-mode .edit-state{color:var(--b)}body.edit-mode .edit-state .dot{background:var(--b);box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+
+/* DETAIL MODAL */
+.modal-over{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.76);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-over.on{display:flex}
+.modal-box{width:min(980px,100%);max-height:88vh;display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--bd2);border-radius:16px;box-shadow:0 30px 100px rgba(0,0,0,.68);animation:modalIn .18s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.modal-head{padding:18px 21px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.modal-title{font-size:17px;font-weight:900}.modal-sub{font-size:11px;color:var(--t3);margin-top:3px}
+.modal-close{width:31px;height:31px;border-radius:8px;background:var(--bg3);border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:19px}
+.modal-close:hover{color:var(--t1);background:var(--bg4)}
+.modal-body{padding:19px 21px;overflow:auto}
+.detail-list{display:flex;flex-direction:column;gap:9px}
+.detail-item{display:grid;grid-template-columns:minmax(170px,1.15fr) minmax(170px,2fr) auto;gap:12px;align-items:center;padding:12px 13px;background:var(--bg3);border:1px solid var(--bd);border-radius:10px}
+.detail-name{font-size:12px;font-weight:800}.detail-desc{font-size:11px;color:var(--t2)}.detail-val{text-align:right;font-weight:850;color:var(--o);white-space:nowrap}
+.modal-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.modal-stat{background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:12px}
+.modal-stat .v{font-size:20px;font-weight:900;margin-top:4px}
+
+@media(max-width:1180px){.h1-kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.h1-kpis{grid-template-columns:repeat(2,1fr)}.detail-item{grid-template-columns:1fr}.detail-val{text-align:left}.modal-summary{grid-template-columns:1fr}}
+
+/* FOOTER */
+.footer{max-width:1440px;margin:15px auto 0;padding:0 24px 28px;color:var(--t3);font-size:10px;display:flex;justify-content:space-between;gap:10px}
+
+/* PRESENTATION */
+body.present .hdr,body.present .nav{display:none}
+body.present .page{max-width:none;padding:28px 4vw}
+body.present .tc.on{min-height:calc(100vh - 56px)}
+body.present .hero{min-height:calc(100vh - 56px);display:flex;align-items:center}
+
+/* RESPONSIVE */
+@media(max-width:1180px){.kpi-strip{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){
+  .page{padding:16px}.hdr{padding:0 14px}.nav{padding:0 8px}
+  .g2,.g3,.risk-grid{grid-template-columns:1fr}.kpi-strip{grid-template-columns:repeat(2,1fr)}
+  .month-grid{grid-template-columns:repeat(3,1fr)}.funnel{grid-template-columns:repeat(3,1fr)}
+  .hero .g2{display:block}.hero-side{margin-top:18px}
+}
+@media(max-width:560px){
+  .hdr-title,.pill-live{display:none}.btn span.hide-sm{display:none}
+  .kpi-strip{grid-template-columns:1fr}.g4{grid-template-columns:1fr}.month-grid{grid-template-columns:repeat(2,1fr)}
+  .funnel{grid-template-columns:repeat(2,1fr)}.bar-row{grid-template-columns:72px 1fr 58px}
+}
+
+/* PRINT */
+@media print{
+  :root{--bg:#fff;--bg2:#fff;--bg3:#f5f5f7;--bg4:#e9e9ec;--bd:#ddd;--bd2:#bbb;--t1:#111;--t2:#444;--t3:#666}
+  body{background:#fff;color:#111;font-size:11px}
+  .hdr,.nav,.no-print{display:none!important}
+  .page{max-width:none;padding:0}
+  .tc{display:block!important;page-break-before:always;animation:none}
+  .tc:first-child{page-break-before:auto}
+  .card,.kpi,.month,.fstep{box-shadow:none;break-inside:avoid}
+  .decision-panel{position:static}
+  .hero{min-height:auto}
+  .footer{display:none}
+}
+</style>
+
+<!-- 1OFFICE × BASE HYBRID LIGHT THEME -->
+<style id="oneoffice-base-hybrid-theme">
+/*
+  Hybrid palette:
+  - 1Office: warm orange/coral for brand, actions and commercial emphasis.
+  - Base.vn: cobalt/navy for structure, data visualization and enterprise trust.
+  - Light canvas: improves readability for C-level presentations and printing.
+*/
+:root{
+  --o:#f15a24;
+  --o2:rgba(241,90,36,.12);
+  --o3:rgba(241,90,36,.06);
+  --bg:#f4f7fb;
+  --bg2:#ffffff;
+  --bg3:#f7f9fc;
+  --bg4:#edf2f7;
+  --bg5:#d9e2ec;
+  --bd:#e2e8f0;
+  --bd2:#cbd5e1;
+  --t1:#14213d;
+  --t2:#475569;
+  --t3:#7c8aa0;
+  --g:#10a879;
+  --a:#e9a23b;
+  --r:#e34d59;
+  --b:#2563eb;
+  --p:#7657d5;
+  --navy:#0b1f3a;
+  --navy2:#12345b;
+  --blue-soft:#eaf2ff;
+  --orange-soft:#fff1eb;
+  --rad:16px;
+  --rads:10px;
+  --shadow:0 18px 48px rgba(15,35,65,.10);
+}
+html{background:var(--bg)}
+body{
+  background:
+    radial-gradient(circle at 2% -5%,rgba(241,90,36,.10),transparent 25%),
+    radial-gradient(circle at 98% 0%,rgba(37,99,235,.10),transparent 30%),
+    linear-gradient(180deg,#f8fbff 0,#f4f7fb 390px,#f6f8fb 100%);
+  color:var(--t1);
+  font-size:14px;
+  letter-spacing:-.006em;
+}
+::selection{background:rgba(37,99,235,.16);color:var(--navy)}
+::-webkit-scrollbar-thumb{background:#c8d3e0}
+a{color:inherit}
+
+/* Header: Base-style navy structure + 1Office orange identity */
+.hdr{
+  height:66px;
+  background:linear-gradient(100deg,rgba(10,31,58,.98),rgba(18,52,91,.97));
+  border-bottom:1px solid rgba(255,255,255,.10);
+  box-shadow:0 12px 32px rgba(9,29,53,.20);
+  backdrop-filter:blur(18px) saturate(1.15);
+}
+.logo{
+  width:38px;height:38px;border-radius:11px;
+  background:#fff;
+  box-shadow:0 0 0 1px rgba(255,255,255,.22) inset,0 10px 24px rgba(9,29,53,.22);
+  font-size:13px;
+}
+.brand-name{font-size:16px;font-weight:850;letter-spacing:-.025em;color:#fff}
+.hdr-title{color:#b7c8dc;font-weight:570}
+.sep-v{background:rgba(255,255,255,.18)}
+.pill-live{color:#c4d2e2;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);padding:6px 10px;border-radius:999px}
+.live-dot{background:#42d5a2;box-shadow:0 0 0 4px rgba(66,213,162,.13),0 0 14px rgba(66,213,162,.35)}
+.btn{border-radius:10px;padding:9px 14px;box-shadow:none}
+.btn-p{background:linear-gradient(135deg,#ff7237,#ef4f1b);color:#fff;box-shadow:0 9px 22px rgba(241,90,36,.24)}
+.btn-p:hover{background:linear-gradient(135deg,#ff824c,#e94713);box-shadow:0 12px 28px rgba(241,90,36,.30)}
+.btn-g{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#d8e3ef}
+.btn-g:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.20);color:#fff}
+.btn-s{background:#fff;border:1px solid var(--bd);color:var(--t2);box-shadow:0 4px 13px rgba(15,35,65,.04)}
+.btn-s:hover{background:#f8fbff;border-color:#b7c7d9;color:var(--navy)}
+
+.nav{
+  top:66px;
+  background:rgba(255,255,255,.94);
+  border-bottom:1px solid var(--bd);
+  box-shadow:0 7px 22px rgba(15,35,65,.06);
+  backdrop-filter:blur(18px);
+}
+.ntab{color:#718096;padding:14px 16px;font-weight:700;border-bottom-width:3px}
+.ntab:hover{color:var(--navy);background:rgba(37,99,235,.035)}
+.ntab.on{color:var(--b);border-bottom-color:var(--o);background:linear-gradient(180deg,transparent,rgba(241,90,36,.055))}
+
+.page{max-width:1460px;padding:30px 26px 42px}
+.card,.kpi,.month,.fstep{
+  background:linear-gradient(180deg,#fff 0%,#fcfdff 100%);
+  border-color:var(--bd);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 12px 34px rgba(15,35,65,.055);
+}
+.card{padding:22px}
+.card.hover:hover,.clickable:hover{
+  border-color:rgba(37,99,235,.30)!important;
+  box-shadow:0 22px 48px rgba(15,35,65,.11),0 0 0 1px rgba(241,90,36,.04) inset;
+  transform:translateY(-3px);
+}
+.section{margin-top:28px}
+.st{color:#738198;font-weight:820;letter-spacing:.12em}
+.sm{color:#8390a3}
+.hl{background:var(--bd)}
+.t2{color:var(--t2)}.t3{color:var(--t3)}
+.co{color:var(--o)}.cg{color:var(--g)}.ca{color:var(--a)}.cr{color:var(--r)}.cb{color:var(--b)}
+
+/* Hero: Base's enterprise blue base, 1Office's warm orange highlight */
+.hero{
+  border-color:rgba(37,99,235,.12);
+  padding:40px;
+  background:
+    radial-gradient(circle at 12% 48%,rgba(241,90,36,.20),transparent 30%),
+    radial-gradient(circle at 85% 17%,rgba(64,130,246,.25),transparent 32%),
+    linear-gradient(118deg,#0b2342 0%,#123d70 54%,#164d83 100%);
+  box-shadow:0 28px 72px rgba(9,34,67,.22),0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.hero:before{
+  content:"";position:absolute;right:38px;bottom:24px;width:158px;height:158px;border-radius:34px;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.09) 1px,transparent 1px);
+  background-size:18px 18px;transform:rotate(8deg);opacity:.8;pointer-events:none;
+}
+.hero:after{right:-88px;top:-140px;background:radial-gradient(circle,rgba(255,118,56,.28),transparent 67%)}
+.eyebrow{color:#ffd4c2;font-size:11px;background:rgba(241,90,36,.15);border:1px solid rgba(255,170,132,.22);display:inline-flex;padding:6px 10px;border-radius:999px;letter-spacing:.11em}
+.hero h1{font-size:clamp(30px,4vw,54px);line-height:1.03;letter-spacing:-.052em;font-weight:900;color:#fff}
+.hero h1 .co{background:linear-gradient(90deg,#ffb18e,#ff743b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#d6e3f1;font-size:15px;line-height:1.72}
+.commit{border:1px solid rgba(255,255,255,.13);border-left:4px solid #ff7339;background:rgba(5,25,51,.34);box-shadow:0 12px 28px rgba(0,0,0,.10);color:#edf5ff}
+.hero-side{
+  border-color:rgba(255,255,255,.18);
+  background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.07));
+  box-shadow:0 24px 48px rgba(0,0,0,.18),0 0 0 1px rgba(255,255,255,.04) inset;
+  padding:24px;border-radius:18px;
+  backdrop-filter:blur(6px);
+}
+.big-target{font-size:44px;background:linear-gradient(90deg,#ffd2bd,#ff773c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.target-sub{color:#c5d5e7;font-weight:750}
+.hero-side .t3{color:#c4d2e2}.hero-side strong{color:#7cf0bf}.hero-side .pb{background:rgba(255,255,255,.14)}
+
+/* KPI system */
+.kpi-strip,.h1-kpis{gap:14px}
+.kpi{padding:20px;min-height:126px;transition:.2s;cursor:pointer}
+.kpi:before{left:20px;right:auto;top:0;width:44px;height:4px;border-radius:0 0 5px 5px;opacity:1;background:var(--o)}
+.kpi:nth-child(2n):before{background:var(--b)}
+.kpi:nth-child(3n):before{background:var(--g)}
+.kpi:nth-child(4n):before{background:var(--p)}
+.kpi:nth-child(5n):before{background:var(--a)}
+.kpi:nth-child(6n):before{background:#2f87d8}
+.kpi-label{font-size:10px;color:#738198;letter-spacing:.095em}
+.kpi-val{font-size:27px;color:var(--navy)}
+.kpi-meta{color:#8390a3}
+.badge{border-radius:999px;padding:4px 9px;font-size:10px;border:1px solid transparent}
+.bd-o{background:#fff0e9;color:#d94a18;border-color:#ffd8c8}
+.bd-g{background:#e9f9f3;color:#087d5a;border-color:#c9f0e2}
+.bd-a{background:#fff7e5;color:#9a640b;border-color:#f7e3b4}
+.bd-r{background:#fff0f1;color:#c43241;border-color:#ffd4d8}
+.bd-b{background:#edf4ff;color:#245cc6;border-color:#d6e6ff}
+.bd-p{background:#f2efff;color:#6647bf;border-color:#e0d9ff}
+.bd-n{background:#f1f4f8;color:#5b6b80;border-color:#e4e9ef}
+
+.pb,.bar-track{background:#e8eef5}
+.pbf{background:linear-gradient(90deg,var(--b),#63a4ff)}
+.bar-fill{background:linear-gradient(90deg,var(--o),#ff8a58);box-shadow:none}
+.quarter,.month,.fstep{background:linear-gradient(180deg,#fff,#f9fbfe)!important;border:1px solid var(--bd);box-shadow:0 11px 26px rgba(15,35,65,.055)}
+.quarter{border-top:4px solid var(--o);border-radius:14px!important}
+.quarter:nth-child(2){border-top-color:var(--b)}
+.q-val,.month-val,.fnum{color:var(--navy)}
+.q-share,.month-focus,.flbl{color:#77869a}
+.month{border-radius:14px;padding:17px;transition:.18s}
+.month:hover{border-color:rgba(37,99,235,.28);transform:translateY(-2px);background:linear-gradient(180deg,#fff,#f1f6ff)!important}
+.month-name{color:#75849a}
+
+/* Tables and data workspace */
+.tbl{font-size:12px}
+.deal-modal-table{min-width:1260px}
+#dealBody td:nth-child(1){min-width:245px}#dealBody td:nth-child(2){min-width:115px}#dealBody td:nth-child(3){min-width:105px}#dealBody td:nth-child(4){min-width:105px}#dealBody td:nth-child(5){min-width:300px}#dealBody td:nth-child(6){min-width:300px}
+.deal-edit-cell,.modal-editable{outline:none;border-radius:6px;transition:.15s}
+.deal-edit-cell{cursor:text;background:rgba(37,99,235,.035)}
+.deal-edit-cell:hover,.modal-editable:hover{box-shadow:0 0 0 1px rgba(37,99,235,.24) inset;background:#f3f7ff}
+.deal-edit-cell:focus,.modal-editable:focus{box-shadow:0 0 0 2px rgba(241,90,36,.32) inset;background:#fff8f4}
+.modal-edit-note{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:9px 11px;border:1px solid #dce7f5;background:#f4f8ff;border-radius:10px;color:#5f7086;font-size:11px}
+.july-actual-card{overflow:hidden;background:linear-gradient(110deg,#effaf6,#fff 48%,#eef5ff)!important}
+.actual-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:12px}
+.actual-stat{padding:15px;border:1px solid var(--bd);border-radius:12px;background:rgba(255,255,255,.78)}
+.actual-value{font-size:25px;font-weight:900;color:var(--navy);margin-top:5px}
+.actual-note{font-size:11px;color:var(--t3);margin-top:6px}
+.action-plan-table{min-width:1180px}
+.action-phase{font-weight:850;color:var(--navy)}
+@media(max-width:800px){.actual-grid{grid-template-columns:1fr}}
+.tbl th{background:#f3f7fc;color:#687991;border-bottom-color:#dfe6ef;padding:11px 12px}
+.tbl td{border-bottom-color:#edf1f5;padding:13px 12px;color:#526175}
+.tbl tbody tr:nth-child(even) td{background:rgba(247,249,252,.62)}
+.tbl tbody tr:hover td{background:#eef5ff}
+.name{color:var(--navy)}
+.sub{color:#7b899c}
+.filters{padding:10px;background:#fff;border:1px solid var(--bd);border-radius:13px;box-shadow:0 9px 24px rgba(15,35,65,.055)}
+.fsel,.fsrch{background:#f7f9fc;border-color:#dfe6ef;color:#55657a;padding:9px 11px}
+.fsel:focus,.fsrch:focus{background:#fff;border-color:rgba(37,99,235,.55);box-shadow:0 0 0 3px rgba(37,99,235,.09);color:var(--navy)}
+
+/* Strategy: alternating 1Office orange and Base blue */
+.strategy{overflow:hidden}
+.strategy:nth-child(1){background:linear-gradient(180deg,#fff4ee,#fff 58%)}
+.strategy:nth-child(2){background:linear-gradient(180deg,#edf5ff,#fff 58%)}
+.strategy:nth-child(3){background:linear-gradient(180deg,#effaf6,#fff 58%)}
+.strategy:nth-child(4){background:linear-gradient(180deg,#f5f1ff,#fff 58%)}
+.strategy-num{width:38px;height:38px;border-radius:12px;background:#fff;border:1px solid #ffd9c8;box-shadow:0 8px 20px rgba(241,90,36,.10);color:var(--o)}
+.strategy:nth-child(2) .strategy-num{border-color:#d8e6ff;color:var(--b);box-shadow:0 8px 20px rgba(37,99,235,.08)}
+.strategy:nth-child(3) .strategy-num{border-color:#d0eee4;color:var(--g);box-shadow:0 8px 20px rgba(16,168,121,.08)}
+.strategy:nth-child(4) .strategy-num{border-color:#e1d9ff;color:var(--p);box-shadow:0 8px 20px rgba(118,87,213,.08)}
+.strategy h3{color:var(--navy);font-size:16px}
+.strategy p,.mini-item{color:#526175}
+.mini-item:before{width:7px;height:7px;margin-top:5px;background:var(--o);box-shadow:0 0 0 4px rgba(241,90,36,.08)}
+.strategy:nth-child(2) .mini-item:before{background:var(--b);box-shadow:0 0 0 4px rgba(37,99,235,.08)}
+.strategy:nth-child(3) .mini-item:before{background:var(--g);box-shadow:0 0 0 4px rgba(16,168,121,.08)}
+.strategy:nth-child(4) .mini-item:before{background:var(--p);box-shadow:0 0 0 4px rgba(118,87,213,.08)}
+
+.fstep{padding:19px 10px}
+.fstep:nth-child(odd){border-top:3px solid var(--b)}
+.fstep:nth-child(even){border-top:3px solid var(--o)}
+.fstep:not(:last-child):after{color:#b1becd;font-size:20px;right:-10px}
+
+/* Risk system */
+.risk{border:1px solid var(--bd);border-left:4px solid var(--a);background:linear-gradient(90deg,#fff9ec,#fff 28%)}
+.risk.high{border-left-color:var(--r);background:linear-gradient(90deg,#fff2f3,#fff 28%)}
+.risk.medium{border-left-color:var(--a);background:linear-gradient(90deg,#fff9ec,#fff 28%)}
+.risk h3{color:var(--navy)}
+.risk p,.risk-action{color:#526175}
+.heat>div{border:1px solid rgba(203,213,225,.55)}
+.hlab{color:#76859a}
+.hgreen{background:#eaf9f3;color:#087d5a}.hamber{background:#fff6df;color:#99620a}.hred{background:#fff0f1;color:#c43241}
+
+/* Support and decision center */
+.ask{border-bottom-color:#e8edf3}
+.ask-ic{background:linear-gradient(145deg,#fff0e9,#edf4ff);border:1px solid #e7eaf0}
+.ask h3{color:var(--navy)}.ask p{color:#6c7b8f}
+.check{background:#f7f9fc;border-color:#d7dfe9}
+.check:hover{border-color:var(--g);background:#effaf6}
+.check.on{background:#e7f8f1;border-color:#a8dfcc;color:#07805c}
+.note{background:#f8fafc;border-color:#dfe6ef;color:var(--navy)}
+.note:focus{background:#fff;border-color:rgba(37,99,235,.55);box-shadow:0 0 0 3px rgba(37,99,235,.09)}
+.decision-status{background:#effaf6;color:#39715f;border:1px solid #d4eee5}
+
+/* H1 analytics, clickable states and edit mode */
+.h1-note{background:#fff7e7;color:#8a5d0b;border:1px solid #f5dfad}
+.spark-bar{background:linear-gradient(180deg,#4f91f2,#2563eb);box-shadow:0 7px 16px rgba(37,99,235,.14)}
+/* Balanced H1 quarterly chart: paired OTE and actual columns */
+.spark{height:190px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:8px 0 0;align-items:stretch}
+.spark-col{min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;background:#f8fafc;border:1px solid #e4eaf1;border-radius:13px;padding:12px 14px 10px;cursor:pointer;transition:.18s}
+.spark-col:hover{background:#eef5ff;border-color:#d4e3fb;transform:translateY(-2px)}
+.spark-val{font-size:11px;color:#526175;margin-bottom:8px;display:flex;justify-content:center;gap:5px;flex-wrap:wrap}
+.spark-val strong{color:var(--navy);font-size:13px}
+.spark-bars{height:112px;display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:0 10px 8px;border-bottom:1px solid #dfe6ef}
+.spark-bar{width:min(46px,38%);min-height:8px;border-radius:7px 7px 3px 3px;cursor:pointer;transition:.18s}
+.spark-bar.ote{background:linear-gradient(180deg,#dce5f0,#aab9ca);box-shadow:none}
+.spark-bar.actual{background:linear-gradient(180deg,#ff8756,#f15a24);box-shadow:0 7px 16px rgba(241,90,36,.16)}
+.spark-bar:hover{filter:brightness(1.04);transform:translateY(-2px)}
+.spark-label{font-size:11px;color:#687991;margin-top:8px;font-weight:750}
+.spark-legend{display:flex;justify-content:center;gap:18px;margin-top:10px;font-size:10px;color:#718096}
+.spark-legend span{display:inline-flex;align-items:center;gap:6px}
+.legend-box{width:10px;height:10px;border-radius:3px;display:inline-block}
+.legend-box.ote{background:#aab9ca}.legend-box.actual{background:#f15a24}
+@media(max-width:560px){.spark{grid-template-columns:1fr;height:auto}.spark-col{min-height:180px}}
+.metric-pair{border-bottom-color:#e8edf3}
+.clickable-row:hover{background:#eef5ff}
+.clickable:after{color:#94a3b8}
+.clickable:hover:after{color:var(--o)}
+.edit-toolbar{background:linear-gradient(90deg,#fff4ee,#f2f7ff);border-color:#e2e8f0;box-shadow:0 9px 22px rgba(15,35,65,.05)}
+.edit-hint{color:#6f7e92}
+body.edit-mode .editable-field{background:#fff6f1;box-shadow:0 0 0 1px rgba(241,90,36,.24) inset}
+body.edit-mode .editable-field:hover{background:#fff1e9;box-shadow:0 0 0 1px rgba(241,90,36,.38) inset}
+body.edit-mode .editable-field:focus{background:#fff;box-shadow:0 0 0 2px rgba(37,99,235,.38) inset}
+
+/* Modal */
+.modal-over{background:rgba(8,25,47,.58);backdrop-filter:blur(9px)}
+.modal-box{background:#fff;border-color:#dfe6ef;border-radius:20px;box-shadow:0 38px 105px rgba(8,30,58,.26)}
+.modal-head{border-bottom-color:#e8edf3;padding:20px 24px;background:linear-gradient(100deg,#f7faff,#fff5ef);border-radius:20px 20px 0 0}
+.modal-title{color:var(--navy);font-size:18px}.modal-sub{color:#78879b}
+.modal-close{background:#fff;border-color:#dfe6ef;color:#748398}
+.modal-close:hover{background:#fff0e9;border-color:#ffd4c2;color:var(--o)}
+.modal-body{padding:22px 24px;background:#fff;border-radius:0 0 20px 20px}
+.detail-item,.modal-stat{background:#f8fafc;border-color:#e4eaf1}
+.detail-item:hover{background:#eef5ff;border-color:#d4e3fb}
+.detail-name{color:var(--navy)}.detail-desc{color:#76859a}
+.modal-stat .v{color:var(--navy)}
+
+.footer{color:#78879b;border-top:1px solid #e1e7ee;padding-top:20px}
+
+/* Presentation */
+body.present{background:#f4f7fb}
+body.present .page{padding:32px 4vw}
+
+@media(max-width:900px){
+  .hero{padding:27px}.page{padding:20px 15px 30px}.hdr{height:62px}.nav{top:62px}
+}
+
+@media print{
+  :root{--bg:#fff;--bg2:#fff;--bg3:#f6f8fb;--bg4:#e8edf4;--bd:#dfe4eb;--bd2:#cbd3dd;--t1:#111827;--t2:#374151;--t3:#667085}
+  body{background:#fff!important;color:#111827}
+  .card,.kpi,.month,.fstep,.hero{background:#fff!important;box-shadow:none!important;color:#111827}
+  .hero{border:1px solid #dfe4eb}
+  .hero h1,.kpi-val,.q-val,.month-val,.fnum,.name,.strategy h3,.risk h3,.ask h3{color:#111827!important;-webkit-text-fill-color:initial}
+  .hero p,.commit,.mini-item,.risk p,.risk-action,.ask p,.tbl td{color:#374151!important}
+}
+</style>
+<!-- /1OFFICE × BASE HYBRID LIGHT THEME -->
+
+
+
+</head>
+<body>
+<header class="hdr">
+  <div class="brand"><a class="logo" href="https://drive.google.com/file/d/1_tTmlUb5ldAwKwVOTmo4BmiBgAyHuEvq/view?usp=sharing" target="_blank" rel="noopener" title="Mở icon gốc trên Google Drive"><img src="https://drive.google.com/thumbnail?id=1_tTmlUb5ldAwKwVOTmo4BmiBgAyHuEvq&sz=w128" alt="Icon 1Office" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='https://lh3.googleusercontent.com/d/1_tTmlUb5ldAwKwVOTmo4BmiBgAyHuEvq=w128'"/></a><div class="brand-name">1Office</div></div>
+  <div class="sep-v"></div>
+  <div class="hdr-title">Giang Tấn Văn — Kế hoạch Kinh doanh H2</div>
+  <div class="hdr-space"></div>
+  <button class="btn btn-g" id="globalEditBtn" onclick="toggleEditMode()">✎ <span class="hide-sm">Chỉnh sửa</span></button>
+  <button class="btn btn-g" onclick="togglePresent()">⛶ <span class="hide-sm">Trình chiếu</span></button>
+  <button class="btn btn-p" onclick="window.print()">↗ <span class="hide-sm">In / PDF</span></button>
+</header>
+
+<nav class="nav">
+  <button class="ntab on" data-tab="overview" onclick="sw('overview')">📊 Tổng quan</button>
+  <button class="ntab" data-tab="pipeline" onclick="sw('pipeline')">🎯 Pipeline và Rủi ro</button>
+  <button class="ntab" data-tab="strategy" onclick="sw('strategy')">🧭 Chiến lược và Hành động</button>
+  <button class="ntab" data-tab="support" onclick="sw('support')">🤝 Đề xuất BGĐ</button>
+</nav>
+
+<main class="page">
+
+<!-- OVERVIEW -->
+<section id="tab-overview" class="tc on">
+  <div class="section" style="margin-top:0">
+    <div class="h1-head">
+      <div><div class="st">Báo cáo kết quả 6 tháng đầu năm</div></div>
+      <div class="h1-note">DỮ LIỆU H1 ĐÃ ĐỐI SOÁT — TỔNG CHI TIẾT KHỚP 629,165M</div>
+    </div>
+    <div class="h1-kpis">
+      <div class="kpi clickable" data-widget="h1-ote"><div class="kpi-label">Chỉ tiêu OTE H1</div><div class="kpi-val">1.750M</div><div class="kpi-meta">100% kế hoạch 6 tháng đầu năm</div></div>
+      <div class="kpi clickable" data-widget="h1-revenue"><div class="kpi-label">Thực đạt KPI H1</div><div class="kpi-val co">629,165M</div><div class="kpi-meta"><span class="badge bd-a">36% OTE</span></div></div>
+      <div class="kpi clickable" data-widget="h1-gap"><div class="kpi-label">Còn thiếu OTE H1</div><div class="kpi-val cr">1.120,835M</div><div class="kpi-meta">64% chưa hoàn thành</div></div>
+      <div class="kpi clickable" data-widget="h1-contracts"><div class="kpi-label">HĐ mới phát sinh H1</div><div class="kpi-val">0</div><div class="kpi-meta">Doanh thu từ khách hàng/hợp đồng hiện hữu</div></div>
+      <div class="kpi clickable" data-widget="h1-detail-total"><div class="kpi-label">Tổng chi tiết khách hàng</div><div class="kpi-val cb">629,165M</div><div class="kpi-meta">Khớp với KPI thực đạt</div></div>
+      <div class="kpi clickable" data-widget="h1-reconcile"><div class="kpi-label">Đối soát dữ liệu H1</div><div class="kpi-val cg">0M</div><div class="kpi-meta">Không còn chênh lệch</div></div>
+    </div>
+
+    <div class="g2 mt16">
+      <div class="card">
+        <div class="sh"><div class="st">Doanh thu H1 theo quý</div><div class="sm">So sánh OTE và thực đạt</div></div>
+        <div class="spark" id="h1Spark"></div>
+        <div class="spark-legend"><span><i class="legend-box ote"></i>OTE</span><span><i class="legend-box actual"></i>Thực đạt</span></div>
+        <div class="fx ai jb mt12 f11 t3"><span>OTE H1: <strong>1.750M</strong></span><span>Thực đạt KPI: <strong class="co">629,165M</strong></span></div>
+      </div>
+      <div class="card">
+        <div class="sh"><div class="st">Kết quả theo nhóm giải pháp</div><div class="sm">Theo chi tiết khách hàng</div></div>
+        <div class="metric-pair clickable-row" data-widget="h1-solution" data-key="SaaS"><div><div class="fw7">SaaS</div><div class="f11 t3">Chứng khoán LPBank · MAYCHA</div></div><strong class="co">331,665M</strong></div>
+        <div class="metric-pair clickable-row" data-widget="h1-solution" data-key="Private Cloud"><div><div class="fw7">Private Cloud</div><div class="f11 t3">Chưa phát sinh trong dữ liệu cung cấp</div></div><strong class="cb">0M</strong></div>
+        <div class="metric-pair clickable-row" data-widget="h1-solution" data-key="On-premise"><div><div class="fw7">On-premise</div><div class="f11 t3">PVFCCo</div></div><strong class="cg">297,500M</strong></div>
+        <div class="mt12 f11 cg">Tổng nhóm giải pháp: 629,165M — khớp với KPI thực đạt H1.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card hero section">
+    <div class="g2" style="align-items:center;position:relative;z-index:2">
+      <div>
+        <div class="eyebrow">H2 Business Plan · Giang Tấn Văn</div>
+        <h1>Hoàn thành tối thiểu <span class="co">4,5 tỷ đồng</span> doanh số trong 6 tháng cuối năm</h1>
+        <p>Kế hoạch tập trung vào thu hồi doanh số từ hợp đồng đã ký, chuyển đổi Pipeline hiện hữu và mở rộng Key Account trong nhóm dầu khí – năng lượng, hạ tầng công ích và tập đoàn đa ngành.</p>
+        <div class="commit">Cam kết điều hành: bảo vệ 1,862 tỷ đồng hợp đồng đã ký — chờ thanh toán, chuyển đổi tối thiểu 2,638 tỷ đồng từ Pipeline Deal tiềm năng và chủ động kích hoạt Deal dự phòng khi dự báo có dấu hiệu trễ.</div>
+      </div>
+      <div class="hero-side">
+        <div class="target-sub">Mục tiêu H2</div>
+        <div class="big-target">4.500M</div>
+        <div class="metric-pair" style="border-color:rgba(255,255,255,.14)"><span class="t3 f11">HĐ đã ký — Chờ thanh toán</span><strong class="cg">1.862M</strong></div>
+        <div class="metric-pair" style="border-color:rgba(255,255,255,.14)"><span class="t3 f11">Pipeline — Deal tiềm năng</span><strong style="color:#ffd4c2">6.508M</strong></div>
+        <div class="fx ai jb mt12"><span class="t3 f11">Tổng Coverage</span><span class="badge bd-o">8.370M · 1,86×</span></div>
+        <div class="pb mt8"><div class="pbf" style="width:100%"></div></div>
+        <div class="fx ai jb mt12"><span class="t3 f11">Mức chuyển đổi Pipeline cần thiết</span><strong class="cg">40,5%</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi clickable" data-widget="h2-target"><div class="kpi-label">Mục tiêu doanh số H2</div><div class="kpi-val co">4.500M</div><div class="kpi-meta">100% chỉ tiêu H2</div></div>
+    <div class="kpi clickable" data-widget="commit"><div class="kpi-label">HĐ đã ký · Chờ thanh toán</div><div class="kpi-val cg">1.862M</div><div class="kpi-meta"><span class="badge bd-g">41,4% target</span></div></div>
+    <div class="kpi clickable" data-widget="new-pipeline"><div class="kpi-label">Pipeline · Deal tiềm năng</div><div class="kpi-val">6.508M</div><div class="kpi-meta"><span class="badge bd-b">7 cơ hội</span></div></div>
+    <div class="kpi clickable" data-widget="all-pipeline"><div class="kpi-label">Tổng Coverage</div><div class="kpi-val">8.370M</div><div class="kpi-meta"><span class="badge bd-o">186% target · 1,86×</span></div></div>
+    <div class="kpi clickable" data-widget="gap-plan"><div class="kpi-label">Gap cần chuyển đổi</div><div class="kpi-val ca">2.638M</div><div class="kpi-meta">Từ Pipeline Deal tiềm năng</div></div>
+    <div class="kpi clickable" data-widget="target-contracts"><div class="kpi-label">Hợp đồng mục tiêu</div><div class="kpi-val">≈ 9</div><div class="kpi-meta">Ticket SaaS/Cloud ~300M</div></div>
+  </div>
+
+  <div class="section g2">
+    <div class="card">
+      <div class="sh"><div class="st">Phân bổ doanh số theo quý</div><div class="sm">Tỷ trọng năm · quy đổi H2 theo tỷ lệ 30:35</div></div>
+      <div class="g2">
+        <div class="quarter clickable" data-widget="quarter-target" data-key="Q3" style="background:var(--bg3);border-radius:12px">
+          <div class="fx ai jb"><div class="q-title">Quý III</div><span class="badge bd-o">30% kế hoạch năm</span></div>
+          <div class="q-val">2.076,923M</div>
+          <div class="q-share">46,2% mục tiêu H2 · chia đều T7–T9</div>
+          <div class="pb mt12"><div class="pbf" style="width:46.2%"></div></div>
+        </div>
+        <div class="quarter clickable" data-widget="quarter-target" data-key="Q4" style="background:var(--bg3);border-radius:12px">
+          <div class="fx ai jb"><div class="q-title">Quý IV</div><span class="badge bd-b">35% kế hoạch năm</span></div>
+          <div class="q-val">2.423,077M</div>
+          <div class="q-share">53,8% mục tiêu H2 · chia đều T10–T12</div>
+          <div class="pb mt12"><div class="pbf" style="width:53.8%;background:var(--b)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sh"><div class="st">Điểm rơi doanh số theo tháng</div><div class="sm">Chia đều trong từng quý · triệu VNĐ</div></div>
+      <div class="bar-list">
+        <div class="bar-row clickable-row" data-widget="month-target" data-key="7"><div class="bar-label">Tháng 7</div><div class="bar-track"><div class="bar-fill" style="width:85.7%"></div></div><div class="bar-value">692,308M</div></div>
+        <div class="bar-row clickable-row" data-widget="month-target" data-key="8"><div class="bar-label">Tháng 8</div><div class="bar-track"><div class="bar-fill" style="width:85.7%"></div></div><div class="bar-value">692,308M</div></div>
+        <div class="bar-row clickable-row" data-widget="month-target" data-key="9"><div class="bar-label">Tháng 9</div><div class="bar-track"><div class="bar-fill" style="width:85.7%"></div></div><div class="bar-value">692,307M</div></div>
+        <div class="bar-row clickable-row" data-widget="month-target" data-key="10"><div class="bar-label">Tháng 10</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807,692M</div></div>
+        <div class="bar-row clickable-row" data-widget="month-target" data-key="11"><div class="bar-label">Tháng 11</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807,692M</div></div>
+        <div class="bar-row clickable-row" data-widget="month-target" data-key="12"><div class="bar-label">Tháng 12</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-value">807,693M</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="st">Ưu tiên điều hành ngay</div><div class="sm">Top items ảnh hưởng trực tiếp tới Target</div></div>
+    <div class="ga">
+      <div class="card hover"><div class="badge bd-r">Ưu tiên cao 01</div><h3 class="mt12">Bảo vệ khoản thu 1,862 tỷ</h3><p class="t2 f12 mt8">NovaGroup, Thoát nước TP.HCM và phí bảo trì PVFCCo phải có lịch thanh toán, checklist hồ sơ và escalation rõ ràng.</p></div>
+      <div class="card hover"><div class="badge bd-o">Ưu tiên cao 02</div><h3 class="mt12">Chuyển đổi tối thiểu 2,638 tỷ</h3><p class="t2 f12 mt8">Ưu tiên PTSC Văn phòng số, PVFCCo API, Cấp nước Tiền Giang, Phan Vũ Group, GDD2 và các Deal tìm năng.</p></div>
+      <div class="card hover"><div class="badge bd-b">Ưu tiên cao 03</div><h3 class="mt12">Mở đường người ra quyết định</h3><p class="t2 f12 mt8">Mỗi Key Account cần xác định Economic Buyer, Internal Champion và Mutual Action Plan theo mốc ký, nghiệm thu, thanh toán.</p></div>
+      <div class="card hover"><div class="badge bd-g">Ưu tiên cao 04</div><h3 class="mt12">Duy trì Pipeline dự phòng</h3><p class="t2 f12 mt8">Tạo thêm tối thiểu 600M Pipeline/tháng và giữ Coverage đủ bù cho phần chỉ tiêu còn lại.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="tab-pipeline" class="tc">
+  <div class="edit-toolbar no-print">
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-pipeline">Đang tắt</strong></span></div><div class="edit-hint mt8">Các trường văn bản trong phần Pipeline và Rủi ro có thể sửa trực tiếp và lưu trên trình duyệt.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('pipeline')">↺ Khôi phục tab</button></div>
+  </div>
+  <div class="sh"><div><div class="st">Pipeline & Risk Management</div><h2 class="mt8">Pipeline H2 và quản trị rủi ro</h2></div><div class="sm">Đơn vị: triệu VNĐ</div></div>
+
+  <div class="month-grid">
+    <div class="month clickable" data-widget="month-target" data-key="7"><div class="month-name">Tháng 7</div><div class="month-val co">692,308M</div><div class="month-focus">Q3 chia đều · NovaGroup · Thoát nước · PTSC</div></div>
+    <div class="month clickable" data-widget="month-target" data-key="8"><div class="month-name">Tháng 8</div><div class="month-val">692,308M</div><div class="month-focus">Q3 chia đều · PVFCCo API · Cấp nước Tiền Giang</div></div>
+    <div class="month clickable" data-widget="month-target" data-key="9"><div class="month-name">Tháng 9</div><div class="month-val">692,307M</div><div class="month-focus">Q3 chia đều · phí bảo trì PVFCCo · bù Gap</div></div>
+    <div class="month clickable" data-widget="month-target" data-key="10"><div class="month-name">Tháng 10</div><div class="month-val">807,692M</div><div class="month-focus">Q4 chia đều · Convert Workshop / Proposal</div></div>
+    <div class="month clickable" data-widget="month-target" data-key="11"><div class="month-name">Tháng 11</div><div class="month-val">807,692M</div><div class="month-focus">Q4 chia đều · thương mại · ngân sách · pháp lý</div></div>
+    <div class="month clickable" data-widget="month-target" data-key="12"><div class="month-name">Tháng 12</div><div class="month-val">807,693M</div><div class="month-focus">Q4 chia đều · ký HĐ · thanh toán đợt đầu</div></div>
+  </div>
+
+  <div class="section card clickable july-actual-card" data-widget="july-actual">
+    <div class="sh"><div><div class="st">Thực đạt tháng 7</div><h3 class="mt8">Doanh số đã ghi nhận: 1.318M</h3></div><span class="badge bd-g">190,4% kế hoạch tháng</span></div>
+    <div class="actual-grid">
+      <div class="actual-stat"><div class="kpi-label">Tổng thực đạt</div><div class="actual-value cg">1.318M</div><div class="actual-note">Kế hoạch tháng 7: 692,308M · vượt 625,692M</div></div>
+      <div class="actual-stat"><div class="kpi-label">PVFCCo · On-premise</div><div class="actual-value co">750M</div><div class="actual-note">Doanh số thực đạt tháng 7</div></div>
+      <div class="actual-stat"><div class="kpi-label">ACBS · Private Cloud</div><div class="actual-value cb">568M</div><div class="actual-note">Doanh số thực đạt tháng 7</div></div>
+    </div>
+  </div>
+
+  <div class="section g3">
+    <div class="card clickable" data-widget="commit"><div class="kpi-label">HĐ đã ký · Chờ thanh toán</div><div class="kpi-val cg">1.862M</div><div class="kpi-meta">3 khoản thanh toán · 41,4% Target</div><div class="pb mt12"><div class="pbf" style="width:41.4%;background:var(--g)"></div></div></div>
+    <div class="card clickable" data-widget="pipeline-category" data-key="Ưu tiên cao"><div class="kpi-label">Ưu tiên cao · Cơ hội chính</div><div class="kpi-val co">4.008M</div><div class="kpi-meta">5 cơ hội cần tăng tốc</div><div class="pb mt12"><div class="pbf" style="width:61.6%"></div></div></div>
+    <div class="card clickable" data-widget="pipeline-category" data-key="Tìm năng"><div class="kpi-label">Tìm năng</div><div class="kpi-val cb">2.500M</div><div class="kpi-meta">2 cơ hội giá trị lớn</div><div class="pb mt12"><div class="pbf" style="width:38.4%;background:var(--b)"></div></div></div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="st">Danh sách H2</div><div class="sm" id="dealCount"></div></div>
+    <div class="filters">
+      <select class="fsel" id="catFilter" onchange="filterDeals()">
+        <option value="ALL">Tất cả nhóm</option>
+        <option value="Chắc chắn">Chắc chắn</option>
+        <option value="Ưu tiên cao">Ưu tiên cao</option>
+        <option value="Tìm năng">Tìm năng</option>
+      </select>
+      <select class="fsel" id="monthFilter" onchange="filterDeals()">
+        <option value="ALL">Tất cả tháng</option>
+        <option value="7">Tháng 7</option><option value="8">Tháng 8</option><option value="9">Tháng 9</option>
+        <option value="10">Tháng 10</option><option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+      </select>
+      <input class="fsrch" id="dealSearch" oninput="filterDeals()" placeholder="🔍 Tìm khách hàng / dự án..."/>
+      <button class="btn btn-s" onclick="resetDeals()">Reset</button>
+    </div>
+    <div class="card"><div class="tw"><table class="tbl">
+      <thead><tr><th>Khách hàng / Dự án</th><th>Nhóm</th><th>Giá trị</th><th>Tháng dự kiến</th><th>Hiện trạng</th><th>Next Step</th></tr></thead>
+      <tbody id="dealBody"></tbody>
+    </table></div></div>
+  </div>
+
+  <div class="section g2">
+    <div class="card">
+      <div class="sh"><div class="st">Logic hoàn thành Target</div><span class="badge bd-g">Có cơ sở</span></div>
+      <div class="bar-list">
+        <div class="bar-row"><div class="bar-label">Đã ký</div><div class="bar-track"><div class="bar-fill" style="width:41.4%;background:var(--g)"></div></div><div class="bar-value">1.862M</div></div>
+        <div class="bar-row"><div class="bar-label">Cần convert</div><div class="bar-track"><div class="bar-fill" style="width:58.6%"></div></div><div class="bar-value">2.638M</div></div>
+      </div>
+      <div class="mt16 f12 t2">Cần chuyển đổi <strong class="cg">40,5%</strong> Pipeline Deal tiềm năng hiện tại để hoàn thành 100% chỉ tiêu H2.</div>
+    </div>
+    <div class="card">
+      <div class="sh"><div class="st">Nguyên tắc dự báo</div><span class="badge bd-o">Weekly Review</span></div>
+      <div class="mini-list">
+        <div class="mini-item"><span><strong>Chắc chắn:</strong> có thời gian và điều kiện thanh toán rõ ràng.</span></div>
+        <div class="mini-item"><span><strong>Best Case:</strong> có nhu cầu, ngân sách và người quyết định.</span></div>
+        <div class="mini-item"><span><strong>Tìm năng:</strong> tiềm năng lớn nhưng chưa đủ điều kiện dự báo.</span></div>
+        <div class="mini-item"><span>Deal không tiến triển 14 ngày phải chuyển cảnh báo và kích hoạt phương án bù.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hl"></div><div class="sh"><div><div class="st">Risk Management</div><h2 class="mt8">Rủi ro doanh số và phương án phòng ngừa</h2></div><div class="sm">Cảnh báo sớm · Escalation · Deal dự phòng</div></div>
+
+  <div class="g2 mb16">
+    <div class="card">
+      <div class="sh"><div class="st">Risk Heatmap</div><span class="badge bd-r">2 Critical</span></div>
+      <div class="heat">
+        <div></div><div class="hlab">Thấp</div><div class="hlab">Trung bình</div><div class="hlab">Cao</div>
+        <div class="hlab">Cao</div><div class="hamber clickable" data-widget="risk-detail" data-key="Thiếu nguồn lực Pre-sales / Delivery">Thiếu Pre-sales</div><div class="hred clickable" data-widget="risk-detail" data-key="Chậm thanh toán hợp đồng đã ký">Chậm thanh toán</div><div class="hred clickable" data-widget="risk-detail" data-key="Chậm đấu thầu và phê duyệt nội bộ">Chậm đấu thầu</div>
+        <div class="hlab">TB</div><div class="hgreen">Thông điệp SP</div><div class="hamber clickable" data-widget="risk-detail" data-key="Chưa tiếp cận đúng người quyết định">Chưa gặp C-level</div><div class="hamber clickable" data-widget="risk-detail" data-key="Phụ thuộc vào một số Deal giá trị cao">Phụ thuộc Deal lớn</div>
+        <div class="hlab">Thấp</div><div class="hgreen">Cạnh tranh giá</div><div class="hgreen">Thay đổi phạm vi</div><div class="hamber">Nguồn lực Delivery</div>
+      </div>
+      <div class="f11 t3 mt12">Trục dọc: mức tác động · Trục ngang: xác suất xảy ra.</div>
+    </div>
+    <div class="card">
+      <div class="sh"><div class="st">Escalation Trigger</div><span class="badge bd-o">Kích hoạt ngay</span></div>
+      <div class="mini-list">
+        <div class="mini-item">Deal Chắc chắn đổi ngày ký / thanh toán: báo cáo trong 24 giờ.</div>
+        <div class="mini-item">Deal không có tiến triển 14 ngày: chuyển cảnh báo.</div>
+        <div class="mini-item">Khoản thu chậm >10 ngày: Giám đốc + Finance tham gia.</div>
+        <div class="mini-item">Gap dự báo >10% target tháng: kích hoạt Best Case Pipeline.</div>
+        <div class="mini-item">Deal >500M chưa gặp Economic Buyer: không đưa vào Chắc chắn.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-grid">
+    <div class="card risk high">
+      <div class="risk-head"><div><h3>Chậm đấu thầu và phê duyệt nội bộ</h3><div class="risk-meta">PTSC · PVFCCo · Cấp nước TG · Saigontourist</div></div><span class="badge bd-r">Critical</span></div>
+      <p>Thời gian ký hợp đồng có thể trượt sang kỳ tiếp theo, làm sai lệch dự báo và mất điểm rơi doanh số.</p>
+      <div class="risk-actions"><div class="risk-action">Mutual Action Plan theo mốc phê duyệt, thầu, ký và thanh toán.</div><div class="risk-action">Làm việc song song Business, IT, Procurement, Finance, Legal.</div><div class="risk-action">Chuẩn bị trước hồ sơ và phương án triển khai theo giai đoạn.</div></div>
+    </div>
+    <div class="card risk high">
+      <div class="risk-head"><div><h3>Chậm thanh toán hợp đồng đã ký</h3><div class="risk-meta">NovaGroup · Thoát nước TP.HCM · PVFCCo</div></div><span class="badge bd-r">Critical</span></div>
+      <p>1,862 tỷ đồng đang phụ thuộc vào lịch thanh toán, tạo áp lực bù doanh số bằng Deal mới nếu bị trễ.</p>
+      <div class="risk-actions"><div class="risk-action">Xác nhận lịch thanh toán với Finance và Economic Buyer.</div><div class="risk-action">Checklist hồ sơ nghiệm thu, hóa đơn, chứng từ theo tuần.</div><div class="risk-action">Escalation ngay khi chậm trên 10 ngày.</div></div>
+    </div>
+    <div class="card risk medium">
+      <div class="risk-head"><div><h3>Phụ thuộc vào một số Deal giá trị cao</h3><div class="risk-meta">PTSC · PVFCCo · Phan Vũ Group</div></div><span class="badge bd-a">High</span></div>
+      <p>Một Deal lớn trì hoãn có thể làm hụt đáng kể dự báo quý và khó bù trong thời gian ngắn.</p>
+      <div class="risk-actions"><div class="risk-action">Không để một Deal chiếm quá 30–35% Chắc chắn quý.</div><div class="risk-action">Bổ sung Deal SaaS / Cloud 200–500M.</div><div class="risk-action">Tối thiểu 2 Deal dự phòng cho mỗi Deal trọng điểm.</div></div>
+    </div>
+    <div class="card risk medium">
+      <div class="risk-head"><div><h3>Chưa tiếp cận đúng người quyết định</h3><div class="risk-meta">Rủi ro Deal dừng ở kỹ thuật / nghiệp vụ</div></div><span class="badge bd-a">High</span></div>
+      <p>Không kiểm soát được ngân sách, tiêu chí lựa chọn và timeline phê duyệt; đối thủ có thể tạo ảnh hưởng tốt hơn.</p>
+      <div class="risk-actions"><div class="risk-action">100% Key Account có Account Map.</div><div class="risk-action">Tiếp cận Giám đốc/Ban TGĐ trong 30 ngày.</div><div class="risk-action">Executive meeting tập trung ROI và rủi ro quản trị.</div></div>
+    </div>
+    <div class="card risk medium">
+      <div class="risk-head"><div><h3>Proposal chưa phản ánh đúng giá trị</h3><div class="risk-meta">Dễ bị so sánh thuần túy về giá</div></div><span class="badge bd-a">Medium</span></div>
+      <p>Chu kỳ bán hàng kéo dài, phải sửa Proposal nhiều lần và khách hàng chưa thấy khác biệt của mô hình triển khai.</p>
+      <div class="risk-actions"><div class="risk-action">Discovery + Fit-Gap trước khi báo giá.</div><div class="risk-action">Proposal >500M phải có Business Case, ROI, Architecture.</div><div class="risk-action">Đề xuất 3 lựa chọn: Basic / Recommended / Enterprise.</div></div>
+    </div>
+    <div class="card risk medium">
+      <div class="risk-head"><div><h3>Cạnh tranh về giá và điều kiện thương mại</h3><div class="risk-meta">Ảnh hưởng biên lợi nhuận và thời gian đàm phán</div></div><span class="badge bd-a">Medium</span></div>
+      <p>Khách hàng tạo áp lực giảm giá hoặc lựa chọn giải pháp thấp giá hơn khi chưa hiểu Total Cost of Ownership.</p>
+      <div class="risk-actions"><div class="risk-action">Bán TCO, bảo mật, tích hợp, SLA và năng lực triển khai.</div><div class="risk-action">Ưu đãi luôn gắn với điều kiện ký / thanh toán.</div><div class="risk-action">Deal Desk phản hồi ngoại lệ trong 24–48 giờ.</div></div>
+    </div>
+    <div class="card risk medium">
+      <div class="risk-head"><div><h3>Thiếu nguồn lực Pre-sales / Delivery</h3><div class="risk-meta">Chậm Demo, RFP, khảo sát và cam kết triển khai</div></div><span class="badge bd-a">Medium</span></div>
+      <p>Chất lượng Proposal không đồng đều và khách hàng thiếu niềm tin về khả năng đáp ứng tiến độ.</p>
+      <div class="risk-actions"><div class="risk-action">Phân hạng Deal và chỉ định Solution Consultant.</div><div class="risk-action">SLA nội bộ 48 giờ cho yêu cầu kỹ thuật.</div><div class="risk-action">Xác nhận nguồn lực Delivery trước khi cam kết.</div></div>
+    </div>
+    <div class="card risk">
+      <div class="risk-head"><div><h3>Thay đổi phạm vi trong quá trình bán</h3><div class="risk-meta">Scope creep · kéo dài phê duyệt</div></div><span class="badge bd-n">Monitor</span></div>
+      <p>Khách hàng bổ sung yêu cầu sau Demo, làm thay đổi giá, kiến trúc và timeline dự án.</p>
+      <div class="risk-actions"><div class="risk-action">Baseline phạm vi sau Solution Workshop.</div><div class="risk-action">Tách Must-have / Nice-to-have và triển khai theo phase.</div><div class="risk-action">Quản trị Change Request ngay từ Proposal.</div></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- STRATEGY -->
+<section id="tab-strategy" class="tc">
+  <div class="edit-toolbar no-print">
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-strategy">Đang tắt</strong></span></div><div class="edit-hint mt8">Các trường văn bản trong phần Chiến lược và Hành động có thể sửa trực tiếp và lưu trên trình duyệt.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('strategy')">↺ Khôi phục tab</button></div>
+  </div>
+  <div class="sh"><div><div class="st">Strategy & Execution</div><h2 class="mt8">Chiến lược và Hành động H2</h2></div><div class="sm">Tập trung chất lượng cơ hội, nhịp vận hành và khả năng chuyển đổi</div></div>
+
+  <div class="g4">
+    <div class="card strategy hover">
+      <div class="strategy-num">01</div>
+      <h3>Protect & Accelerate</h3>
+      <p>Tập trung phần lớn thời gian vào Deal đã có nhu cầu, ngân sách, hồ sơ hoặc hợp đồng.</p>
+      <div class="mini-list">
+        <div class="mini-item">Mỗi Deal có Next Step, Owner và Deadline.</div>
+        <div class="mini-item">Bám sát hồ sơ, lịch phê duyệt, ký, nghiệm thu và thanh toán.</div>
+        <div class="mini-item">Deal không tiến triển 14 ngày phải chuyển cảnh báo và có phương án thay thế.</div>
+      </div>
+    </div>
+    <div class="card strategy hover">
+      <div class="strategy-num">02</div>
+      <h3>Account-Based Selling</h3>
+      <p>Ưu tiên ngành có lợi thế quan hệ và Case Study, mở rộng theo hệ sinh thái tập đoàn.</p>
+      <div class="mini-list">
+        <div class="mini-item">Dầu khí, năng lượng, hóa chất.</div>
+        <div class="mini-item">Hạ tầng công ích, cấp thoát nước.</div>
+        <div class="mini-item">Tập đoàn đa ngành, du lịch, BĐS.</div>
+      </div>
+    </div>
+    <div class="card strategy hover">
+      <div class="strategy-num">03</div>
+      <h3>C-level Influence</h3>
+      <p>Chuyển thông điệp từ tính năng sang hiệu quả vận hành, quản trị rủi ro và ROI.</p>
+      <div class="mini-list">
+        <div class="mini-item">Xác định Economic Buyer & Champion.</div>
+        <div class="mini-item">Executive Workshop cho Deal >500M.</div>
+        <div class="mini-item">Tiếp cận đa tầng: Business, IT, Finance, Procurement.</div>
+      </div>
+    </div>
+    <div class="card strategy hover">
+      <div class="strategy-num">04</div>
+      <h3>Cross-sell & Upsell</h3>
+      <p>Mở rộng doanh số từ khách hàng đã triển khai và các công ty thành viên.</p>
+      <div class="mini-list">
+        <div class="mini-item">Mở rộng user, đơn vị và phân hệ.</div>
+        <div class="mini-item">ERP, ký số, API, Private Cloud.</div>
+        <div class="mini-item">Bảo trì, tư vấn quy trình, chuyển đổi số.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section card">
+    <div class="sh"><div class="st">Ngành trọng điểm & Key Account</div><div class="sm">Ưu tiên nguồn lực theo khả năng thắng</div></div>
+    <div class="tw"><table class="tbl">
+      <thead><tr><th>Ngành</th><th>Key Account</th><th>Bài toán ưu tiên</th><th>Motion bán hàng</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge bd-o">Dầu khí · Năng lượng</span></td><td class="name">PTSC, PVFCCo</td><td>Văn phòng số, quy trình điều hành, API ký số, GDD2</td><td>Executive Sponsor + RFP shaping + mở rộng hệ sinh thái</td></tr>
+        <tr><td><span class="badge bd-b">Hạ tầng công ích</span></td><td class="name">Cấp nước Tiền Giang, Thoát nước TP.HCM</td><td>Số hóa vận hành, phê duyệt, tích hợp hệ thống</td><td>Phối hợp đối tác + chuẩn hóa hồ sơ kỹ thuật</td></tr>
+        <tr><td><span class="badge bd-g">Tập đoàn đa ngành</span></td><td class="name">Phan Vũ, Saigontourist, NovaGroup</td><td>Quản trị tập đoàn, workflow, mở rộng đơn vị thành viên</td><td>Business Case + triển khai theo giai đoạn + cross-sell</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+<div class="hl"></div>
+  <div class="sh"><div><div class="st">Action Plan</div><h2 class="mt8">Kế hoạch hành động theo Deal và mốc thực hiện</h2></div><div class="sm">Tập trung đầu ra cần hoàn tất, không quản trị bằng số lượng hoạt động</div></div>
+
+  <div class="section card">
+    <div class="sh"><div class="st">Danh sách công việc trọng tâm</div><div class="sm">Rà soát theo tiến độ thực tế và điểm nghẽn của từng Deal</div></div>
+    <div class="tw"><table class="tbl action-plan-table">
+      <thead><tr><th>Giai đoạn</th><th>Khách hàng / Dự án</th><th>Việc cần làm</th><th>Kết quả đầu ra</th><th>Thời điểm / Điều kiện</th><th>Phối hợp</th></tr></thead>
+      <tbody>
+        <tr><td class="action-phase">Xác nhận thực đạt</td><td class="name">PVFCCo · On-premise 750M<br>ACBS · Private Cloud 568M</td><td>Đối soát hợp đồng, nghiệm thu, hóa đơn và điều kiện ghi nhận doanh số.</td><td>Hồ sơ tháng 7 đầy đủ; số liệu thống nhất giữa Sales, Finance và Delivery.</td><td>Hoàn tất ngay trong kỳ tháng 7</td><td>Sales · Finance · PM/Delivery</td></tr>
+        <tr><td class="action-phase">Thu hồi khoản đã ký</td><td class="name">NovaGroup · Thoát nước TP.HCM · PVFCCo bảo trì</td><td>Khóa lịch thanh toán, rà soát chứng từ còn thiếu và xác định đầu mối phê duyệt cuối.</td><td>Mỗi khoản có ngày thanh toán, bộ hồ sơ hoàn chỉnh và phương án escalation.</td><td>NovaGroup/Thoát nước: ưu tiên ngay<br>PVFCCo bảo trì: trước kỳ thanh toán T9</td><td>Sales · Finance · Sponsor khách hàng</td></tr>
+        <tr><td class="action-phase">Chốt Deal ưu tiên cao</td><td class="name">PTSC Văn phòng số · PVFCCo API · Cấp nước Tiền Giang</td><td>Hoàn tất hồ sơ kỹ thuật, phạm vi, phương án giá và điều kiện triển khai.</td><td>Hồ sơ đủ để khách hàng ra quyết định; không còn điểm mở về scope và thương mại.</td><td>Theo lịch thầu/phê duyệt của từng khách hàng</td><td>Sales · Pre-sales · Legal · Delivery</td></tr>
+        <tr><td class="action-phase">Chuẩn bị điểm rơi Q4</td><td class="name">Phan Vũ Group · PVFCCo GDD2</td><td>Xác nhận bài toán, người phê duyệt, ngân sách và phương án triển khai theo giai đoạn.</td><td>Business Case, phạm vi và lịch trình ký/triển khai được khách hàng xác nhận.</td><td>Hoàn tất trước khi bước vào đàm phán cuối</td><td>Sales · Sponsor · Pre-sales</td></tr>
+        <tr><td class="action-phase">Nuôi dưỡng Deal tìm năng</td><td class="name">PTSC Số hóa Quy trình · Saigontourist</td><td>Làm rõ nhu cầu, quy trình mua sắm, tiêu chí lựa chọn và phạm vi có thể triển khai trước.</td><td>Chuyển từ cơ hội tìm năng sang cơ hội có lịch làm việc, đầu mối và bước tiếp theo rõ ràng.</td><td>Chỉ đưa vào dự báo khi đủ điều kiện</td><td>Sales · Marketing · Pre-sales</td></tr>
+        <tr><td class="action-phase">Bù Gap khi Deal trễ</td><td class="name">Khách hàng hiện hữu và công ty thành viên</td><td>Ưu tiên mở rộng user, phân hệ, API, bảo trì hoặc triển khai theo phase ngắn.</td><td>Có danh sách Deal thay thế đủ điều kiện để kích hoạt khi khoản thu/Deal lớn bị lùi.</td><td>Kích hoạt khi Gap dự báo tháng vượt 10%</td><td>Sales · CS · Marketing · Product</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section g3">
+    <div class="card hover"><div class="badge bd-r">0–30 ngày</div><h3 class="mt12">Khóa số đã thực đạt và khoản phải thu</h3><p class="f12 t2 mt8">Đối soát PVFCCo, ACBS; hoàn thiện hồ sơ NovaGroup và Thoát nước; xác nhận lịch thanh toán với từng đầu mối.</p></div>
+    <div class="card hover"><div class="badge bd-o">31–60 ngày</div><h3 class="mt12">Hoàn tất điều kiện ra quyết định</h3><p class="f12 t2 mt8">Tập trung PTSC, PVFCCo API và Cấp nước Tiền Giang; xử lý triệt để điểm mở kỹ thuật, giá, pháp lý và nguồn lực triển khai.</p></div>
+    <div class="card hover"><div class="badge bd-b">61–90 ngày</div><h3 class="mt12">Khóa điểm rơi Q4 và Deal dự phòng</h3><p class="f12 t2 mt8">Đưa Phan Vũ và PVFCCo GDD2 vào lộ trình ký rõ ràng; duy trì PTSC Số hóa Quy trình và Saigontourist làm nguồn bù.</p></div>
+  </div>
+
+  <div class="section g2">
+    <div class="card">
+      <div class="sh"><div class="st">Nhịp điều hành thực tế</div><span class="badge bd-b">Theo điểm nghẽn</span></div>
+      <div class="mini-list">
+        <div class="mini-item">Đầu tuần: rà soát khoản phải thu, lịch khách hàng và việc cần quyết định.</div>
+        <div class="mini-item">Trong tuần: tổ chức phiên làm việc riêng cho Deal có điểm mở kỹ thuật, pháp lý hoặc thương mại.</div>
+        <div class="mini-item">Cuối tuần: cập nhật Hiện trạng, Next Step, Owner, Deadline và phương án thay thế.</div>
+        <div class="mini-item">Escalation ngay khi ngày ký/thanh toán đổi hoặc hồ sơ bị treo quá thời hạn cam kết.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sh"><div class="st">Điều kiện chuyển giai đoạn</div><span class="badge bd-o">Dựa trên bằng chứng</span></div>
+      <div class="mini-list">
+        <div class="mini-item">Có bài toán, phạm vi và giá trị kinh doanh được khách hàng xác nhận.</div>
+        <div class="mini-item">Biết người phê duyệt, quy trình mua sắm và nguồn ngân sách.</div>
+        <div class="mini-item">Điểm mở kỹ thuật, bảo mật, pháp lý và thương mại có người xử lý và hạn hoàn tất.</div>
+        <div class="mini-item">Có ngày dự kiến cho bước kế tiếp; Deal không có lịch cụ thể không đưa vào dự báo chắc chắn.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- SUPPORT -->
+<section id="tab-support" class="tc">
+  <div class="edit-toolbar no-print">
+    <div><div class="edit-state"><span class="dot"></span><span>Chế độ chỉnh sửa nội dung: <strong id="editStatus-support">Đang tắt</strong></span></div><div class="edit-hint mt8">Các trường văn bản trong tab Đề xuất BGĐ có thể sửa trực tiếp và lưu trên trình duyệt.</div></div>
+    <div class="edit-actions"><button class="btn btn-g" onclick="toggleEditMode()">✎ Bật / Tắt sửa</button><button class="btn btn-p" onclick="saveEditableContent()">💾 Lưu</button><button class="btn btn-s" onclick="resetEditableTab('support')">↺ Khôi phục tab</button></div>
+  </div>
+  <div class="sh"><div><div class="st">Resources & Support Needed</div><h2 class="mt8">Đề xuất hỗ trợ và quyết định từ Giám đốc</h2></div><div class="sm">Tick để ghi nhận nội dung đã thống nhất</div></div>
+
+  <div class="g2" style="align-items:start">
+    <div>
+      <div class="card mb16">
+        <div class="st mb8">A. Hỗ trợ trực tiếp từ Giám đốc</div>
+        <div class="ask"><div class="ask-ic">👔</div><div><h3>Executive Sponsorship cho Key Account</h3><p>Tham gia tối thiểu 2 Executive Meeting/tháng với PTSC, PVFCCo, Phan Vũ, Saigontourist và NovaGroup khi cần escalation.</p></div><button class="check" data-key="a1" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">🔁</div><div><h3>Deal Review cố định hằng tuần</h3><p>30–45 phút để review dự báo, công nợ, Next Step, Risk và điểm nghẽn cần quyết định.</p></div><button class="check" data-key="a2" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">⚡</div><div><h3>Deal Desk SLA 24–48 giờ</h3><p>Phê duyệt chiết khấu, milestone thanh toán, SLA, phạm vi đặc biệt và ngoại lệ hợp đồng.</p></div><button class="check" data-key="a3" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">🧩</div><div><h3>Khung thẩm quyền thương mại</h3><p>Thống nhất mức chiết khấu, phương án thanh toán và chi phí Workshop/POC Sales được chủ động.</p></div><button class="check" data-key="a4" onclick="toggleCheck(this)">✓</button></div>
+      </div>
+
+      <div class="card mb16">
+        <div class="st mb8">B. Marketing & Pre-sales</div>
+        <div class="ask"><div class="ask-ic">📣</div><div><h3>Account-Based Marketing theo 3 ngành</h3><p>Case Study, Business Case, ROI, Executive Workshop và chiến dịch tiếp cận công ty thành viên.</p></div><button class="check" data-key="b1" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">🛠️</div><div><h3>Solution Consultant cho Deal trọng điểm</h3><p>Phụ trách xuyên suốt PTSC/PVFCCo; SLA Demo, Fit-Gap và phản hồi RFP trong 48 giờ.</p></div><button class="check" data-key="b2" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">🧪</div><div><h3>Demo Environment theo ngành</h3><p>Chuẩn hóa kịch bản Văn phòng số, quy trình điều hành, ERP/ký số và Private Cloud.</p></div><button class="check" data-key="b3" onclick="toggleCheck(this)">✓</button></div>
+      </div>
+
+      <div class="card">
+        <div class="st mb8">C. Finance · Legal · Delivery</div>
+        <div class="ask"><div class="ask-ic">💰</div><div><h3>Escalation công nợ trọng điểm</h3><p>NovaGroup, Viettel/Thoát nước và PVFCCo được cập nhật hằng tuần; escalation khi trễ >10 ngày.</p></div><button class="check" data-key="c1" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">📄</div><div><h3>Bộ hồ sơ đấu thầu chuẩn hóa</h3><p>Hồ sơ năng lực, bảo mật, kiến trúc, SLA, hợp đồng mẫu, dự án tham chiếu và checklist dự thầu.</p></div><button class="check" data-key="c2" onclick="toggleCheck(this)">✓</button></div>
+        <div class="ask"><div class="ask-ic">🚀</div><div><h3>Xác nhận năng lực Delivery trước cam kết</h3><p>Khóa nguồn lực và timeline triển khai đối với các dự án Private Cloud / On-premise.</p></div><button class="check" data-key="c3" onclick="toggleCheck(this)">✓</button></div>
+      </div>
+    </div>
+
+    <aside class="decision-panel">
+      <div class="card">
+        <div class="sh"><div class="st">Decision Center</div><span class="badge bd-o" id="approvalCount">0/10</span></div>
+        <div class="decision-status"><span class="live-dot"></span><span>Nội dung được lưu tự động trên trình duyệt này.</span></div>
+        <label class="f11 t3" style="display:block;margin-top:14px;margin-bottom:6px">Ghi chú / quyết định của Giám đốc</label>
+        <textarea class="note" id="directorNote" placeholder="Ví dụ: Phê duyệt Deal Review vào thứ Hai hàng tuần; ưu tiên Pre-sales cho PTSC và PVFCCo..." oninput="saveNote()"></textarea>
+        <div class="fx g8 mt12 wr">
+          <button class="btn btn-p" onclick="exportDecision()">⬇ Export ghi chú</button>
+          <button class="btn btn-s" onclick="clearDecision()">Xóa</button>
+        </div>
+      </div>
+      <div class="card mt16">
+        <div class="st mb12">8 quyết định đề nghị phê duyệt</div>
+        <div class="mini-list">
+          <div class="mini-item">Executive Sponsorship cho Key Account.</div>
+          <div class="mini-item">Deal Review cố định hằng tuần.</div>
+          <div class="mini-item">SLA 24–48 giờ cho giá và Pre-sales.</div>
+          <div class="mini-item">Ưu tiên Solution Consultant cho Deal >500M.</div>
+          <div class="mini-item">Escalation công nợ trọng điểm.</div>
+          <div class="mini-item">Ngân sách Account-Based Marketing.</div>
+          <div class="mini-item">Khung thẩm quyền thương mại.</div>
+          <div class="mini-item">Cơ chế ghi nhận doanh số vượt 100% kế hoạch.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+</main>
+
+
+<div class="modal-over" id="detailModal" onclick="if(event.target===this)closeDetailModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title" id="detailTitle">Chi tiết dữ liệu</div><div class="modal-sub" id="detailSub"></div></div>
+      <button class="modal-close" onclick="closeDetailModal()">×</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<footer class="footer"><span>1Office · Giang Tấn Văn · H2 Business Plan</span><span>Dữ liệu kế hoạch: 4.500M Target · 1.862M đã ký · 6.508M Pipeline tiềm năng</span></footer>
+
+<script>
+const DEFAULT_DEALS=[
+ {name:"NOVAGROUP",project:"Thanh toán đợt 3",cat:"Chắc chắn",value:986,month:"7",status:"Khách hàng đang sắp xếp dòng tiền để thanh toán trong tháng 7",next:"Khóa lịch Finance + Sponsor; hoàn tất hồ sơ thanh toán"},
+ {name:"Thoát nước TP.HCM",project:"Thanh toán từ Viettel",cat:"Chắc chắn",value:196,month:"7",status:"Đợi Viettel thanh toán trong tháng 7",next:"Theo sát nghiệm thu và đầu mối thanh toán Viettel"},
+ {name:"PVFCCo",project:"Phí bảo trì phần mềm",cat:"Chắc chắn",value:680,month:"9",status:"Dự kiến thanh toán phí bảo trì trong tháng 9",next:"Chuẩn bị nghiệm thu, hóa đơn và checklist chứng từ"},
+ {name:"PTSC",project:"Văn phòng số — thanh toán đợt 1",cat:"Ưu tiên cao",value:1600,month:"7",status:"Đợi kết quả đấu thầu dự kiến trong tháng 7",next:"Chuẩn bị phương án thương mại, hợp đồng và kế hoạch triển khai"},
+ {name:"PVFCCo",project:"API ký số tích hợp ERP",cat:"Ưu tiên cao",value:490,month:"8",status:"Khách hàng đang làm hồ sơ nội bộ để triển khai",next:"Thúc đẩy hồ sơ; làm rõ ROI và thời gian triển khai"},
+ {name:"Cấp nước Tiền Giang",project:"Triển khai phần mềm",cat:"Ưu tiên cao",value:398,month:"8",status:"Đã thông qua ngân sách; Viettel bổ sung mô tả kỹ thuật",next:"Hoàn thiện hồ sơ chào giá và khóa phạm vi"},
+ {name:"PHAN VŨ GROUP",project:"Văn phòng số — thanh toán đợt 1",cat:"Ưu tiên cao",value:720,month:"10",status:"Đang trình BOD thông qua chủ trương triển khai",next:"Executive Business Case và lộ trình theo giai đoạn"},
+ {name:"PVFCCo",project:"Các tính năng GDD2 — thanh toán đợt 1",cat:"Ưu tiên cao",value:800,month:"11",status:"Đang đánh giá yêu cầu nghiệp vụ với khách hàng",next:"Hoàn tất Fit-Gap, phạm vi và phương án thanh toán"},
+ {name:"PTSC",project:"Số hóa Quy trình điều hành",cat:"Tìm năng",value:2000,month:"12",status:"Khách hàng đang làm hồ sơ mời tham gia thầu",next:"RFP shaping; map Business, IT, Procurement và C-level"},
+ {name:"SaiGon Touris Group",project:"Giải pháp quản trị doanh nghiệp",cat:"Tìm năng",value:500,month:"11",status:"Đang đàm phán phương án chi phí phù hợp quy định mua sắm",next:"Tối ưu scope/phasing và chứng minh TCO"}
+];
+function loadDealData(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("h2-deals-data-v6")||"null");
+    if(Array.isArray(saved)&&saved.length===DEFAULT_DEALS.length) return saved;
+  }catch(e){}
+  return DEFAULT_DEALS.map(d=>({...d}));
+}
+function saveDealData(){try{localStorage.setItem("h2-deals-data-v6",JSON.stringify(DEALS))}catch(e){}}
+let DEALS=loadDealData();
+const JULY_ACTUALS=[
+  {name:"PVFCCo",project:"Doanh số thực đạt tháng 7",solution:"On-premise",value:750,status:"Đã ghi nhận trong tháng 7"},
+  {name:"ACBS",project:"Doanh số thực đạt tháng 7",solution:"Private Cloud",value:568,status:"Đã ghi nhận trong tháng 7"}
+];
+
+const H1_DEALS=[
+ {name:"PVFCCo",project:"Doanh thu H1",solution:"On-premise",quarter:1,value:297.5,status:"Giá trị đã điều chỉnh theo dữ liệu cung cấp"},
+ {name:"CHỨNG KHOÁN LPBANK",project:"Khoản doanh thu Q1-01",solution:"SaaS",quarter:1,value:33.915,status:"Giá trị theo dữ liệu cung cấp"},
+ {name:"CHỨNG KHOÁN LPBANK",project:"Khoản doanh thu Q1-02",solution:"SaaS",quarter:1,value:19.38,status:"Giá trị theo dữ liệu cung cấp"},
+ {name:"CHỨNG KHOÁN LPBANK",project:"Khoản doanh thu Q1-03",solution:"SaaS",quarter:1,value:29.07,status:"Giá trị theo dữ liệu cung cấp"},
+ {name:"CHỨNG KHOÁN LPBANK",project:"Khoản doanh thu Q2-01",solution:"SaaS",quarter:2,value:28.9,status:"Giá trị theo dữ liệu cung cấp"},
+ {name:"CHỨNG KHOÁN LPBANK",project:"Khoản doanh thu Q2-02",solution:"SaaS",quarter:2,value:15.3,status:"Giá trị theo dữ liệu cung cấp"},
+ {name:"CHỨNG KHOÁN LPBANK",project:"Khoản doanh thu Q2-03",solution:"SaaS",quarter:2,value:32.3,status:"Giá trị theo dữ liệu cung cấp"},
+ {name:"MAYCHA",project:"Doanh thu H1",solution:"SaaS",quarter:2,value:172.8,status:"Giá trị theo dữ liệu cung cấp"}
+];
+const H1_QUARTERS=[
+ {quarter:1,target:750,actual:379.865,detail:"PVFCCo 297,500M + LPBank 82,365M"},
+ {quarter:2,target:1000,actual:249.3,detail:"LPBank 76,5M + MAYCHA 172,8M"}
+];
+const H1_KPI={target:1750,actual:629.165,gap:1120.835,detailTotal:629.165,reconcile:0,newContracts:0};
+const H1_PIPELINE=[];
+const H1_ACTIVITIES=[];
+const MONTH_TARGETS={
+  "7":{target:692.308,focus:"Q3 chia đều · Thu NovaGroup, Thoát nước; kết quả thầu PTSC"},
+  "8":{target:692.308,focus:"Q3 chia đều · PVFCCo API, Cấp nước Tiền Giang"},
+  "9":{target:692.307,focus:"Q3 chia đều · Phí bảo trì PVFCCo và bù Gap"},
+  "10":{target:807.692,focus:"Q4 chia đều · Chuyển đổi Workshop / Proposal"},
+  "11":{target:807.692,focus:"Q4 chia đều · Đàm phán thương mại, ngân sách, pháp lý"},
+  "12":{target:807.693,focus:"Q4 chia đều · Ký hợp đồng và thanh toán đợt đầu"}
+};
+
+const money=n=>n.toLocaleString("vi-VN")+"M";
+const catBadge=c=>c==="Chắc chắn"?"bd-g":c==="Ưu tiên cao"?"bd-o":"bd-b";
+const catText=c=>c;
+
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function normalizeDealValue(raw){
+  const cleaned=String(raw).replace(/M/gi,"").replace(/\s/g,"").replace(/\./g,"").replace(",", ".").replace(/[^0-9.-]/g,"");
+  const n=Number(cleaned);return Number.isFinite(n)?n:null;
+}
+function updateDealField(index,field,el){
+  if(!DEALS[index]) return;
+  let value=el.textContent.trim();
+  if(field==="value"){const n=normalizeDealValue(value);if(n===null){el.textContent=money(DEALS[index].value);return}DEALS[index].value=n;el.textContent=money(n)}
+  else if(field==="month"){const match=value.match(/(7|8|9|10|11|12)/);if(!match){el.textContent="Tháng "+DEALS[index].month;return}DEALS[index].month=match[1];el.textContent="Tháng "+match[1]}
+  else{DEALS[index][field]=value}
+  saveDealData();
+  if(document.getElementById("dealBody")) filterDeals();
+}
+function currentFilteredDeals(){
+  const cat=document.getElementById("catFilter")?.value||"ALL";
+  const mon=document.getElementById("monthFilter")?.value||"ALL";
+  const q=(document.getElementById("dealSearch")?.value||"").trim().toLowerCase();
+  return DEALS.filter(d=>(cat==="ALL"||d.cat===cat)&&(mon==="ALL"||d.month===mon)&&(!q||(d.name+" "+d.project+" "+d.status+" "+d.next).toLowerCase().includes(q)));
+}
+function renderDeals(list=DEALS){
+  const body=document.getElementById("dealBody");if(!body)return;
+  body.innerHTML=list.map(d=>{const idx=DEALS.indexOf(d);return `<tr>
+    <td><div class="name">${escapeHtml(d.name)}</div><div class="sub">${escapeHtml(d.project)}</div></td>
+    <td><span class="badge ${catBadge(d.cat)}">${escapeHtml(catText(d.cat))}</span></td>
+    <td class="fw8 co">${money(d.value)}</td>
+    <td><span class="badge bd-n">Tháng ${escapeHtml(d.month)}</span></td>
+    <td class="t2 deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" onblur="updateDealField(${idx},'status',this)">${escapeHtml(d.status)}</td>
+    <td class="t2 deal-edit-cell" contenteditable="true" spellcheck="false" title="Nhấp để sửa; tự động lưu" onblur="updateDealField(${idx},'next',this)">${escapeHtml(d.next)}</td>
+  </tr>`}).join("");
+  const total=list.reduce((s,d)=>s+d.value,0);
+  document.getElementById("dealCount").textContent=`${list.length} cơ hội · ${money(total)} · Hiện trạng/Next Step có thể sửa trực tiếp`;
+}
+
+function filterDeals(){renderDeals(currentFilteredDeals())}
+function resetDeals(){
+  document.getElementById("catFilter").value="ALL";
+  document.getElementById("monthFilter").value="ALL";
+  document.getElementById("dealSearch").value="";
+  renderDeals();
+}
+function sw(tab){
+  document.querySelectorAll(".tc").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".ntab").forEach(x=>x.classList.remove("on"));
+  document.getElementById("tab-"+tab).classList.add("on");
+  document.querySelector(`[data-tab="${tab}"]`).classList.add("on");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function togglePresent(){
+  document.body.classList.toggle("present");
+  if(document.body.classList.contains("present") && document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }else if(document.fullscreenElement && document.exitFullscreen){
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+document.addEventListener("keydown",e=>{
+  const tabs=["overview","pipeline","strategy","support"];
+  const active=document.querySelector(".ntab.on")?.dataset.tab;
+  const i=tabs.indexOf(active);
+  if(e.key==="ArrowRight"&&i<tabs.length-1) sw(tabs[i+1]);
+  if(e.key==="ArrowLeft"&&i>0) sw(tabs[i-1]);
+  if(e.key==="Escape"&&document.getElementById("detailModal")?.classList.contains("on")) closeDetailModal();
+  else if(e.key==="Escape"&&document.body.classList.contains("present")) togglePresent();
+});
+function loadDecision(){
+  document.getElementById("directorNote").value=localStorage.getItem("h2-director-note")||"";
+  document.querySelectorAll(".check").forEach(b=>{
+    if(localStorage.getItem("h2-"+b.dataset.key)==="1") b.classList.add("on");
+  });
+  updateApproval();
+}
+function toggleCheck(btn){
+  btn.classList.toggle("on");
+  localStorage.setItem("h2-"+btn.dataset.key,btn.classList.contains("on")?"1":"0");
+  updateApproval();
+}
+function updateApproval(){
+  const all=[...document.querySelectorAll(".check")],done=all.filter(x=>x.classList.contains("on")).length;
+  document.getElementById("approvalCount").textContent=`${done}/${all.length}`;
+}
+function saveNote(){localStorage.setItem("h2-director-note",document.getElementById("directorNote").value)}
+function clearDecision(){
+  if(!confirm("Xóa ghi chú và trạng thái đã phê duyệt?")) return;
+  localStorage.removeItem("h2-director-note");
+  document.getElementById("directorNote").value="";
+  document.querySelectorAll(".check").forEach(b=>{b.classList.remove("on");localStorage.removeItem("h2-"+b.dataset.key)});
+  updateApproval();
+}
+function exportDecision(){
+  const checked=[...document.querySelectorAll(".check.on")].map(b=>b.parentElement.querySelector("h3").textContent);
+  const note=document.getElementById("directorNote").value||"(chưa có ghi chú)";
+  const text=[
+    "1OFFICE — GIANG TẤN VĂN — H2 DECISION NOTES",
+    "Ngày xuất: "+new Date().toLocaleString("vi-VN"),
+    "",
+    "NỘI DUNG ĐÃ THỐNG NHẤT:",
+    ...(checked.length?checked.map((x,i)=>`${i+1}. ${x}`):["(chưa đánh dấu nội dung nào)"]),
+    "",
+    "GHI CHÚ / QUYẾT ĐỊNH CỦA GIÁM ĐỐC:",
+    note
+  ].join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([text],{type:"text/plain;charset=utf-8"}));
+  a.download="H2_Giang_Tan_Van_Decision_Notes.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+
+const DEFAULT_EDIT_CONTENT={};
+let EDIT_MODE=false;
+
+function renderH1Spark(){
+  const el=document.getElementById("h1Spark"); if(!el) return;
+  const max=Math.max(...H1_QUARTERS.map(x=>x.target));
+  const scale=100;
+  el.innerHTML=H1_QUARTERS.map(x=>{
+    const targetHeight=Math.max(18,Math.round(x.target/max*scale));
+    const actualHeight=Math.max(12,Math.round(x.actual/max*scale));
+    return `<div class="spark-col" onclick="openWidget('h1-quarter','${x.quarter}')" title="Quý ${x.quarter}: Thực đạt ${money(x.actual)} / OTE ${money(x.target)}">
+      <div class="spark-val"><strong>${money(x.actual)}</strong><span>/ OTE ${money(x.target)}</span></div>
+      <div class="spark-bars"><div class="spark-bar ote" style="height:${targetHeight}px"></div><div class="spark-bar actual" style="height:${actualHeight}px"></div></div>
+      <div class="spark-label">Quý ${x.quarter} · ${Math.round(x.actual/x.target*100)}%</div>
+    </div>`;
+  }).join("");
+}
+
+function detailItem(name,desc,val,badge=""){
+  return `<div class="detail-item"><div><div class="detail-name">${name}</div>${badge?`<div class="mt8">${badge}</div>`:""}</div><div class="detail-desc">${desc||""}</div><div class="detail-val">${val||""}</div></div>`;
+}
+function statBox(label,val,cls=""){
+  return `<div class="modal-stat"><div class="kpi-label">${label}</div><div class="v ${cls}">${val}</div></div>`;
+}
+function dealListTable(list){
+  if(!list.length) return `<div class="detail-list">${detailItem("Chưa có dữ liệu","Không có cơ hội phù hợp với bộ lọc hiện tại","")}</div>`;
+  return `<div class="tw"><table class="tbl deal-modal-table"><thead><tr><th>Khách hàng / Dự án</th><th>Nhóm</th><th>Giá trị</th><th>Tháng dự kiến</th><th>Hiện trạng</th><th>Next Step</th></tr></thead><tbody>${list.map(d=>{const i=DEALS.indexOf(d);return `<tr>
+    <td><div class="name" data-deal-index="${i}" data-deal-field="name">${escapeHtml(d.name)}</div><div class="sub" data-deal-index="${i}" data-deal-field="project">${escapeHtml(d.project)}</div></td>
+    <td data-deal-index="${i}" data-deal-field="cat">${escapeHtml(catText(d.cat))}</td>
+    <td class="fw8 co" data-deal-index="${i}" data-deal-field="value">${money(d.value)}</td>
+    <td data-deal-index="${i}" data-deal-field="month">Tháng ${escapeHtml(d.month)}</td>
+    <td data-deal-index="${i}" data-deal-field="status">${escapeHtml(d.status)}</td>
+    <td data-deal-index="${i}" data-deal-field="next">${escapeHtml(d.next)}</td>
+  </tr>`}).join("")}</tbody></table></div>`;
+}
+let CURRENT_WIDGET_ID="";
+function enableModalEditing(widgetId){
+  const modal=document.getElementById("detailModal");
+  const nodes=[document.getElementById("detailTitle"),document.getElementById("detailSub"),...modal.querySelectorAll("#detailBody .detail-name,#detailBody .detail-desc,#detailBody .detail-val,#detailBody .modal-stat .kpi-label,#detailBody .modal-stat .v,#detailBody .deal-modal-table th,#detailBody [data-deal-field],#detailBody .detail-item .badge")];
+  nodes.filter(Boolean).forEach((el,i)=>{
+    el.classList.add("modal-editable");el.setAttribute("contenteditable","true");el.setAttribute("spellcheck","false");el.title="Nhấp để chỉnh sửa; nội dung tự động lưu";
+    const dealField=el.dataset.dealField;
+    if(dealField){
+      el.addEventListener("blur",()=>updateDealField(Number(el.dataset.dealIndex),dealField,el));
+      return;
+    }
+    const storageKey=`widget-text-${widgetId}-${i}`;
+    const saved=localStorage.getItem(storageKey);if(saved!==null)el.textContent=saved;
+    el.addEventListener("blur",()=>localStorage.setItem(storageKey,el.textContent));
+  });
+}
+function openDetailModal(title,sub,html,widgetId="detail"){
+  CURRENT_WIDGET_ID=widgetId;
+  document.getElementById("detailTitle").textContent=title;
+  document.getElementById("detailSub").textContent=sub||"";
+  document.getElementById("detailBody").innerHTML=`<div class="modal-edit-note">✎ Nhấp trực tiếp vào nội dung để chỉnh sửa. Thay đổi được lưu tự động trên trình duyệt này.</div>${html}`;
+  enableModalEditing(widgetId);
+  document.getElementById("detailModal").classList.add("on");
+  document.body.style.overflow="hidden";
+}
+function closeDetailModal(){document.getElementById("detailModal").classList.remove("on");document.body.style.overflow=""}
+
+function openWidget(type,key=""){
+  if(EDIT_MODE) return;
+  let title="Chi tiết dữ liệu",sub="",items=[],summary="",customHtml="";
+  if(type==="july-actual"){
+    title="Thực đạt tháng 7";sub="Tổng doanh số đã ghi nhận: 1.318M · 190,4% kế hoạch tháng";
+    summary=`<div class="modal-summary">${statBox("Kế hoạch tháng 7","692,308M")}${statBox("Thực đạt","1.318M","cg")}${statBox("Vượt kế hoạch","625,692M","co")}</div>`;
+    items=JULY_ACTUALS.map(d=>detailItem(d.name,`${d.project} · ${d.solution} · ${d.status}`,money(d.value),`<span class="badge ${d.solution==="On-premise"?'bd-o':'bd-b'}">${d.solution}</span>`));
+  }else if(type==="h2-target"){
+    title="Phân bổ mục tiêu doanh số H2";sub="4.500M · Q3/Q4 theo tỷ lệ kế hoạch năm 30:35";
+    summary=`<div class="modal-summary">${statBox("Mục tiêu H2","4.500M","co")}${statBox("Quý III","2.076,923M")}${statBox("Quý IV","2.423,077M","cb")}</div>`;
+    items=Object.entries(MONTH_TARGETS).map(([m,x])=>detailItem(`Tháng ${m}`,x.focus,`${x.target}M`,m<10?'<span class="badge bd-o">Q3</span>':'<span class="badge bd-b">Q4</span>'));
+  }else if(type==="commit"){
+    const list=DEALS.filter(d=>d.cat==="Chắc chắn");title="Hợp đồng đã ký — Chờ thanh toán";sub=`${list.length} khoản thu · ${money(list.reduce((s,d)=>s+d.value,0))}`;
+    customHtml=dealListTable(list);
+  }else if(type==="new-pipeline"){
+    const list=DEALS.filter(d=>d.cat!=="Chắc chắn");title="Pipeline dự án mới";sub=`${list.length} cơ hội · ${money(list.reduce((s,d)=>s+d.value,0))}`;
+    customHtml=dealListTable(list);
+  }else if(type==="all-pipeline"){
+    title="Tổng Pipeline Coverage";sub="Bao gồm hợp đồng đã ký và cơ hội mới";
+    summary=`<div class="modal-summary">${statBox("Đã ký — Chờ thanh toán","1.862M","cg")}${statBox("Pipeline tiềm năng","6.508M","co")}${statBox("Tổng Coverage","8.370M","cb")}</div>`;
+    customHtml=dealListTable(DEALS);
+  }else if(type==="gap-plan"){
+    title="Phương án bù Gap 2.638M";sub="Các tổ hợp Deal có thể giúp hoàn thành Target 4.500M";
+    items=[
+      detailItem("Phương án A","PTSC Văn phòng số + PVFCCo API + PVFCCo GDD2","2.890M",'<span class="badge bd-g">Cân bằng</span>'),
+      detailItem("Phương án B","PTSC Số hóa Quy trình + Phan Vũ","2.720M",'<span class="badge bd-o">Ưu tiên</span>'),
+      detailItem("Phương án C","PTSC Số hóa Quy trình + Saigontourist + Cấp nước TG","2.898M",'<span class="badge bd-b">Best Case</span>'),
+      detailItem("Phương án D","PVFCCo API + GDD2 + Phan Vũ + Cấp nước TG + Saigontourist","2.908M",'<span class="badge bd-a">Phân tán rủi ro</span>')];
+  }else if(type==="target-contracts"){
+    const list=DEALS.filter(d=>d.cat!=="Chắc chắn").sort((a,b)=>Math.abs(a.value-300)-Math.abs(b.value-300));
+    title="Danh sách cơ hội cho mục tiêu khoảng 9 hợp đồng";sub="7 cơ hội hiện hữu; cần bổ sung thêm Deal để đạt số lượng mục tiêu với Ticket khoảng 300M";
+    customHtml=dealListTable(list);
+  }else if(type==="h1-ote"){
+    title="Chỉ tiêu OTE H1";sub="Kế hoạch 6 tháng đầu năm";
+    summary=`<div class="modal-summary">${statBox("OTE H1","1.750M")}${statBox("Thực đạt KPI","629,165M","co")}${statBox("Còn thiếu","1.120,835M","cr")}</div>`;
+    items=H1_QUARTERS.map(q=>detailItem(`Quý ${q.quarter}`,q.detail,`${money(q.actual)} / ${money(q.target)}`,`<span class="badge ${q.actual>=q.target?'bd-g':'bd-a'}">${Math.round(q.actual/q.target*100)}%</span>`));
+  }else if(type==="h1-revenue"){
+    title="Thực đạt KPI H1";sub="629,165M / OTE 1.750M · 36%";
+    summary=`<div class="modal-summary">${statBox("Thực đạt","629,165M","co")}${statBox("Hoàn thành","36%","ca")}${statBox("Còn thiếu","1.120,835M","cr")}</div>`;
+    items=[detailItem("Lưu ý đối soát","Tổng các khoản chi tiết được cung cấp là 629,165M và đã khớp KPI thực đạt","0M",'<span class="badge bd-g">Đã đối soát</span>')];
+  }else if(type==="h1-gap"){
+    title="Khoảng thiếu OTE H1";sub="Chênh lệch giữa OTE 1.750M và thực đạt KPI 629,165M";
+    items=[detailItem("OTE H1","Chỉ tiêu 6 tháng đầu năm","1.750M"),detailItem("Thực đạt KPI","Theo số tổng hợp được cung cấp","629,165M"),detailItem("Còn thiếu","64% OTE H1","1.120,835M")];
+  }else if(type==="h1-contracts"){
+    title="Hợp đồng mới phát sinh H1";sub="Không có hợp đồng mới phát sinh";
+    items=[detailItem("Số HĐ mới","Doanh thu H1 đến từ khách hàng/hợp đồng hiện hữu","0",'<span class="badge bd-n">H1</span>')];
+  }else if(type==="h1-detail-total"){
+    title="Chi tiết doanh thu theo khách hàng H1";sub="Tổng các khoản được cung cấp: 629,165M";
+    items=H1_DEALS.map(d=>detailItem(d.name,`${d.project} · Q${d.quarter} · ${d.status}`,money(d.value),`<span class="badge bd-n">${d.solution}</span>`));
+  }else if(type==="h1-reconcile"){
+    title="Đối soát số liệu H1";sub="Chi tiết khách hàng đã khớp KPI thực đạt";
+    summary=`<div class="modal-summary">${statBox("KPI thực đạt","629,165M","co")}${statBox("Tổng chi tiết","629,165M","cb")}${statBox("Chênh lệch","0M","cg")}</div>`;
+    items=[detailItem("Kết quả đối soát","Tổng chi tiết khách hàng bằng đúng KPI thực đạt H1","0M",'<span class="badge bd-g">Đã khớp</span>')];
+  }else if(type==="h1-quarter"){
+    const q=Number(key),qd=H1_QUARTERS.find(x=>x.quarter===q),list=H1_DEALS.filter(d=>d.quarter===q);
+    title=`Kết quả Quý ${q}`;sub=`Thực hiện chi tiết ${money(qd.actual)} / OTE ${money(qd.target)}`;
+    summary=`<div class="modal-summary">${statBox("OTE",money(qd.target))}${statBox("Chi tiết",money(qd.actual),"co")}${statBox("Hoàn thành",Math.round(qd.actual/qd.target*100)+"%",qd.actual>=qd.target?'cg':'ca')}</div>`;
+    items=list.map(d=>detailItem(d.name,`${d.project} · ${d.solution}`,money(d.value)));
+  }else if(type==="h1-solution"){
+    const list=H1_DEALS.filter(d=>d.solution===key);title=`Kết quả H1 — ${key}`;sub=`${list.length} khoản · ${money(list.reduce((s,d)=>s+d.value,0))}`;
+    items=list.length?list.map(d=>detailItem(d.name,`${d.project} · Q${d.quarter}`,money(d.value))):[detailItem("Chưa phát sinh","Không có dữ liệu doanh thu cho nhóm giải pháp này","0M")];
+  }else if(type==="quarter-target"){
+    const months=key==="Q3"?["7","8","9"]:["10","11","12"];
+    title=`Mục tiêu ${key}`;sub=money(months.reduce((s,m)=>s+MONTH_TARGETS[m].target,0));
+    items=months.map(m=>detailItem(`Tháng ${m}`,MONTH_TARGETS[m].focus,money(MONTH_TARGETS[m].target)));
+  }else if(type==="month-target"){
+    const d=MONTH_TARGETS[key],list=DEALS.filter(x=>x.month===key);title=`Kế hoạch doanh số tháng ${key}`;sub=`Target ${money(d.target)} · ${d.focus}`;
+    customHtml=list.length?dealListTable(list):`<div class="detail-list">${detailItem("Pipeline bổ sung",d.focus,money(d.target))}</div>`;
+  }else if(type==="pipeline-category"){
+    const list=DEALS.filter(d=>d.cat===key);title=`Pipeline — ${catText(key)}`;sub=`${list.length} cơ hội · ${money(list.reduce((s,d)=>s+d.value,0))}`;
+    customHtml=dealListTable(list);
+  }else if(type==="risk-detail"){
+    const card=[...document.querySelectorAll(".risk")].find(x=>x.querySelector("h3")?.textContent.trim()===key);
+    title=`Chi tiết rủi ro — ${key}`;sub="Nội dung hiện tại trên dashboard";
+    if(card){items=[detailItem("Đối tượng / phạm vi",card.querySelector(".risk-meta")?.textContent||"",card.querySelector(".badge")?.textContent||""),detailItem("Tác động",card.querySelector("p")?.textContent||"",""),...([...card.querySelectorAll(".risk-action")].map((x,i)=>detailItem(`Biện pháp ${i+1}`,x.textContent,"")))];}
+  }
+  openDetailModal(title,sub,summary+(customHtml||`<div class="detail-list">${items.join("")}</div>`),`${type}-${key||"all"}`);
+}
+
+function bindWidgets(){
+  document.querySelectorAll("[data-widget]").forEach(el=>{
+    el.addEventListener("click",e=>{
+      if(EDIT_MODE||e.target.closest("button,input,select,textarea,[contenteditable=true]")) return;
+      openWidget(el.dataset.widget,el.dataset.key||"");
+    });
+  });
+}
+
+function initEditableContent(){
+  const selectors={
+    pipeline:"h2,.sm,.month-focus,.card .st,.card .mini-item,.heat>div:not(.hlab),.risk h3,.risk-meta,.risk p,.risk-action,.actual-value,.actual-note,.july-actual-card h3",
+    strategy:"h2,.sm,.strategy h3,.strategy p,.strategy .mini-item,.fstep .flbl,.card .st,.card h3,.card p,.card .mini-item,.tbl tbody td",
+    support:"h2,.sm,.ask h3,.ask p,.card .st,.card .mini-item,label"
+  };
+  Object.entries(selectors).forEach(([tab,sel])=>{
+    document.querySelectorAll(`#tab-${tab} ${sel}`).forEach((el,i)=>{
+      if(el.closest(".edit-toolbar")||el.matches("button")||el.querySelector("button,input,textarea,select")) return;
+      const key=`${tab}-${i}`;el.dataset.editKey=key;el.classList.add("editable-field");DEFAULT_EDIT_CONTENT[key]=el.innerHTML;
+      const saved=localStorage.getItem("editable-"+key);if(saved!==null) el.innerHTML=saved;
+      el.addEventListener("blur",()=>{if(EDIT_MODE)localStorage.setItem("editable-"+key,el.innerHTML)});
+      el.addEventListener("click",e=>{if(EDIT_MODE)e.stopPropagation()});
+    });
+  });
+  updateEditStatus();
+}
+function toggleEditMode(){
+  EDIT_MODE=!EDIT_MODE;document.body.classList.toggle("edit-mode",EDIT_MODE);
+  document.querySelectorAll(".editable-field").forEach(el=>el.setAttribute("contenteditable",EDIT_MODE?"true":"false"));
+  const btn=document.getElementById("globalEditBtn");if(btn)btn.innerHTML=EDIT_MODE?'✓ <span class="hide-sm">Kết thúc sửa</span>':'✎ <span class="hide-sm">Chỉnh sửa</span>';
+  updateEditStatus();
+}
+function updateEditStatus(){
+  ["pipeline","strategy","support"].forEach(t=>{const el=document.getElementById("editStatus-"+t);if(el)el.textContent=EDIT_MODE?"Đang bật":"Đang tắt"});
+}
+function saveEditableContent(){
+  document.querySelectorAll(".editable-field").forEach(el=>localStorage.setItem("editable-"+el.dataset.editKey,el.innerHTML));
+  const was=EDIT_MODE;if(was)toggleEditMode();
+  alert("Đã lưu nội dung chỉnh sửa trên trình duyệt này.");
+}
+function resetEditableTab(tab){
+  if(!confirm("Khôi phục toàn bộ nội dung mặc định của tab này?"))return;
+  document.querySelectorAll(`#tab-${tab} .editable-field`).forEach(el=>{const k=el.dataset.editKey;localStorage.removeItem("editable-"+k);el.innerHTML=DEFAULT_EDIT_CONTENT[k]});
+}
+
+renderDeals();
+renderH1Spark();
+bindWidgets();
+initEditableContent();
+loadDecision();
+</script>
+</body>
+</html>
